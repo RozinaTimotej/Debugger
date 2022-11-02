@@ -1,7 +1,7 @@
 b,b,b,b,b,b,b,b,b,b,b,b,b
-b,b,b,b,b,b,b,b,b,b,b,b,b
-b,b,b,b,b,b,b,b,b,b,b,b,b
-b,b,b,b,b,b,b,b,b,b,b,b,b
-b,b,b,b,b,b,b,b,b,b,b,b,b
+b,b,b,b,b,b,f1,b,b,b,b,b,b
+b,b,b,b,b,b,f1,b,b,b,b,b,b
+b,b,b,b,b,b,f1,b,b,b,b,b,b
+b,b,b,b,b,b,f1,b,b,b,b,b,b
 p,b,b,b,b,b,b,b,b,b,b,b,e
 f1,f0,f1,f0,f1,f0,f1,f0,f1,f0,f1,f0,f0

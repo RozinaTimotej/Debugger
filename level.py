@@ -1,6 +1,8 @@
+import copy
+
 import pygame
 from tiles import Tla,Finish
-from settings import tile_size
+from settings import tile_size,screen_w
 from player import Player
 
 class Level:
@@ -24,8 +26,46 @@ class Level:
                 if col == 'e':
                     self.tiles.add(Finish(tile_size, c_i * tile_size, r_i * tile_size, "0"))
 
+    def cam(self):
+        player = self.player.sprite
+        if player.rect.centerx > (3*screen_w/4) and player.direction.x > 0:
+            self.move = -player.speedInfo
+            player.speed = 0
+        elif player.rect.centerx < (screen_w/4) and player.direction.x < 0:
+            self.move = player.speedInfo
+            player.speed = 0
+        else:
+            self.move = 0
+            player.speed = player.speedInfo
+
+    def h_col(self):
+        player = self.player.sprite
+        player.rect.x += player.direction.x * player.speed
+
+        for sprite in self.tiles.sprites():
+            if sprite.rect.colliderect(player.rect):
+                if player.direction.x < 0:
+                    player.rect.left = sprite.rect.right
+                elif player.direction.x > 0:
+                    player.rect.right = sprite.rect.left
+
+    def v_col(self):
+        player = self.player.sprite
+        player.set_gravity()
+
+        for sprite in self.tiles.sprites():
+            if sprite.rect.colliderect(player.rect):
+                if player.direction.y > 0:
+                    player.rect.bottom = sprite.rect.top
+                    player.direction.y = 0
+                elif player.direction.y < 0:
+                    player.rect.top = sprite.rect.bottom
     def draw(self):
         self.tiles.update(self.move)
-        self.player.update()
-        self.player.draw(self.display_surface)
         self.tiles.draw(self.display_surface)
+        self.cam()
+
+        self.player.update()
+        self.h_col()
+        self.v_col()
+        self.player.draw(self.display_surface)
