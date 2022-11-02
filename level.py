@@ -21,7 +21,7 @@ class Level:
                 if col == 'p':
                     self.player.add(Player((c_i * tile_size, r_i * tile_size)))
                 if col == 'f':
-                    self.tiles.add(Tla(tile_size, c_i * tile_size, r_i * tile_size, str(random.randint(0,4))))
+                    self.tiles.add(Tla(tile_size, c_i * tile_size, r_i * tile_size, str(random.randint(0, 4))))
                 if col == 'e':
                     self.finish.add(Finish(tile_size, c_i * tile_size, r_i * tile_size, "0"))
 

@@ -41,7 +41,7 @@ class Player(pygame.sprite.Sprite):
         if self.facing_right:
             self.image = self.frames[self.dir_i][int(self.frame_index)]
         else:
-            self.image = pygame.transform.flip(self.frames[self.dir_i][int(self.frame_index)],True,False)
+            self.image = pygame.transform.flip(self.frames[self.dir_i][int(self.frame_index)], True, False)
 
     def input(self):
         keys = pygame.key.get_pressed()
