@@ -21,6 +21,8 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
 
         #movm
+        self.on_wall = False
+        self.wall_jumped = True
         self.facing_right = True
         self.jumpTime = 0
         self.jumps = 0
@@ -56,7 +58,21 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = 0
             self.dir_i = "front"
 
-        if keys[pygame.K_UP] and self.jumpTime > 15 and self.jumps < 2:
+        if keys[pygame.K_UP] and self.on_wall and not self.wall_jumped and self.jumpTime > 15:
+            self.wall_jumped = True
+            if self.facing_right:
+                self.direction.x = -1
+                self.direction.y += 3*self.jumpHeight/4
+                self.jumps = 2
+                self.rect.x += self.direction.x * self.speed*1.5
+            else:
+                self.direction.x = 1
+                self.direction.y += 3*self.jumpHeight/4
+                self.jumps = 2
+                self.rect.x += self.direction.x * self.speed*1.5
+            self.jumpTime = 0
+
+        if keys[pygame.K_UP] and self.jumpTime > 15 and self.jumps < 2 and not self.on_wall:
             if self.jumps == 0:
                 self.direction.y += self.jumpHeight
                 self.jumps += 1

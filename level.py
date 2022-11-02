@@ -47,16 +47,22 @@ class Level:
                 if player.direction.x < 0:
                     if player.jumps > 0:
                         player.direction.y = 0
+                        player.on_wall = True
                     player.rect.left = sprite.rect.right
                 elif player.direction.x > 0:
                     if player.jumps > 0:
                         player.direction.y = 0
+                        player.on_wall = True
                     player.rect.right = sprite.rect.left
                     player.direction.y = 0
 
     def v_col(self):
         player = self.player.sprite
         player.set_gravity()
+        if player.rect.y <= 0:
+            player.direction.y = 0
+            player.rect.top = 0
+
 
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(player.rect):
@@ -64,6 +70,8 @@ class Level:
                     player.rect.bottom = sprite.rect.top
                     player.direction.y = 0
                     player.jumps = 0
+                    player.on_wall = False
+                    player.wall_jumped = False
                 elif player.direction.y < 0:
                     player.direction.y = 0
                     player.rect.top = sprite.rect.bottom
