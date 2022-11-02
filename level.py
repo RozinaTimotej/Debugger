@@ -1,5 +1,5 @@
 import copy
-
+import random
 import pygame
 from tiles import Tla, Finish
 from settings import tile_size, screen_w
@@ -15,17 +15,15 @@ class Level:
     def init_level(self, layout):
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
-
+        self.finish = pygame.sprite.GroupSingle()
         for r_i, row in enumerate(layout):
             for c_i, col in enumerate(row):
                 if col == 'p':
                     self.player.add(Player((c_i * tile_size, r_i * tile_size)))
-                if col == 'f1':
-                    self.tiles.add(Tla(tile_size, c_i * tile_size, r_i * tile_size, "1"))
-                if col == 'f0':
-                    self.tiles.add(Tla(tile_size, c_i * tile_size, r_i * tile_size, "0"))
+                if col == 'f':
+                    self.tiles.add(Tla(tile_size, c_i * tile_size, r_i * tile_size, str(random.randint(0,4))))
                 if col == 'e':
-                    self.tiles.add(Finish(tile_size, c_i * tile_size, r_i * tile_size, "0"))
+                    self.finish.add(Finish(tile_size, c_i * tile_size, r_i * tile_size, "0"))
 
     def cam(self):
         player = self.player.sprite
@@ -78,7 +76,9 @@ class Level:
 
     def draw(self):
         self.tiles.update(self.move)
+        self.finish.update(self.move)
         self.tiles.draw(self.display_surface)
+        self.finish.draw(self.display_surface)
         self.cam()
 
         self.player.update()

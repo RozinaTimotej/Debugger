@@ -32,7 +32,7 @@ class Player(pygame.sprite.Sprite):
         self.speedInfo = self.speed
         self.animMult = {"front":1,"run":5,"jump":3,"fall":3}
         self.gravity = 1
-        self.jumpHeight = -25
+        self.jumpHeight = -17
 
     def animate(self):
         self.frame_index += 0.02*self.animMult[self.dir_i]
@@ -58,18 +58,23 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = 0
             self.dir_i = "front"
 
+
+
         if keys[pygame.K_UP] and self.on_wall and not self.wall_jumped and self.jumpTime > 15:
             self.wall_jumped = True
             if self.facing_right:
                 self.direction.x = -1
-                self.direction.y += 3*self.jumpHeight/4
+                self.direction.y += self.jumpHeight
                 self.jumps = 2
-                self.rect.x += self.direction.x * self.speed*1.5
+                self.rect.x += self.direction.x * self.speed*2.5
+                self.facing_right = False
             else:
                 self.direction.x = 1
-                self.direction.y += 3*self.jumpHeight/4
+                self.direction.y += self.jumpHeight
                 self.jumps = 2
-                self.rect.x += self.direction.x * self.speed*1.5
+                self.rect.x += self.direction.x * self.speed*2.5
+                self.facing_right = True
+            self.on_wall = False
             self.jumpTime = 0
 
         if keys[pygame.K_UP] and self.jumpTime > 15 and self.jumps < 2 and not self.on_wall:
@@ -78,7 +83,7 @@ class Player(pygame.sprite.Sprite):
                 self.jumps += 1
             elif self.jumps == 1:
                 self.direction.y = 0
-                self.direction.y += 2*self.jumpHeight/3
+                self.direction.y += 3*self.jumpHeight/4
                 self.jumps += 1
             self.jumpTime = 0
 
