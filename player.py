@@ -28,7 +28,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2(0.0)
         self.speed = 5
         self.speedInfo = self.speed
-        self.animMult = {"front":1,"run":3,"jump":3,"fall":3}
+        self.animMult = {"front":1,"run":5,"jump":3,"fall":3}
         self.gravity = 1
         self.jumpHeight = -25
 
