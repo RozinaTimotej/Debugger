@@ -26,8 +26,8 @@ class Player(pygame.sprite.Sprite):
         self.jumps = 0
         self.doubleJump = False
         self.direction = pygame.math.Vector2(0.0)
-        self.speed = 3
-        self.speedInfo = 3
+        self.speed = 5
+        self.speedInfo = self.speed
         self.animMult = {"front":1,"run":3,"jump":3,"fall":3}
         self.gravity = 1
         self.jumpHeight = -25
@@ -57,13 +57,12 @@ class Player(pygame.sprite.Sprite):
             self.dir_i = "front"
 
         if keys[pygame.K_UP] and self.jumpTime > 15 and self.jumps < 2:
-
             if self.jumps == 0:
                 self.direction.y += self.jumpHeight
                 self.jumps += 1
             elif self.jumps == 1:
                 self.direction.y = 0
-                self.direction.y += self.jumpHeight/2
+                self.direction.y += 2*self.jumpHeight/3
                 self.jumps += 1
             self.jumpTime = 0
 

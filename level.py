@@ -60,6 +60,7 @@ class Level:
                     player.direction.y = 0
                     player.jumps = 0
                 elif player.direction.y < 0:
+                    player.direction.y = 0
                     player.rect.top = sprite.rect.bottom
     def draw(self):
         self.tiles.update(self.move)
