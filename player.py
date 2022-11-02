@@ -12,7 +12,7 @@ def import_folder(path):
 class Player(pygame.sprite.Sprite):
     def __init__(self,pos):
         super().__init__()
-        self.frames = {"front":[],"run":[],"jump":[],"fall":[]}
+        self.frames = {"front":[],"run":[],"jump":[],"fall":[],"holdWall":[]}
         self.frames["front"] = import_folder("../Assets/player/front/game/")
         self.frames["run"] = import_folder("../Assets/player/side/right/game/")
         self.dir_i = "front"
