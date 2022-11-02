@@ -1,0 +1,14 @@
+import os
+
+d = 'levels'
+
+map = []
+
+with open("D:\Faks\Debugger\levels\level1.txt", 'r') as f:
+    for line in f.readlines():
+        map.append(line.strip().split(','))
+
+tile_size = 64
+player_spawn = (0,0)
+screen_w = 1200
+screen_h = tile_size*len(map)
