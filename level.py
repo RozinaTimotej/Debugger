@@ -44,16 +44,15 @@ class Level:
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(player.rect):
                 if player.direction.x < 0:
-                    if player.jumps > 0:
+                    if player.jumps > 0 and not player.wall_jumped:
                         player.direction.y = 0
                         player.on_wall = True
                     player.rect.left = sprite.rect.right
                 elif player.direction.x > 0:
-                    if player.jumps > 0:
+                    if player.jumps > 0 and not player.wall_jumped:
                         player.direction.y = 0
                         player.on_wall = True
                     player.rect.right = sprite.rect.left
-                    player.direction.y = 0
 
     def v_col(self):
         player = self.player.sprite

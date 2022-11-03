@@ -15,7 +15,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
         self.frames = {"front": import_folder("../Assets/player/front/game/"),
-                       "run": import_folder("../Assets/player/side/right/game/"), "jump": [], "fall": [],
+                       "run": import_folder("../Assets/player/side/right/game1/"), "jump": [], "fall": [],
                        "holdWall": []}
         self.dir_i = "front"
         self.frame_index = 0
