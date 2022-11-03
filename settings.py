@@ -9,6 +9,5 @@ with open("D:\Faks\Debugger\levels\level1.txt", 'r') as f:
         map.append(line.strip().split(','))
 
 tile_size = 64
-player_spawn = (0,0)
 screen_w = 1200
 screen_h = tile_size*len(map)

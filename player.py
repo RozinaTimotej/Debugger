@@ -58,6 +58,18 @@ class Player(pygame.sprite.Sprite):
         else:
             self.image = pygame.transform.flip(self.frames[self.dir_i][int(self.frame_index)], True, False)
 
+
+    def jumpFromWall(self):
+        if self.facing_right:
+            self.direction.x = -1
+        else:
+            self.direction.x = 1
+        self.direction.y += self.jumpHeight
+        self.rect.x += self.direction.x * self.speed
+        self.jumps = 2
+        self.wall_jumped = True
+        self.on_wall = False
+        self.jumpTime = 0
     def input(self):
         keys = pygame.key.get_pressed()
 
@@ -68,19 +80,8 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
-        if keys[pygame.K_UP] and self.on_wall and not self.wall_jumped and self.jumpTime > 15:
-            if self.facing_right:
-                self.direction.x = -1
-                self.facing_right = False
-            else:
-                self.direction.x = 1
-                self.facing_right = True
-            self.direction.y += self.jumpHeight
-            self.rect.x += self.direction.x * self.speed * 2
-            self.jumps = 2
-            self.wall_jumped = True
-            self.on_wall = False
-            self.jumpTime = 0
+        if keys[pygame.K_UP] and self.on_wall and not self.wall_jumped:
+            self.jumpFromWall()
 
         if keys[pygame.K_UP] and self.jumpTime > 15 and self.jumps < 2 and not self.on_wall:
             if self.jumps == 0:
