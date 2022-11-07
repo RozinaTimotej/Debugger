@@ -7,7 +7,7 @@ def import_folder(path):
     for filename in os.listdir(path):
         if not filename.endswith('.png'):
             continue
-        arr.append(pygame.transform.scale(pygame.image.load(path + filename).convert_alpha(),(48,60)))
+        arr.append(pygame.transform.scale(pygame.image.load(path + filename).convert_alpha(), (44, 55)))
     return arr
 
 
@@ -33,7 +33,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2(0.0)
         self.speed = 5
         self.speedInfo = self.speed
-        self.animMult = {"front": 1, "run": 6, "jump": 3, "fall": 3,"holdWall":3}
+        self.animMult = {"front": 6, "run": 6, "jump": 6, "fall": 6,"holdWall":6}
         self.gravity = 1
         self.jumpHeight = -17
 

@@ -15,6 +15,7 @@ class Level:
     def init_level(self, layout):
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
+        self.enemies = pygame.sprite.Group()
         self.finish = pygame.sprite.GroupSingle()
         for r_i, row in enumerate(layout):
             for c_i, col in enumerate(row):
