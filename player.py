@@ -17,7 +17,6 @@ class Player(pygame.sprite.Sprite):
         self.frames = {"front": import_folder("../Assets/player/idle/game/"),
                        "run": import_folder("../Assets/player/run/game/"),
                        "jump": import_folder("../Assets/player/jump/game/"),
-                       "fall": import_folder("../Assets/player/idle/game/"),
                        "holdWall": import_folder("../Assets/player/hold/game/")}
         self.dir_i = "front"
         self.frame_index = 0
@@ -39,21 +38,23 @@ class Player(pygame.sprite.Sprite):
         self.jumpHeight = -17
 
     def animate(self):
+        if self.direction.x > 0:
+            self.facing_right = True
+        if self.direction.x < 0:
+            self.facing_right = False
+
         if self.on_wall:
             self.dir_i = "holdWall"
+        elif self.direction.y > self.gravity:
+            self.dir_i = "jump"
+            self.frame_index = 3
         elif self.jumps > 0:
             self.dir_i = "jump"
         else:
-            if self.direction.x > 0:
+            if self.direction.x != 0:
                 self.dir_i = "run"
-                self.facing_right = True
-            if self.direction.x < 0:
-                self.dir_i = "run"
-                self.facing_right = False
             if self.direction.x == 0:
                 self.dir_i = "front"
-            if self.direction.y > self.gravity:
-                self.dir_i = "fall"
 
         self.frame_index += 0.02 * self.animMult[self.dir_i]
         if self.frame_index >= len(self.frames[self.dir_i]):
@@ -97,6 +98,7 @@ class Player(pygame.sprite.Sprite):
 
         if keys[pygame.K_UP] and self.jumpTime > 15 and self.jumps < 2 and not self.on_wall:
             self.dir_i = "jump"
+            self.frame_index = 0
             if self.jumps == 0:
                 self.direction.y += self.jumpHeight
                 self.jumps += 1
