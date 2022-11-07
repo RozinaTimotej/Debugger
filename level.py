@@ -1,5 +1,7 @@
 import copy
 import random
+import sys
+
 import pygame
 from tiles import Tla, Finish
 from settings import tile_size, screen_w
@@ -14,6 +16,7 @@ class Level:
 
     def init_level(self, layout): #gre čez level in ga naloži
         self.tiles = pygame.sprite.Group()
+        self.topDieTiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.enemies = pygame.sprite.Group()
         self.finish = pygame.sprite.GroupSingle()
@@ -24,7 +27,7 @@ class Level:
                 if col == 'f':
                     self.tiles.add(Tla(tile_size, c_i * tile_size, r_i * tile_size, "2"))
                 if col == 'f1':
-                    self.tiles.add(Tla(tile_size, c_i * tile_size, r_i * tile_size, "3"))
+                    self.topDieTiles.add(Tla(tile_size, c_i * tile_size, r_i * tile_size, "3"))
                 if col == 'e':
                     self.finish.add(Finish(tile_size, c_i * tile_size, r_i * tile_size, "0"))
 
@@ -57,6 +60,19 @@ class Level:
                         player.on_wall = True
                     player.rect.right = sprite.rect.left
 
+        for sprite in self.topDieTiles.sprites():
+            if sprite.rect.colliderect(player.rect):
+                if player.direction.x < 0:
+                    if player.jumps > 0 and not player.wall_jumped:
+                        player.direction.y = 0
+                        player.on_wall = True
+                    player.rect.left = sprite.rect.right
+                elif player.direction.x > 0:
+                    if player.jumps > 0 and not player.wall_jumped:
+                        player.direction.y = 0
+                        player.on_wall = True
+                    player.rect.right = sprite.rect.left
+
     def v_col_plain(self): #collisioni za gor/dol in pa logika za skok
         player = self.player.sprite
         player.set_gravity()
@@ -76,10 +92,26 @@ class Level:
                     player.direction.y = 0
                     player.rect.top = sprite.rect.bottom
 
+        for sprite in self.topDieTiles.sprites():
+            if sprite.rect.colliderect(player.rect):
+                if player.direction.y > 0:
+                    player.rect.bottom = sprite.rect.top
+                    player.direction.y = 0
+                    player.jumps = 0
+                    player.on_wall = False
+                    player.wall_jumped = False
+                    pygame.quit()
+                    sys.exit()
+                elif player.direction.y < 0:
+                    player.direction.y = 0
+                    player.rect.top = sprite.rect.bottom
+
     def draw(self):
         self.tiles.update(self.move)
+        self.topDieTiles.update(self.move)
         self.finish.update(self.move)
         self.tiles.draw(self.display_surface)
+        self.topDieTiles.draw(self.display_surface)
         self.finish.draw(self.display_surface)
         self.cam()
 
