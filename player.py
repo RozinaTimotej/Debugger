@@ -7,7 +7,7 @@ def import_folder(path):
     for filename in os.listdir(path):
         if not filename.endswith('.png'):
             continue
-        arr.append(pygame.image.load(path + filename).convert_alpha())
+        arr.append(pygame.transform.scale(pygame.image.load(path + filename).convert_alpha(),(48,60)))
     return arr
 
 
