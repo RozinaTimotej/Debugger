@@ -33,7 +33,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2(0.0)
         self.speed = 5
         self.speedInfo = self.speed
-        self.animMult = {"front": 1, "run": 5, "jump": 3, "fall": 3,"holdWall":3}
+        self.animMult = {"front": 1, "run": 6, "jump": 3, "fall": 3,"holdWall":3}
         self.gravity = 1
         self.jumpHeight = -17
 
@@ -45,7 +45,7 @@ class Player(pygame.sprite.Sprite):
 
         if self.on_wall:
             self.dir_i = "holdWall"
-        elif self.direction.y > self.gravity:
+        elif self.direction.y > 4*self.gravity/2:
             self.dir_i = "jump"
             self.frame_index = 3
         elif self.jumps > 0:
