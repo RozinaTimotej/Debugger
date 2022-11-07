@@ -60,16 +60,10 @@ class Player(pygame.sprite.Sprite):
         if self.frame_index >= len(self.frames[self.dir_i]):
             self.frame_index = 0
 
-        if self.on_wall:
-            if not self.facing_right:
-                self.image = self.frames[self.dir_i][int(self.frame_index)]
-            else:
-                self.image = pygame.transform.flip(self.frames[self.dir_i][int(self.frame_index)], True, False)
+        if self.facing_right:
+            self.image = self.frames[self.dir_i][int(self.frame_index)]
         else:
-            if self.facing_right:
-                self.image = self.frames[self.dir_i][int(self.frame_index)]
-            else:
-                self.image = pygame.transform.flip(self.frames[self.dir_i][int(self.frame_index)], True, False)
+            self.image = pygame.transform.flip(self.frames[self.dir_i][int(self.frame_index)], True, False)
 
 
     def jumpFromWall(self):
