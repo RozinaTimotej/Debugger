@@ -14,11 +14,11 @@ def import_folder(path):
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
-        self.frames = {"front": import_folder("../Assets/player/front/game/"),
-                       "run": import_folder("../Assets/player/side/right/game/"),
-                       "jump": [],
-                       "fall": import_folder("../Assets/player/front/game/"),
-                       "holdWall": []}
+        self.frames = {"front": import_folder("../Assets/player/idle/game/"),
+                       "run": import_folder("../Assets/player/run/game/"),
+                       "jump": import_folder("../Assets/player/jump/game/"),
+                       "fall": import_folder("../Assets/player/idle/game/"),
+                       "holdWall": import_folder("../Assets/player/hold/game/")}
         self.dir_i = "front"
         self.frame_index = 0
         self.image = self.frames[self.dir_i][self.frame_index]
@@ -34,29 +34,41 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2(0.0)
         self.speed = 5
         self.speedInfo = self.speed
-        self.animMult = {"front": 1, "run": 5, "jump": 3, "fall": 3}
+        self.animMult = {"front": 1, "run": 5, "jump": 3, "fall": 3,"holdWall":3}
         self.gravity = 1
         self.jumpHeight = -17
 
     def animate(self):
-        if self.direction.x > 0:
-            self.dir_i = "run"
-            self.facing_right = True
-        if self.direction.x < 0:
-            self.dir_i = "run"
-            self.facing_right = False
-        if self.direction.x == 0:
-            self.dir_i = "front"
-        if self.direction.y > self.gravity:
-            self.dir_i = "fall"
+        if self.on_wall:
+            self.dir_i = "holdWall"
+        elif self.jumps > 0:
+            self.dir_i = "jump"
+        else:
+            if self.direction.x > 0:
+                self.dir_i = "run"
+                self.facing_right = True
+            if self.direction.x < 0:
+                self.dir_i = "run"
+                self.facing_right = False
+            if self.direction.x == 0:
+                self.dir_i = "front"
+            if self.direction.y > self.gravity:
+                self.dir_i = "fall"
 
         self.frame_index += 0.02 * self.animMult[self.dir_i]
         if self.frame_index >= len(self.frames[self.dir_i]):
             self.frame_index = 0
-        if self.facing_right:
-            self.image = self.frames[self.dir_i][int(self.frame_index)]
+
+        if self.on_wall:
+            if not self.facing_right:
+                self.image = self.frames[self.dir_i][int(self.frame_index)]
+            else:
+                self.image = pygame.transform.flip(self.frames[self.dir_i][int(self.frame_index)], True, False)
         else:
-            self.image = pygame.transform.flip(self.frames[self.dir_i][int(self.frame_index)], True, False)
+            if self.facing_right:
+                self.image = self.frames[self.dir_i][int(self.frame_index)]
+            else:
+                self.image = pygame.transform.flip(self.frames[self.dir_i][int(self.frame_index)], True, False)
 
 
     def jumpFromWall(self):
@@ -66,7 +78,7 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = 1
         self.direction.y += self.jumpHeight
         self.rect.x += self.direction.x * self.speed
-        self.jumps = 2
+        self.jumps += 1
         self.wall_jumped = True
         self.on_wall = False
         self.jumpTime = 0
@@ -84,6 +96,7 @@ class Player(pygame.sprite.Sprite):
             self.jumpFromWall()
 
         if keys[pygame.K_UP] and self.jumpTime > 15 and self.jumps < 2 and not self.on_wall:
+            self.dir_i = "jump"
             if self.jumps == 0:
                 self.direction.y += self.jumpHeight
                 self.jumps += 1
