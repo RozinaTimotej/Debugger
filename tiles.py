@@ -19,7 +19,7 @@ class StaticTile(Tile):
 
 class Tla(StaticTile):
     def __init__(self, size, x, y, id):
-        super().__init__(size, x, y, pygame.transform.flip(pygame.image.load('../Assets/tla/sprite_' + id + '.png').convert_alpha(),bool(random.getrandbits(1)),bool(random.getrandbits(1))))
+        super().__init__(size, x, y, pygame.image.load('../Assets/tla/sprite_' + id + '.png').convert_alpha())
         offset_y = y + size
         self.rect = self.image.get_rect(bottomleft=(x, offset_y))
 

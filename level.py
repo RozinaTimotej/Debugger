@@ -22,7 +22,9 @@ class Level:
                 if col == 'p':
                     self.player.add(Player((c_i * tile_size, r_i * tile_size)))
                 if col == 'f':
-                    self.tiles.add(Tla(tile_size, c_i * tile_size, r_i * tile_size, str(random.randint(0, 4))))
+                    self.tiles.add(Tla(tile_size, c_i * tile_size, r_i * tile_size, "2"))
+                if col == 'f1':
+                    self.tiles.add(Tla(tile_size, c_i * tile_size, r_i * tile_size, "3"))
                 if col == 'e':
                     self.finish.add(Finish(tile_size, c_i * tile_size, r_i * tile_size, "0"))
 
@@ -38,7 +40,7 @@ class Level:
             self.move = 0
             player.speed = player.speedInfo
 
-    def h_col(self): #collisioni za levo/desno in pa logika za držanje stene
+    def h_col_plain(self): #collisioni za levo/desno in pa logika za držanje stene
         player = self.player.sprite
         player.rect.x += player.direction.x * player.speed
 
@@ -55,7 +57,7 @@ class Level:
                         player.on_wall = True
                     player.rect.right = sprite.rect.left
 
-    def v_col(self): #collisioni za gor/dol in pa logika za skok
+    def v_col_plain(self): #collisioni za gor/dol in pa logika za skok
         player = self.player.sprite
         player.set_gravity()
         if player.rect.y <= 0:
@@ -82,6 +84,6 @@ class Level:
         self.cam()
 
         self.player.update()
-        self.h_col()
-        self.v_col()
+        self.h_col_plain()
+        self.v_col_plain()
         self.player.draw(self.display_surface)
