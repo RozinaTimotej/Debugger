@@ -2,7 +2,7 @@ import pygame
 import os
 
 
-def import_folder(path):
+def import_folder(path): #nalaganje vseh *.png datotek
     arr = []
     for filename in os.listdir(path):
         if not filename.endswith('.png'):
@@ -23,7 +23,7 @@ class Player(pygame.sprite.Sprite):
         self.image = self.frames[self.dir_i][self.frame_index]
         self.rect = self.image.get_rect(topleft=pos)
 
-        # movm
+        # premikanje igralca
         self.on_wall = False
         self.wall_jumped = True
         self.facing_right = True
@@ -37,7 +37,7 @@ class Player(pygame.sprite.Sprite):
         self.gravity = 1
         self.jumpHeight = -17
 
-    def animate(self):
+    def animate(self): #pregled stanja igralca in določitev ustrezne animacije
         if self.direction.x > 0:
             self.facing_right = True
         if self.direction.x < 0:
@@ -90,7 +90,7 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_UP] and self.on_wall and not self.wall_jumped:
             self.jumpFromWall()
 
-        if keys[pygame.K_UP] and self.jumpTime > 15 and self.jumps < 2 and not self.on_wall:
+        if keys[pygame.K_UP] and self.jumpTime > 15 and self.jumps < 2 and not self.on_wall: #ce je na steni, mora biti do naslednjega skoka vsaj 1/4 sekunde, skoči lahko samo 2x
             self.dir_i = "jump"
             self.frame_index = 0
             if self.jumps == 0:

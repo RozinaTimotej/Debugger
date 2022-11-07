@@ -12,7 +12,7 @@ class Level:
         self.init_level(data)
         self.move = 0
 
-    def init_level(self, layout):
+    def init_level(self, layout): #gre čez level in ga naloži
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.enemies = pygame.sprite.Group()
@@ -26,7 +26,7 @@ class Level:
                 if col == 'e':
                     self.finish.add(Finish(tile_size, c_i * tile_size, r_i * tile_size, "0"))
 
-    def cam(self):
+    def cam(self): #ce je igralec znotraj 2 in 3 četrtine se kamera ne premika, drugače se
         player = self.player.sprite
         if player.rect.centerx > (3 * screen_w / 4) and player.direction.x > 0:
             self.move = -player.speedInfo
@@ -38,7 +38,7 @@ class Level:
             self.move = 0
             player.speed = player.speedInfo
 
-    def h_col(self):
+    def h_col(self): #collisioni za levo/desno in pa logika za držanje stene
         player = self.player.sprite
         player.rect.x += player.direction.x * player.speed
 
@@ -55,7 +55,7 @@ class Level:
                         player.on_wall = True
                     player.rect.right = sprite.rect.left
 
-    def v_col(self):
+    def v_col(self): #collisioni za gor/dol in pa logika za skok
         player = self.player.sprite
         player.set_gravity()
         if player.rect.y <= 0:
