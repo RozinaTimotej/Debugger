@@ -6,11 +6,12 @@ import pygame
 from tiles import Tla, Finish
 from settings import tile_size, screen_w
 from player import Player
-
+from enemy import Enemy
 
 class Level:
     def __init__(self, data, surface):
         self.display_surface = surface
+        self.data = data
         self.init_level(data)
         self.move = 0
 
@@ -24,6 +25,8 @@ class Level:
             for c_i, col in enumerate(row):
                 if col == 'p':
                     self.player.add(Player((c_i * tile_size, r_i * tile_size)))
+                if col == 'h':
+                    self.enemies.add(Enemy((c_i * tile_size, r_i * tile_size)))
                 if col == 'f':
                     self.tiles.add(Tla(tile_size, c_i * tile_size, r_i * tile_size, "2"))
                 if col == 'f1':
@@ -43,7 +46,7 @@ class Level:
             self.move = 0
             player.speed = player.speedInfo
 
-    def h_col_plain(self): #collisioni za levo/desno in pa logika za držanje stene
+    def h_col_player(self):
         player = self.player.sprite
         player.rect.x += player.direction.x * player.speed
 
@@ -73,13 +76,34 @@ class Level:
                         player.on_wall = True
                     player.rect.right = sprite.rect.left
 
-    def v_col_plain(self): #collisioni za gor/dol in pa logika za skok
+    def h_col_enemy(self):
+        player = self.player.sprite
+        for enemy in self.enemies.sprites():
+            enemy.rect.x += enemy.direction.x * enemy.speed
+        for sprite in self.tiles.sprites():
+            for enemy in self.enemies.sprites():
+                if enemy.rect.colliderect(self.player.sprite.rect):
+                    if enemy.direction.x < 0 or enemy.direction.x > 0:
+                        self.init_level(self.data)
+                if sprite.rect.colliderect(enemy.rect):
+                    if enemy.direction.x < 0:
+                        enemy.rect.left = sprite.rect.right
+                        enemy.direction.x = 1
+                        enemy.facing_right = True
+                    elif enemy.direction.x > 0:
+                        enemy.direction.x = -1
+                        enemy.facing_right = False
+                        enemy.rect.right = sprite.rect.left
+    def h_col_plain(self): #collisioni za levo/desno in pa logika za držanje stene
+       self.h_col_player()
+       self.h_col_enemy()
+
+    def v_col_player(self):
         player = self.player.sprite
         player.set_gravity()
         if player.rect.y <= 0:
             player.direction.y = 0
             player.rect.top = 0
-
 
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(player.rect):
@@ -101,22 +125,34 @@ class Level:
                     player.jumps = 0
                     player.on_wall = False
                     player.wall_jumped = False
-                    pygame.quit()
-                    sys.exit()
+                    self.init_level(self.data)
                 elif player.direction.y < 0:
                     player.direction.y = 0
                     player.rect.top = sprite.rect.bottom
 
-    def draw(self):
-        self.tiles.update(self.move)
-        self.topDieTiles.update(self.move)
-        self.finish.update(self.move)
+    def v_col_enemy(self):
+        for enemy in self.enemies.sprites():
+            if enemy.rect.colliderect(self.player.sprite.rect):
+                if self.player.sprite.direction.y > 0:
+                    self.enemies.remove(enemy)
+
+    def v_col_plain(self): #collisioni za gor/dol in pa logika za skok
+        self.v_col_player()
+        self.v_col_enemy()
+
+    def draw(self,pause):
         self.tiles.draw(self.display_surface)
         self.topDieTiles.draw(self.display_surface)
         self.finish.draw(self.display_surface)
         self.cam()
-
-        self.player.update()
-        self.h_col_plain()
-        self.v_col_plain()
+        self.enemies.draw(self.display_surface)
         self.player.draw(self.display_surface)
+        if not pause:
+            self.h_col_plain()
+            self.v_col_plain()
+            self.tiles.update(self.move)
+            self.topDieTiles.update(self.move)
+            self.finish.update(self.move)
+            self.enemies.update(self.move)
+            self.player.update()
+

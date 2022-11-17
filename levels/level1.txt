@@ -2,8 +2,11 @@ b,b,b,b,b,b,b,b,b,b,b,b,b
 b,b,b,b,b,b,b,b,b,b,b,b,b
 b,b,b,b,b,b,b,b,b,b,b,b,b
 b,b,b,b,b,b,b,b,b,b,b,b,b
+b,b,b,b,b,b,b,b,b,b,b,b,b
+b,b,b,b,b,b,b,b,b,b,b,b,b
+b,b,b,b,b,b,b,b,b,b,b,b,b
 b,b,b,b,b,b,f1,b,b,b,b,b,b
-b,b,b,f,b,b,f,b,b,b,b,b,b
-b,b,b,f,b,b,f,b,b,b,b,b,b
-p,b,b,f,b,b,f,b,b,b,b,b,e
+b,b,f,b,b,b,f,b,b,b,b,b,b
+b,b,f,b,b,b,f,b,b,b,b,b,b
+p,b,f,b,h,b,f,b,b,b,hw,b,e
 f,f,f,f,f,f,f,f,f1,f1,f,f,f

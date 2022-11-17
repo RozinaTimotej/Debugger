@@ -1,13 +1,13 @@
 import pygame, sys
 from settings import *
 from level import Level
-
+from pygame.locals import *
 pygame.init()
 screen = pygame.display.set_mode((screen_w, screen_h))
 clock = pygame.time.Clock()
 level = Level(map, screen)
 font = pygame.font.SysFont("Arial", 18)
-
+pause = False
 
 def update_fps():
     fps = str(int(clock.get_fps()))
@@ -20,9 +20,12 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        elif event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                pause = not pause
 
     screen.fill('blue')
-    level.draw()
+    level.draw(pause)
     screen.blit(update_fps(), (10, 0))
     clock.tick(60)
     pygame.display.update()
