@@ -62,6 +62,7 @@ class Level:
                         player.direction.y = 0
                         player.on_wall = True
                     player.rect.right = sprite.rect.left
+                break
 
         for sprite in self.topDieTiles.sprites():
             if sprite.rect.colliderect(player.rect):
@@ -75,16 +76,19 @@ class Level:
                         player.direction.y = 0
                         player.on_wall = True
                     player.rect.right = sprite.rect.left
+                break
 
     def h_col_enemy(self):
         player = self.player.sprite
         for enemy in self.enemies.sprites():
             enemy.rect.x += enemy.direction.x * enemy.speed
-        for sprite in self.tiles.sprites():
-            for enemy in self.enemies.sprites():
-                if enemy.rect.colliderect(self.player.sprite.rect):
-                    if enemy.direction.x < 0 or enemy.direction.x > 0:
-                        self.init_level(self.data)
+
+        for enemy in self.enemies.sprites():
+            if enemy.rect.colliderect(player.rect):
+                if enemy.direction.x < 0 or enemy.direction.x > 0:
+                    self.init_level(self.data)
+                break
+            for sprite in self.tiles.sprites():
                 if sprite.rect.colliderect(enemy.rect):
                     if enemy.direction.x < 0:
                         enemy.rect.left = sprite.rect.right
@@ -94,6 +98,7 @@ class Level:
                         enemy.direction.x = -1
                         enemy.facing_right = False
                         enemy.rect.right = sprite.rect.left
+                    break
     def h_col_plain(self): #collisioni za levo/desno in pa logika za držanje stene
        self.h_col_player()
        self.h_col_enemy()
@@ -116,6 +121,7 @@ class Level:
                 elif player.direction.y < 0:
                     player.direction.y = 0
                     player.rect.top = sprite.rect.bottom
+                break
 
         for sprite in self.topDieTiles.sprites():
             if sprite.rect.colliderect(player.rect):
@@ -129,6 +135,7 @@ class Level:
                 elif player.direction.y < 0:
                     player.direction.y = 0
                     player.rect.top = sprite.rect.bottom
+                break
 
     def v_col_enemy(self):
         for enemy in self.enemies.sprites():
