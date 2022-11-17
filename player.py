@@ -31,7 +31,7 @@ class Player(pygame.sprite.Sprite):
         self.jumps = 0
         self.doubleJump = False
         self.direction = pygame.math.Vector2(0.0)
-        self.speed = 5
+        self.speed = 4
         self.speedInfo = self.speed
         self.animMult = {"front": 6, "run": 6, "jump": 6, "fall": 6,"holdWall":6}
         self.gravity = 1
@@ -64,14 +64,12 @@ class Player(pygame.sprite.Sprite):
             self.image = self.frames[self.dir_i][int(self.frame_index)]
         else:
             self.image = pygame.transform.flip(self.frames[self.dir_i][int(self.frame_index)], True, False)
-
-
     def jumpFromWall(self):
         if self.facing_right:
             self.direction.x = -1
         else:
             self.direction.x = 1
-        self.direction.y += self.jumpHeight
+        self.direction.y = self.jumpHeight
         self.rect.x += self.direction.x * self.speed
         self.jumps += 1
         self.wall_jumped = True
@@ -86,7 +84,6 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = -1
         else:
             self.direction.x = 0
-
         if keys[pygame.K_UP] and self.on_wall and not self.wall_jumped:
             self.jumpFromWall()
 

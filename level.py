@@ -80,6 +80,7 @@ class Level:
             player.direction.y = 0
             player.rect.top = 0
 
+
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(player.rect):
                 if player.direction.y > 0:
