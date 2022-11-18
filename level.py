@@ -138,10 +138,12 @@ class Level:
                 break
 
     def v_col_enemy(self):
+        player = self.player.sprite
         for enemy in self.enemies.sprites():
             if enemy.rect.colliderect(self.player.sprite.rect):
                 if self.player.sprite.direction.y > 0:
                     self.enemies.remove(enemy)
+                    player.direction.y = player.jumpHeight/2
 
     def v_col_plain(self): #collisioni za gor/dol in pa logika za skok
         self.v_col_player()

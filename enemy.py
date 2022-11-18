@@ -24,7 +24,7 @@ class Enemy(pygame.sprite.Sprite):
         self.speedInfo = self.speed
         self.animMult = {"front": 6, "run": 6, "jump": 6, "fall": 6, "holdWall": 6}
         self.direction = pygame.math.Vector2(0.0)
-        self.direction.x = -1
+        self.direction.x = 1
 
     def update(self, move):
         self.rect.x += move
