@@ -39,9 +39,9 @@ class Level:
                 if col == 'e':
                     self.finish.add(Finish(tile_size, c_i * tile_size, r_i * tile_size, "0"))
 
-        len_x = math.ceil((screen_w+screen_w/4)/1367)
+        len_x = math.ceil((screen_w+screen_w/4)/1367)+1
         for i in range(0,len_x):
-            self.bg.add(Background1(i*1367-screen_w/4,0))
+            self.bg.add(Background1(i*1367-screen_w/2,0))
             for i in range(-1, len_x+1):
                 self.bg.add(Background2(i * 1367 - screen_w / 4, 0))
 
