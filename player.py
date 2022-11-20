@@ -89,7 +89,6 @@ class Player(pygame.sprite.Sprite):
 
         if keys[pygame.K_UP] and self.jumpTime > 15 and self.jumps < 2 and not self.on_wall: #ce je na steni, mora biti do naslednjega skoka vsaj 1/4 sekunde, skoči lahko samo 2x
             self.frame_index = 0
-            print("test1")
             if self.jumps == 0:
                 self.direction.y = self.jumpHeight
                 self.jumps += 1

@@ -1,4 +1,5 @@
 import copy
+import math
 import random
 import sys
 
@@ -7,6 +8,7 @@ from tiles import Tla, Finish
 from settings import tile_size, screen_w
 from player import Player
 from enemy import Enemy
+from background import Background1,Background2
 
 class Level:
     def __init__(self, data, surface):
@@ -21,18 +23,27 @@ class Level:
         self.player = pygame.sprite.GroupSingle()
         self.enemies = pygame.sprite.Group()
         self.finish = pygame.sprite.GroupSingle()
+        self.bg = pygame.sprite.Group()
+
         for r_i, row in enumerate(layout):
             for c_i, col in enumerate(row):
                 if col == 'p':
                     self.player.add(Player((c_i * tile_size, r_i * tile_size)))
+                    player_x = c_i
                 if col == 'h':
                     self.enemies.add(Enemy((c_i * tile_size, r_i * tile_size)))
                 if col == 'f':
                     self.tiles.add(Tla(tile_size, c_i * tile_size, r_i * tile_size, "2"))
                 if col == 'f1':
-                    self.topDieTiles.add(Tla(tile_size, c_i * tile_size, r_i * tile_size, "3"))
+                    self.topDieTiles.add(Tla(tile_size, c_i * tile_size, r_i * tile_size, "2"))
                 if col == 'e':
                     self.finish.add(Finish(tile_size, c_i * tile_size, r_i * tile_size, "0"))
+
+        len_x = math.ceil((screen_w+screen_w/4)/1367)
+        for i in range(0,len_x):
+            self.bg.add(Background1(i*1367-screen_w/4,0))
+            for i in range(-1, len_x+1):
+                self.bg.add(Background2(i * 1367 - screen_w / 4, 0))
 
     def cam(self): #ce je igralec znotraj 2 in 3 četrtine se kamera ne premika, drugače se
         player = self.player.sprite
@@ -150,6 +161,7 @@ class Level:
         self.v_col_enemy()
 
     def draw(self,pause):
+        self.bg.draw(self.display_surface)
         self.tiles.draw(self.display_surface)
         self.topDieTiles.draw(self.display_surface)
         self.finish.draw(self.display_surface)
@@ -159,6 +171,7 @@ class Level:
         if not pause:
             self.h_col_plain()
             self.v_col_plain()
+            self.bg.update(self.move)
             self.tiles.update(self.move)
             self.topDieTiles.update(self.move)
             self.finish.update(self.move)
