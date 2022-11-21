@@ -8,7 +8,7 @@ from tiles import Tla, Finish
 from settings import tile_size, screen_w
 from player import Player
 from enemy import Enemy
-from background import Background1,Background2
+from background import Background1, Background2
 
 class Level:
     def __init__(self, data, surface):
@@ -16,6 +16,8 @@ class Level:
         self.data = data
         self.init_level(data)
         self.move = 0
+        self.hitEnemy = pygame.mixer.Sound("./Assets/sounds/hit_enemy.wav")
+        pygame.mixer.Sound.set_volume(self.hitEnemy, 0.1)
 
     def init_level(self, layout): #gre čez level in ga naloži
         self.tiles = pygame.sprite.Group()
@@ -23,7 +25,8 @@ class Level:
         self.player = pygame.sprite.GroupSingle()
         self.enemies = pygame.sprite.Group()
         self.finish = pygame.sprite.GroupSingle()
-        self.bg = pygame.sprite.Group()
+        self.space = pygame.sprite.Group()
+        self.stars = pygame.sprite.Group()
 
         for r_i, row in enumerate(layout):
             for c_i, col in enumerate(row):
@@ -40,10 +43,10 @@ class Level:
                     self.finish.add(Finish(tile_size, c_i * tile_size, r_i * tile_size, "0"))
 
         len_x = math.ceil((screen_w+screen_w/4)/1367)+1
-        for i in range(0,len_x):
-            self.bg.add(Background1(i*1367-screen_w/2,0))
-            for i in range(-1, len_x+1):
-                self.bg.add(Background2(i * 1367 - screen_w / 4, 0))
+        for i in range(-1,len_x+1):
+            self.space.add(Background1(i*1367-screen_w/2,0))
+        for i in range(-1, len_x+1):
+            self.stars.add(Background2(i * 1367 - screen_w / 2, 0))
 
     def cam(self): #ce je igralec znotraj 2 in 3 četrtine se kamera ne premika, drugače se
         player = self.player.sprite
@@ -153,6 +156,7 @@ class Level:
         for enemy in self.enemies.sprites():
             if enemy.rect.colliderect(self.player.sprite.rect):
                 if self.player.sprite.direction.y > 0:
+                    pygame.mixer.Sound.play(self.hitEnemy)
                     self.enemies.remove(enemy)
                     player.direction.y = player.jumpHeight/2
 
@@ -161,7 +165,8 @@ class Level:
         self.v_col_enemy()
 
     def draw(self,pause):
-        self.bg.draw(self.display_surface)
+        self.space.draw(self.display_surface)
+        self.stars.draw(self.display_surface)
         self.tiles.draw(self.display_surface)
         self.topDieTiles.draw(self.display_surface)
         self.finish.draw(self.display_surface)
@@ -171,7 +176,8 @@ class Level:
         if not pause:
             self.h_col_plain()
             self.v_col_plain()
-            self.bg.update(self.move)
+            self.space.update(self.move)
+            self.stars.update(self.move)
             self.tiles.update(self.move)
             self.topDieTiles.update(self.move)
             self.finish.update(self.move)
