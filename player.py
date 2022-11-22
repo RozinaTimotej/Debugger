@@ -16,7 +16,7 @@ def sound(path): #nalaganje vseh *.png datotek
         if not filename.endswith('.ogg'):
             continue
         x = pygame.mixer.Sound(path + filename)
-        pygame.mixer.Sound.set_volume(x,0.1)
+        pygame.mixer.Sound.set_volume(x,0.4)
         arr.append(x)
     return arr
 
@@ -79,14 +79,14 @@ class Player(pygame.sprite.Sprite):
             self.image = self.frames[self.dir_i][int(self.frame_index)]
         else:
             self.image = pygame.transform.flip(self.frames[self.dir_i][int(self.frame_index)], True, False)
-
-        if self.direction.y == 0 and not self.direction.x == 0 and self.soundDelay % 20 == 0:
+        print(self.soundDelay)
+        if self.direction.y == 0 and not self.direction.x == 0 and self.soundDelay % 30 == 0:
             pygame.mixer.Sound.play(self.walk[self.s_index])
             self.s_index += 1
             if self.s_index > 1:
                 self.s_index = 0
-
-        self.soundDelay += 1
+        if self.soundDelay != -1:
+            self.soundDelay += 1
     def jumpFromWall(self):
         if self.facing_right:
             self.direction.x = -1
@@ -102,10 +102,15 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_RIGHT]:
+            if self.soundDelay == -1:
+                self.soundDelay = 0
             self.direction.x = 1
         elif keys[pygame.K_LEFT]:
+            if self.soundDelay == -1:
+                self.soundDelay = 0
             self.direction.x = -1
         else:
+            self.soundDelay = -1
             self.direction.x = 0
         if keys[pygame.K_UP] and self.on_wall and not self.wall_jumped:
             self.jumpFromWall()

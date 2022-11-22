@@ -129,6 +129,8 @@ class Level:
                 if player.direction.y > 0:
                     player.rect.bottom = sprite.rect.top
                     player.direction.y = 0
+                    if player.jumps > 0:
+                        player.soundDelay = 0
                     player.jumps = 0
                     player.on_wall = False
                     player.wall_jumped = False

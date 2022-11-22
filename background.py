@@ -19,4 +19,4 @@ class Background2(pygame.sprite.Sprite):
 
     def update(self, move):
         if move != 0:
-            self.rect.x += move+1*(move/move)
+            self.rect.x += move/2
