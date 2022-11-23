@@ -37,6 +37,11 @@ while True:
         if state == "finish":
             state = "playing"
             settings.levelIndex += 1
+            if settings.levelIndex >= len(settings.levels):
+                settings.levelIndex = 0
+                state = "main_menu"
+                settings.gameMusic.stop()
+                settings.menuMusic.play(-1)
             level = Level(settings.levels[settings.levelIndex], screen, settings)
     elif state == "main_menu":
         state = startMenu.draw()
