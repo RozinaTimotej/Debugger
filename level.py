@@ -10,6 +10,7 @@ from player import Player
 from enemy import Enemy
 from background import Background1, Background2
 
+
 class Level:
     def __init__(self, data, surface):
         self.display_surface = surface
@@ -19,7 +20,7 @@ class Level:
         self.hitEnemy = pygame.mixer.Sound("./Assets/sounds/hit_enemy.wav")
         pygame.mixer.Sound.set_volume(self.hitEnemy, 0.1)
 
-    def init_level(self, layout): #gre čez level in ga naloži
+    def init_level(self, layout):  # gre čez level in ga naloži
         self.tiles = pygame.sprite.Group()
         self.topDieTiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
@@ -42,13 +43,13 @@ class Level:
                 if col == 'e':
                     self.finish.add(Finish(tile_size, c_i * tile_size, r_i * tile_size, "0"))
 
-        len_x = math.ceil((screen_w+screen_w/4)/1367)+1
-        for i in range(-1,len_x+1):
-            self.space.add(Background1(i*1367-screen_w/2,0))
-        for i in range(-1, len_x+1):
+        len_x = math.ceil((screen_w + screen_w / 4) / 1367) + 1
+        for i in range(-1, len_x + 1):
+            self.space.add(Background1(i * 1367 - screen_w / 2, 0))
+        for i in range(-1, len_x + 1):
             self.stars.add(Background2(i * 1367 - screen_w / 2, 0))
 
-    def cam(self): #ce je igralec znotraj 2 in 3 četrtine se kamera ne premika, drugače se
+    def cam(self):  # ce je igralec znotraj 2 in 3 četrtine se kamera ne premika, drugače se
         player = self.player.sprite
         if player.rect.centerx > (3 * screen_w / 4) and player.direction.x > 0:
             self.move = -player.speedInfo
@@ -113,9 +114,10 @@ class Level:
                         enemy.facing_right = False
                         enemy.rect.right = sprite.rect.left
                     break
-    def h_col_plain(self): #collisioni za levo/desno in pa logika za držanje stene
-       self.h_col_player()
-       self.h_col_enemy()
+
+    def h_col_plain(self):  # collisioni za levo/desno in pa logika za držanje stene
+        self.h_col_player()
+        self.h_col_enemy()
 
     def v_col_player(self):
         player = self.player.sprite
@@ -160,13 +162,13 @@ class Level:
                 if self.player.sprite.direction.y > 0:
                     pygame.mixer.Sound.play(self.hitEnemy)
                     self.enemies.remove(enemy)
-                    player.direction.y = player.jumpHeight/2
+                    player.direction.y = player.jumpHeight / 2
 
-    def v_col_plain(self): #collisioni za gor/dol in pa logika za skok
+    def v_col_plain(self):  # collisioni za gor/dol in pa logika za skok
         self.v_col_player()
         self.v_col_enemy()
 
-    def draw(self,pause):
+    def draw(self, pause):
         self.space.draw(self.display_surface)
         self.stars.draw(self.display_surface)
         self.tiles.draw(self.display_surface)
@@ -185,4 +187,3 @@ class Level:
             self.finish.update(self.move)
             self.enemies.update(self.move)
             self.player.update()
-
