@@ -1,5 +1,6 @@
 import pygame
 
+
 class Button(pygame.sprite.Sprite):
     def __init__(self, x, y, job, settings):
         super().__init__()
@@ -15,11 +16,12 @@ class Button(pygame.sprite.Sprite):
         pygame.mixer.Sound.set_volume(self.ClickSound, self.settings.vol[1])
         self.played = False
 
-    def updateSound(self,el):
+    def updateSound(self, el):
         pygame.mixer.Sound.set_volume(self.HoverSound, self.settings.vol[1])
         pygame.mixer.Sound.set_volume(self.ClickSound, self.settings.vol[1])
         pygame.mixer.Sound.set_volume(self.settings.menuMusic, self.settings.vol[0])
         pygame.mixer.Sound.set_volume(self.settings.gameMusic, self.settings.vol[0])
+
     def update(self, el):
         self.updateSound(el)
         mouse = pygame.mouse.get_pos()
@@ -32,7 +34,7 @@ class Button(pygame.sprite.Sprite):
                 el.state = self.job
                 if el.state == "playing":
                     self.settings.menuMusic.stop()
-                    self.settings.gameMusic.play()
+                    self.settings.gameMusic.play(-1)
                 pygame.mixer.Sound.play(self.ClickSound)
             self.image = self.imageHover
 
@@ -42,17 +44,18 @@ class Button(pygame.sprite.Sprite):
 
 
 class MainMenu:
-    def __init__(self, surface,settings):
+    def __init__(self, surface, settings):
         self.menu = None
         self.settings = settings
         self.state = "main_menu"
         self.display_surface = surface
         self.init_menu()
+
     def init_menu(self):
         self.menu = pygame.sprite.Group()
-        self.menu.add(Button(self.settings.screen_w / 2 - 30, 100, "playing",self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2 - 30, 200, "settings",self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2 - 30, 300, "exit_to_desktop",self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2 - 30, 100, "playing", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2 - 30, 200, "settings", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2 - 30, 300, "exit_to_desktop", self.settings))
 
     def draw(self):
         self.display_surface.fill("black")

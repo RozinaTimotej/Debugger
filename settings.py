@@ -25,6 +25,6 @@ class Settings():
         pygame.mixer.init()
         self.menuMusic = pygame.mixer.Sound("./Assets/sounds/menumusic.mp3")
         pygame.mixer.Sound.set_volume(self.menuMusic, self.vol[0])
-        self.menuMusic.play()
+        self.menuMusic.play(-1)
         self.gameMusic = pygame.mixer.Sound("./Assets/sounds/gameMusic.mp3")
         pygame.mixer.Sound.set_volume(self.gameMusic, self.vol[0])
