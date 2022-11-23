@@ -9,7 +9,7 @@ from settingMenu import SettingsMenu
 
 settings = Settings()
 pygame.init()
-screen = pygame.display.set_mode((screen_w, screen_h))
+screen = pygame.display.set_mode((settings.screen_w, settings.screen_h))
 clock = pygame.time.Clock()
 startMenu = MainMenu(screen,settings)
 settingMenu = SettingsMenu(screen, settings)
@@ -41,7 +41,6 @@ while True:
         state = settingMenu.draw()
         if state != "settings":
             level.updateSound()
-            state = "main_menu"
         settingMenu.state = "settings"
     screen.blit(update_fps(), (10, 0))
     clock.tick(60)

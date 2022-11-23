@@ -15,11 +15,13 @@ class Button(pygame.sprite.Sprite):
         pygame.mixer.Sound.set_volume(self.ClickSound, self.settings.vol[1])
         self.played = False
 
-    def updateSound(self):
+    def updateSound(self,el):
         pygame.mixer.Sound.set_volume(self.HoverSound, self.settings.vol[1])
         pygame.mixer.Sound.set_volume(self.ClickSound, self.settings.vol[1])
+        pygame.mixer.Sound.set_volume(self.settings.menuMusic, self.settings.vol[0])
+        pygame.mixer.Sound.set_volume(self.settings.gameMusic, self.settings.vol[0])
     def update(self, el):
-        self.updateSound()
+        self.updateSound(el)
         mouse = pygame.mouse.get_pos()
         pressed = pygame.mouse.get_pressed()[0]
         if self.rect.collidepoint(mouse):
@@ -28,6 +30,9 @@ class Button(pygame.sprite.Sprite):
                 self.played = True
             if self.rect.collidepoint(mouse) and pressed:
                 el.state = self.job
+                if el.state == "playing":
+                    self.settings.menuMusic.stop()
+                    self.settings.gameMusic.play()
                 pygame.mixer.Sound.play(self.ClickSound)
             self.image = self.imageHover
 
@@ -43,7 +48,6 @@ class MainMenu:
         self.state = "main_menu"
         self.display_surface = surface
         self.init_menu()
-
     def init_menu(self):
         self.menu = pygame.sprite.Group()
         self.menu.add(Button(self.settings.screen_w / 2 - 30, 100, "playing",self.settings))
