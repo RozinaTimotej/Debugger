@@ -8,13 +8,14 @@ class Button(pygame.sprite.Sprite):
         self.settings = settings
         self.imageNormal = pygame.image.load('./Assets/menu/start.png').convert_alpha()
         self.imageHover = pygame.image.load('./Assets/menu/start_hover.png').convert_alpha()
-        self.image = self.imageNormal
-        self.rect = self.image.get_rect(topleft=(x, y))
         self.HoverSound = pygame.mixer.Sound("./Assets/sounds/hover.wav")
         self.ClickSound = pygame.mixer.Sound("./Assets/sounds/test.wav")
         pygame.mixer.Sound.set_volume(self.HoverSound, self.settings.vol[1])
         pygame.mixer.Sound.set_volume(self.ClickSound, self.settings.vol[1])
         self.played = False
+
+        self.image = self.imageNormal
+        self.rect = self.image.get_rect(topleft=(x, y))
 
     def updateSound(self, el):
         pygame.mixer.Sound.set_volume(self.HoverSound, self.settings.vol[1])
@@ -34,7 +35,7 @@ class Button(pygame.sprite.Sprite):
                 el.state = self.job
                 if el.state == "playing":
                     self.settings.menuMusic.stop()
-                    self.settings.gameMusic.play(-1)
+                    self.settings.gameMusic.play(-1,0,2000)
                 pygame.mixer.Sound.play(self.ClickSound)
             self.image = self.imageHover
 

@@ -8,9 +8,9 @@ from mainMenu import MainMenu
 from settingMenu import SettingsMenu
 
 settings = Settings()
+clock = pygame.time.Clock()
 pygame.init()
 screen = pygame.display.set_mode((settings.screen_w, settings.screen_h))
-clock = pygame.time.Clock()
 startMenu = MainMenu(screen,settings)
 settingMenu = SettingsMenu(screen, settings)
 level = Level(settings.levels[settings.levelIndex], screen, settings)
@@ -34,15 +34,6 @@ while True:
                 pause = not pause
     if state == "playing":
         state = level.draw(pause)
-        if state == "finish":
-            state = "playing"
-            settings.levelIndex += 1
-            if settings.levelIndex >= len(settings.levels):
-                settings.levelIndex = 0
-                state = "main_menu"
-                settings.gameMusic.stop()
-                settings.menuMusic.play(-1)
-            level = Level(settings.levels[settings.levelIndex], screen, settings)
     elif state == "main_menu":
         state = startMenu.draw()
         startMenu.state = "main_menu"
@@ -51,6 +42,15 @@ while True:
         if state != "settings":
             level.updateSound()
         settingMenu.state = "settings"
+    elif state == "finish":
+        state = "playing"
+        settings.levelIndex += 1
+        if settings.levelIndex >= len(settings.levels):
+            settings.levelIndex = 0
+            state = "main_menu"
+            settings.gameMusic.stop()
+            settings.menuMusic.play(-1,0,2000)
+        level = Level(settings.levels[settings.levelIndex], screen, settings)
     screen.blit(update_fps(), (10, 0))
     clock.tick(60)
     pygame.display.update()
