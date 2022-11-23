@@ -12,8 +12,9 @@ def import_folder(path):  # nalaganje vseh *.png datotek
 
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, pos):
+    def __init__(self, pos, settings):
         super().__init__()
+        self.settings = settings
         self.frames = {"run": import_folder("./Assets/enemy/run/game/")}
         self.dir_i = "run"
         self.frame_index = 0

@@ -1,25 +1,27 @@
-import copy
+
 import math
-import random
-import sys
 
 import pygame
 from tiles import Tla, Finish
-from settings import tile_size, screen_w
 from player import Player
 from enemy import Enemy
 from background import Background1, Background2
 
 
 class Level:
-    def __init__(self, data, surface):
+    def __init__(self, data, surface, settings):
         self.display_surface = surface
+        self.settings = settings
         self.data = data
         self.init_level(data)
         self.move = 0
         self.hitEnemy = pygame.mixer.Sound("./Assets/sounds/hit_enemy.wav")
-        pygame.mixer.Sound.set_volume(self.hitEnemy, 0.1)
+        pygame.mixer.Sound.set_volume(self.hitEnemy, self.settings.vol[1])
 
+    def updateSound(self):
+        pygame.mixer.Sound.set_volume(self.hitEnemy, self.settings.vol[1])
+        for x in self.player:
+            x.updateSound()
     def init_level(self, layout):  # gre čez level in ga naloži
         self.tiles = pygame.sprite.Group()
         self.topDieTiles = pygame.sprite.Group()
@@ -32,29 +34,29 @@ class Level:
         for r_i, row in enumerate(layout):
             for c_i, col in enumerate(row):
                 if col == 'p':
-                    self.player.add(Player((c_i * tile_size, r_i * tile_size)))
+                    self.player.add(Player((c_i * self.settings.tile_size, r_i * self.settings.tile_size),self.settings))
                     player_x = c_i
                 if col == 'h':
-                    self.enemies.add(Enemy((c_i * tile_size, r_i * tile_size)))
+                    self.enemies.add(Enemy((c_i * self.settings.tile_size, r_i * self.settings.tile_size),self.settings))
                 if col == 'f':
-                    self.tiles.add(Tla(tile_size, c_i * tile_size, r_i * tile_size, "2"))
+                    self.tiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, "2",self.settings))
                 if col == 'f1':
-                    self.topDieTiles.add(Tla(tile_size, c_i * tile_size, r_i * tile_size, "2"))
+                    self.topDieTiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, "2",self.settings))
                 if col == 'e':
-                    self.finish.add(Finish(tile_size, c_i * tile_size, r_i * tile_size, "0"))
+                    self.finish.add(Finish(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, "0",self.settings))
 
-        len_x = math.ceil((screen_w + screen_w / 4) / 1367) + 1
+        len_x = math.ceil((self.settings.screen_w + self.settings.screen_w / 4) / 1367) + 1
         for i in range(-1, len_x + 1):
-            self.space.add(Background1(i * 1367 - screen_w / 2, 0))
+            self.space.add(Background1(i * 1367 - self.settings.screen_w / 2, 0,self.settings))
         for i in range(-1, len_x + 1):
-            self.stars.add(Background2(i * 1367 - screen_w / 2, 0))
+            self.stars.add(Background2(i * 1367 - self.settings.screen_w / 2, 0,self.settings))
 
     def cam(self):  # ce je igralec znotraj 2 in 3 četrtine se kamera ne premika, drugače se
         player = self.player.sprite
-        if player.rect.centerx > (3 * screen_w / 4) and player.direction.x > 0:
+        if player.rect.centerx > (3 * self.settings.screen_w / 4) and player.direction.x > 0:
             self.move = -player.speedInfo
             player.speed = 0
-        elif player.rect.centerx < (screen_w / 4) and player.direction.x < 0:
+        elif player.rect.centerx < (self.settings.screen_w / 4) and player.direction.x < 0:
             self.move = player.speedInfo
             player.speed = 0
         else:

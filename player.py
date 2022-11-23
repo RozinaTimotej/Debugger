@@ -1,6 +1,5 @@
 import pygame
 import os
-import math
 
 def import_folder(path): #nalaganje vseh *.png datotek
     arr = []
@@ -10,18 +9,18 @@ def import_folder(path): #nalaganje vseh *.png datotek
         arr.append(pygame.transform.scale(pygame.image.load(path + filename).convert_alpha(), (44, 55)))
     return arr
 
-def sound(path): #nalaganje vseh *.png datotek
+def sound(path,volume): #nalaganje vseh *.png datotek
     arr = []
     for filename in os.listdir(path):
         if not filename.endswith('.ogg'):
             continue
         x = pygame.mixer.Sound(path + filename)
-        pygame.mixer.Sound.set_volume(x,0.4)
+        pygame.mixer.Sound.set_volume(x, volume)
         arr.append(x)
     return arr
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos):
+    def __init__(self, pos, settings):
         super().__init__()
         self.frames = {"front": import_folder("./Assets/player/idle/game/"),
                        "run": import_folder("./Assets/player/run/game/"),
@@ -31,10 +30,10 @@ class Player(pygame.sprite.Sprite):
         self.frame_index = 0
         self.image = self.frames[self.dir_i][self.frame_index]
         self.rect = self.image.get_rect(topleft=pos)
-
+        self.settings = settings
         self.jump = pygame.mixer.Sound("./Assets/sounds/jump_02.wav")
-        pygame.mixer.Sound.set_volume(self.jump, 0.1)
-        self.walk = sound("./Assets/sounds/walk/")
+        pygame.mixer.Sound.set_volume(self.jump, self.settings.vol[1])
+        self.walk = sound("./Assets/sounds/walk/", self.settings.vol[1])
         self.soundDelay = 0
         self.s_index = 0
 
@@ -52,6 +51,11 @@ class Player(pygame.sprite.Sprite):
         self.gravity = 1
         self.jumpHeight = -17
 
+    def updateSound(self):
+        print(self.settings.vol[1])
+        pygame.mixer.Sound.set_volume(self.jump, self.settings.vol[1])
+        for walkSound in self.walk:
+            pygame.mixer.Sound.set_volume(walkSound, self.settings.vol[1])
     def animate(self): #pregled stanja igralca in določitev ustrezne animacije
         if self.direction.x > 0:
             self.facing_right = True
@@ -79,7 +83,7 @@ class Player(pygame.sprite.Sprite):
             self.image = self.frames[self.dir_i][int(self.frame_index)]
         else:
             self.image = pygame.transform.flip(self.frames[self.dir_i][int(self.frame_index)], True, False)
-        print(self.soundDelay)
+
         if self.direction.y == 0 and not self.direction.x == 0 and self.soundDelay % 30 == 0:
             pygame.mixer.Sound.play(self.walk[self.s_index])
             self.s_index += 1
