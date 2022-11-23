@@ -13,6 +13,7 @@ class Level:
         self.data = data
         self.init_level(data)
         self.move = 0
+        self.status = "playing"
         self.hitEnemy = pygame.mixer.Sound("./Assets/sounds/hit_enemy.wav")
         pygame.mixer.Sound.set_volume(self.hitEnemy, self.settings.vol[1])
 
@@ -77,6 +78,11 @@ class Level:
                         player.direction.y = 0
                         player.on_wall = True
                     player.rect.right = sprite.rect.left
+                break
+
+        for sprite in self.finish.sprites():
+            if sprite.rect.colliderect(player.rect):
+                self.status = "finish"
                 break
 
         for sprite in self.topDieTiles.sprites():
@@ -187,3 +193,4 @@ class Level:
             self.finish.update(self.move)
             self.enemies.update(self.move)
             self.player.update()
+        return self.status

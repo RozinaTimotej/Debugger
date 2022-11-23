@@ -13,7 +13,7 @@ screen = pygame.display.set_mode((settings.screen_w, settings.screen_h))
 clock = pygame.time.Clock()
 startMenu = MainMenu(screen,settings)
 settingMenu = SettingsMenu(screen, settings)
-level = Level(map, screen,settings)
+level = Level(settings.levels[settings.levelIndex], screen, settings)
 font = pygame.font.SysFont("Arial", 18)
 pause = False
 state = "main_menu"
@@ -33,7 +33,11 @@ while True:
             if event.key == K_ESCAPE and state == "playing":
                 pause = not pause
     if state == "playing":
-        level.draw(pause)
+        state = level.draw(pause)
+        if state == "finish":
+            state = "playing"
+            settings.levelIndex += 1
+            level = Level(settings.levels[settings.levelIndex], screen, settings)
     elif state == "main_menu":
         state = startMenu.draw()
         startMenu.state = "main_menu"
