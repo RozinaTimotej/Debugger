@@ -1,6 +1,4 @@
 import pygame
-from settings import screen_h
-
 
 class Background1(pygame.sprite.Sprite):
     def __init__(self, x, y,settings):

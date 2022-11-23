@@ -1,6 +1,4 @@
-
 import math
-
 import pygame
 from tiles import Tla, Finish
 from player import Player

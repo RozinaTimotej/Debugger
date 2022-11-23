@@ -1,5 +1,4 @@
 import pygame
-from settings import screen_w
 
 class Slider(pygame.sprite.Sprite):
 
@@ -76,11 +75,11 @@ class SettingsMenu:
 
     def init_menu(self):
         self.groupSound = pygame.sprite.Group()
-        self.groupSound.add(Slider(screen_w / 2, 100, 0))
-        self.groupSound.add(SliderMovable(screen_w / 2, 100, 0, self.settings.vol[0]))
-        self.groupSound.add(Slider(screen_w / 2, 200, 1))
-        self.groupSound.add(SliderMovable(screen_w / 2, 200, 1, self.settings.vol[1]))
-        self.groupSound.add(Button(screen_w / 2 - 30, 500, "playing", self.settings))
+        self.groupSound.add(Slider(self.settings.screen_w / 2, 100, 0))
+        self.groupSound.add(SliderMovable(self.settings.screen_w / 2, 100, 0, self.settings.vol[0]))
+        self.groupSound.add(Slider(self.settings.screen_w / 2, 200, 1))
+        self.groupSound.add(SliderMovable(self.settings.screen_w / 2, 200, 1, self.settings.vol[1]))
+        self.groupSound.add(Button(self.settings.screen_w / 2 - 30, 500, "playing", self.settings))
 
     def draw(self):
         self.display_surface.fill("black")

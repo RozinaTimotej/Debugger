@@ -1,6 +1,4 @@
 import pygame
-from settings import screen_w
-
 
 class Button(pygame.sprite.Sprite):
     def __init__(self, x, y, job, settings):
@@ -48,9 +46,9 @@ class MainMenu:
 
     def init_menu(self):
         self.menu = pygame.sprite.Group()
-        self.menu.add(Button(screen_w / 2 - 30, 100, "playing",self.settings))
-        self.menu.add(Button(screen_w / 2 - 30, 200, "settings",self.settings))
-        self.menu.add(Button(screen_w / 2 - 30, 300, "exit_to_desktop",self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2 - 30, 100, "playing",self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2 - 30, 200, "settings",self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2 - 30, 300, "exit_to_desktop",self.settings))
 
     def draw(self):
         self.display_surface.fill("black")
