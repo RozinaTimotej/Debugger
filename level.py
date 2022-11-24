@@ -21,6 +21,7 @@ class Level:
         pygame.mixer.Sound.set_volume(self.hitEnemy, self.settings.vol[1])
         for x in self.player:
             x.updateSound()
+
     def init_level(self, layout):  # gre čez level in ga naloži
         self.tiles = pygame.sprite.Group()
         self.topDieTiles = pygame.sprite.Group()
@@ -72,12 +73,12 @@ class Level:
                     if player.jumps > 0 and not player.wall_jumped:
                         player.direction.y = 0
                         player.on_wall = True
-                    player.rect.left = sprite.rect.right
+                    player.rect.left = sprite.rect.right+0.005
                 elif player.direction.x > 0:
                     if player.jumps > 0 and not player.wall_jumped:
                         player.direction.y = 0
                         player.on_wall = True
-                    player.rect.right = sprite.rect.left
+                    player.rect.right = sprite.rect.left-0.005
                 break
 
         for sprite in self.finish.sprites():
@@ -175,14 +176,6 @@ class Level:
         self.v_col_enemy()
 
     def draw(self, pause):
-        self.space.draw(self.display_surface)
-        self.stars.draw(self.display_surface)
-        self.tiles.draw(self.display_surface)
-        self.topDieTiles.draw(self.display_surface)
-        self.finish.draw(self.display_surface)
-        self.cam()
-        self.enemies.draw(self.display_surface)
-        self.player.draw(self.display_surface)
         if not pause:
             self.h_col_plain()
             self.v_col_plain()
@@ -193,4 +186,14 @@ class Level:
             self.finish.update(self.move)
             self.enemies.update(self.move)
             self.player.update()
+
+        self.space.draw(self.display_surface)
+        self.stars.draw(self.display_surface)
+        self.tiles.draw(self.display_surface)
+        self.topDieTiles.draw(self.display_surface)
+        self.finish.draw(self.display_surface)
+        self.cam()
+        self.enemies.draw(self.display_surface)
+        self.player.draw(self.display_surface)
+
         return self.status
