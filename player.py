@@ -1,7 +1,6 @@
 import pygame
 import os
 
-
 def import_folder(path): #nalaganje vseh *.png datotek
     arr = []
     for filename in os.listdir(path):
@@ -10,9 +9,18 @@ def import_folder(path): #nalaganje vseh *.png datotek
         arr.append(pygame.transform.scale(pygame.image.load(path + filename).convert_alpha(), (44, 55)))
     return arr
 
+def sound(path,volume): #nalaganje vseh *.png datotek
+    arr = []
+    for filename in os.listdir(path):
+        if not filename.endswith('.ogg'):
+            continue
+        x = pygame.mixer.Sound(path + filename)
+        pygame.mixer.Sound.set_volume(x, volume)
+        arr.append(x)
+    return arr
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos):
+    def __init__(self, pos, settings):
         super().__init__()
         self.frames = {"front": import_folder("./Assets/player/idle/game/"),
                        "run": import_folder("./Assets/player/run/game/"),
@@ -22,6 +30,12 @@ class Player(pygame.sprite.Sprite):
         self.frame_index = 0
         self.image = self.frames[self.dir_i][self.frame_index]
         self.rect = self.image.get_rect(topleft=pos)
+        self.settings = settings
+        self.jump = pygame.mixer.Sound("./Assets/sounds/jump_02.wav")
+        pygame.mixer.Sound.set_volume(self.jump, self.settings.vol[1])
+        self.walk = sound("./Assets/sounds/walk/", self.settings.vol[1])
+        self.soundDelay = 0
+        self.s_index = 0
 
         # premikanje igralca
         self.on_wall = False
@@ -37,6 +51,11 @@ class Player(pygame.sprite.Sprite):
         self.gravity = 1
         self.jumpHeight = -17
 
+    def updateSound(self):
+        print(self.settings.vol[1])
+        pygame.mixer.Sound.set_volume(self.jump, self.settings.vol[1])
+        for walkSound in self.walk:
+            pygame.mixer.Sound.set_volume(walkSound, self.settings.vol[1])
     def animate(self): #pregled stanja igralca in določitev ustrezne animacije
         if self.direction.x > 0:
             self.facing_right = True
@@ -64,6 +83,14 @@ class Player(pygame.sprite.Sprite):
             self.image = self.frames[self.dir_i][int(self.frame_index)]
         else:
             self.image = pygame.transform.flip(self.frames[self.dir_i][int(self.frame_index)], True, False)
+
+        if self.direction.y == 0 and not self.direction.x == 0 and self.soundDelay % 30 == 0:
+            pygame.mixer.Sound.play(self.walk[self.s_index])
+            self.s_index += 1
+            if self.s_index > 1:
+                self.s_index = 0
+        if self.soundDelay != -1:
+            self.soundDelay += 1
     def jumpFromWall(self):
         if self.facing_right:
             self.direction.x = -1
@@ -79,23 +106,29 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_RIGHT]:
+            if self.soundDelay == -1:
+                self.soundDelay = 0
             self.direction.x = 1
         elif keys[pygame.K_LEFT]:
+            if self.soundDelay == -1:
+                self.soundDelay = 0
             self.direction.x = -1
         else:
+            self.soundDelay = -1
             self.direction.x = 0
         if keys[pygame.K_UP] and self.on_wall and not self.wall_jumped:
             self.jumpFromWall()
+            pygame.mixer.Sound.play(self.jump)
 
         if keys[pygame.K_UP] and self.jumpTime > 15 and self.jumps < 2 and not self.on_wall: #ce je na steni, mora biti do naslednjega skoka vsaj 1/4 sekunde, skoči lahko samo 2x
-            self.dir_i = "jump"
             self.frame_index = 0
+            pygame.mixer.Sound.play(self.jump)
             if self.jumps == 0:
-                self.direction.y += self.jumpHeight
+                self.direction.y = self.jumpHeight
                 self.jumps += 1
             elif self.jumps == 1:
                 self.direction.y = 0
-                self.direction.y += 3 * self.jumpHeight / 4
+                self.direction.y = 8 * self.jumpHeight / 9
                 self.jumps += 1
             self.jumpTime = 0
 

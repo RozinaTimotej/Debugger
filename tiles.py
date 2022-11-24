@@ -1,9 +1,9 @@
 import pygame
-import random
 
 class Tile(pygame.sprite.Sprite):
-    def __init__(self, size, x, y):
+    def __init__(self, size, x, y,settings):
         super().__init__()
+        self.settings = settings
         self.image = pygame.Surface((size, size))
         self.rect = self.image.get_rect(topleft=(x, y))
 
@@ -12,20 +12,20 @@ class Tile(pygame.sprite.Sprite):
 
 
 class StaticTile(Tile):
-    def __init__(self, size, x, y, surface):
-        super().__init__(size, x, y)
+    def __init__(self, size, x, y, surface,settings):
+        super().__init__(size, x, y,settings)
         self.image = surface
 
 
 class Tla(StaticTile):
-    def __init__(self, size, x, y, id):
-        super().__init__(size, x, y, pygame.image.load('./Assets/tla/sprite_' + id + '.png').convert_alpha())
+    def __init__(self, size, x, y, id, settings):
+        super().__init__(size, x, y, pygame.image.load('./Assets/tla/sprite_' + id + '.png').convert_alpha(),settings)
         offset_y = y + size
         self.rect = self.image.get_rect(bottomleft=(x, offset_y))
 
 
 class Finish(StaticTile):
-    def __init__(self, size, x, y, id):
-        super().__init__(size, x, y, pygame.image.load('./Assets/finish/sprite_' + id + '.png').convert_alpha())
+    def __init__(self, size, x, y, id, settings):
+        super().__init__(size, x, y, pygame.image.load('./Assets/finish/sprite_' + id + '.png').convert_alpha(),settings)
         offset_y = y + size
         self.rect = self.image.get_rect(bottomleft=(x, offset_y))
