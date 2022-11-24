@@ -39,8 +39,6 @@ while True:
         startMenu.state = "main_menu"
     elif state == "settings":
         state = settingMenu.draw()
-        if state != "settings":
-            level.updateSound()
         settingMenu.state = "settings"
     elif state == "finish":
         state = "playing"

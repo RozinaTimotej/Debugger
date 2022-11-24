@@ -17,14 +17,7 @@ class Button(pygame.sprite.Sprite):
         self.image = self.imageNormal
         self.rect = self.image.get_rect(topleft=(x, y))
 
-    def updateSound(self, el):
-        pygame.mixer.Sound.set_volume(self.HoverSound, self.settings.vol[1])
-        pygame.mixer.Sound.set_volume(self.ClickSound, self.settings.vol[1])
-        pygame.mixer.Sound.set_volume(self.settings.menuMusic, self.settings.vol[0])
-        pygame.mixer.Sound.set_volume(self.settings.gameMusic, self.settings.vol[0])
-
     def update(self, el):
-        self.updateSound(el)
         mouse = pygame.mouse.get_pos()
         pressed = pygame.mouse.get_pressed()[0]
         if self.rect.collidepoint(mouse):

@@ -2,6 +2,16 @@ import os
 import pygame
 d = 'levels'
 
+def sound(path,volume): #nalaganje vseh *.png datotek
+    arr = []
+    for filename in os.listdir(path):
+        if not filename.endswith('.ogg'):
+            continue
+        x = pygame.mixer.Sound(path + filename)
+        pygame.mixer.Sound.set_volume(x, volume)
+        arr.append(x)
+    return arr
+
 map = []
 for filename in os.listdir("./levels"):
     arr = []
@@ -21,6 +31,7 @@ effects_volume = 0.1
 
 class Settings():
     def __init__(self):
+        pygame.mixer.init()
         global music_volume, effects_volume, tile_size, screen_w, screen_h
         self.levelIndex = 0
         self.levels = map
@@ -28,9 +39,20 @@ class Settings():
         self.screen_h = screen_h
         self.tile_size = tile_size
         self.vol = [music_volume, effects_volume]
-        pygame.mixer.init()
+        self.playerJump = pygame.mixer.Sound("./Assets/sounds/jump_02.wav")
         self.menuMusic = pygame.mixer.Sound("./Assets/sounds/menumusic.mp3")
-        pygame.mixer.Sound.set_volume(self.menuMusic, self.vol[0])
-        self.menuMusic.play(-1, 0, 2000)
         self.gameMusic = pygame.mixer.Sound("./Assets/sounds/gameMusic.mp3")
+        self.hitEnemy = pygame.mixer.Sound("./Assets/sounds/hit_enemy.wav")
+        self.HoverSound = pygame.mixer.Sound("./Assets/sounds/hover.wav")
+        self.ClickSound = pygame.mixer.Sound("./Assets/sounds/test.wav")
+        self.playerWalk = sound("./Assets/sounds/walk/", self.vol[1])
+        self.updateSound()
+        self.menuMusic.play(-1, 0, 2000)
+
+    def updateSound(self):
+        pygame.mixer.Sound.set_volume(self.playerJump, self.vol[1])
+        pygame.mixer.Sound.set_volume(self.menuMusic, self.vol[0])
         pygame.mixer.Sound.set_volume(self.gameMusic, self.vol[0])
+        pygame.mixer.Sound.set_volume(self.hitEnemy, self.vol[1])
+        pygame.mixer.Sound.set_volume(self.HoverSound, self.vol[1])
+        pygame.mixer.Sound.set_volume(self.ClickSound, self.vol[1])

@@ -14,13 +14,6 @@ class Level:
         self.init_level(data)
         self.move = 0
         self.status = "playing"
-        self.hitEnemy = pygame.mixer.Sound("./Assets/sounds/hit_enemy.wav")
-        pygame.mixer.Sound.set_volume(self.hitEnemy, self.settings.vol[1])
-
-    def updateSound(self):
-        pygame.mixer.Sound.set_volume(self.hitEnemy, self.settings.vol[1])
-        for x in self.player:
-            x.updateSound()
 
     def init_level(self, layout):  # gre čez level in ga naloži
         self.tiles = pygame.sprite.Group()
@@ -167,7 +160,7 @@ class Level:
         for enemy in self.enemies.sprites():
             if enemy.rect.colliderect(self.player.sprite.rect):
                 if self.player.sprite.direction.y > 0:
-                    pygame.mixer.Sound.play(self.hitEnemy)
+                    pygame.mixer.Sound.play(self.settings.hitEnemy)
                     self.enemies.remove(enemy)
                     player.direction.y = player.jumpHeight / 2
 
