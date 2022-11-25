@@ -3,7 +3,13 @@ import pygame
 
 d = 'levels'
 
-
+def import_folder(path):  # nalaganje vseh *.png datotek
+    arr = []
+    for filename in os.listdir(path):
+        if not filename.endswith('.png'):
+            continue
+        arr.append(pygame.transform.scale(pygame.image.load(path + filename).convert_alpha(), (64, 64)))
+    return arr
 def sound(path, volume):  # nalaganje vseh *.png datotek
     arr = []
     for filename in os.listdir(path):
@@ -25,6 +31,7 @@ def tiles(path):  # nalaganje vseh *.png datotek
     return arr
 
 map = []
+
 for filename in os.listdir("./levels"):
     arr = []
     if not filename.endswith('.txt'):
@@ -59,6 +66,12 @@ class Settings():
         self.ClickSound = pygame.mixer.Sound("./Assets/sounds/test.wav")
         self.playerWalk = sound("./Assets/sounds/walk/", self.vol[1])
         self.tile = tiles("./Assets/tla/")
+        self.finish = pygame.image.load("./Assets/finish/e.png").convert_alpha()
+        self.enemyFrames = {"run": import_folder("./Assets/enemy/run/game/")}
+        self.playerFrames = {"front": import_folder("./Assets/player/idle/game/"),
+                       "run": import_folder("./Assets/player/run/game/"),
+                       "jump": import_folder("./Assets/player/jump/game/"),
+                       "holdWall": import_folder("./Assets/player/hold/game/")}
         self.updateSound()
         self.menuMusic.play(-1, 0, 2000)
 

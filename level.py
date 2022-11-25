@@ -27,16 +27,15 @@ class Level:
         for r_i, row in enumerate(layout):
             for c_i, col in enumerate(row):
                 if col == 'p':
-                    self.player.add(Player((c_i * self.settings.tile_size, r_i * self.settings.tile_size),self.settings))
-                    player_x = c_i
+                    self.player.add(Player((c_i * self.settings.tile_size, r_i * self.settings.tile_size),self.settings,self.settings.playerFrames))
                 if col == 'h':
-                    self.enemies.add(Enemy((c_i * self.settings.tile_size, r_i * self.settings.tile_size),self.settings))
+                    self.enemies.add(Enemy((c_i * self.settings.tile_size, r_i * self.settings.tile_size),self.settings, self.settings.enemyFrames))
                 if col == 't1':
                     self.tiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.tile[col[1]],self.settings))
                 if col == 'td':
                     self.topDieTiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.tile[col[1]],self.settings))
                 if col == 'e':
-                    self.finish.add(Finish(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, "0",self.settings))
+                    self.finish.add(Finish(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.finish, self.settings))
 
         len_x = math.ceil((self.settings.screen_w + self.settings.screen_w / 4) / 1367) + 1
         for i in range(-1, len_x + 1):

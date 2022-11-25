@@ -12,12 +12,9 @@ def import_folder(path): #nalaganje vseh *.png datotek
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, settings):
+    def __init__(self, pos, settings,frames):
         super().__init__()
-        self.frames = {"front": import_folder("./Assets/player/idle/game/"),
-                       "run": import_folder("./Assets/player/run/game/"),
-                       "jump": import_folder("./Assets/player/jump/game/"),
-                       "holdWall": import_folder("./Assets/player/hold/game/")}
+        self.frames = frames
         self.dir_i = "front"
         self.frame_index = 0
         self.image = self.frames[self.dir_i][self.frame_index]
