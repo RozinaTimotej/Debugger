@@ -7,10 +7,10 @@ from pygame.locals import *
 from mainMenu import MainMenu
 from settingMenu import SettingsMenu
 
-settings = Settings()
 clock = pygame.time.Clock()
 pygame.init()
 screen = pygame.display.set_mode((settings.screen_w, settings.screen_h))
+settings = Settings()
 startMenu = MainMenu(screen,settings)
 settingMenu = SettingsMenu(screen, settings)
 level = Level(settings.levels[settings.levelIndex], screen, settings)

@@ -1,8 +1,10 @@
 import os
 import pygame
+
 d = 'levels'
 
-def sound(path,volume): #nalaganje vseh *.png datotek
+
+def sound(path, volume):  # nalaganje vseh *.png datotek
     arr = []
     for filename in os.listdir(path):
         if not filename.endswith('.ogg'):
@@ -12,12 +14,22 @@ def sound(path,volume): #nalaganje vseh *.png datotek
         arr.append(x)
     return arr
 
+
+def tiles(path):  # nalaganje vseh *.png datotek
+    arr = {}
+    for filename in os.listdir(path):
+        if not filename.endswith('.png'):
+            continue
+        id = filename.split(".")[0].split("_")[1]
+        arr[id]=pygame.image.load(path+filename).convert_alpha()
+    return arr
+
 map = []
 for filename in os.listdir("./levels"):
     arr = []
     if not filename.endswith('.txt'):
         continue
-    with open("./levels/"+filename, 'r') as f:  # nalaganje levela iz datoteke
+    with open("./levels/" + filename, 'r') as f:  # nalaganje levela iz datoteke
         for line in f.readlines():
             arr.append(line.strip().split(','))
     map.append(arr)
@@ -46,6 +58,7 @@ class Settings():
         self.HoverSound = pygame.mixer.Sound("./Assets/sounds/hover.wav")
         self.ClickSound = pygame.mixer.Sound("./Assets/sounds/test.wav")
         self.playerWalk = sound("./Assets/sounds/walk/", self.vol[1])
+        self.tile = tiles("./Assets/tla/")
         self.updateSound()
         self.menuMusic.play(-1, 0, 2000)
 

@@ -32,7 +32,7 @@ class Level:
                 if col == 'h':
                     self.enemies.add(Enemy((c_i * self.settings.tile_size, r_i * self.settings.tile_size),self.settings))
                 if col == 'f':
-                    self.tiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, "2",self.settings))
+                    self.tiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.tile["2"],self.settings))
                 if col == 'f1':
                     self.topDieTiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, "2",self.settings))
                 if col == 'e':
