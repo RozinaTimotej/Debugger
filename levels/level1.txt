@@ -5,8 +5,8 @@ b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b
 b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b
 b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b
 b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b
-b,b,b,b,b,b,f,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b
-b,b,f,b,b,b,f,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b
-b,b,f,b,b,b,f,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b
-p,b,f,b,h,b,f,b,b,b,hw,b,e,b,b,b,b,b,b,b,b,b,b,b
-f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f
+b,b,b,b,b,b,t1,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b
+b,b,td,b,b,b,t1,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b
+b,b,t1,b,b,b,t1,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b
+p,b,t1,b,h,b,t1,b,b,b,hw,b,e,b,b,b,b,b,b,b,b,b,b,b
+t1,t1,t1,t1,t1,t1,t1,t1,t1,t1,t1,t1,t1,t1,t1,t1,t1,t1,t1,t1,t1,t1,t1

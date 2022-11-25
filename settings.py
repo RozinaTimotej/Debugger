@@ -21,7 +21,7 @@ def tiles(path):  # nalaganje vseh *.png datotek
         if not filename.endswith('.png'):
             continue
         id = filename.split(".")[0].split("_")[1]
-        arr[id]=pygame.image.load(path+filename).convert_alpha()
+        arr[id] = pygame.image.load(path+filename).convert_alpha()
     return arr
 
 map = []
