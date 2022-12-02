@@ -1,3 +1,5 @@
+import copy
+
 import pygame
 
 
@@ -45,7 +47,7 @@ class Button(pygame.sprite.Sprite):
         self.imageNormal = pygame.image.load('./Assets/menu/'+job+'.png').convert_alpha()
         self.imageHover = pygame.image.load('./Assets/menu/'+job+'_hover.png').convert_alpha()
         self.image = self.imageNormal
-        self.rect = self.image.get_rect(topleft=(x, y))
+        self.rect = self.image.get_rect(topleft=((x-self.imageNormal.get_width()/2), y))
         self.played = False
 
     def update(self, el):
@@ -69,6 +71,7 @@ class SettingsMenu:
     def __init__(self, surface, settings):
         self.groupSound = None
         self.settings = settings
+        self.prevSound = copy.deepcopy(settings.vol)
         self.state = "settings"
         self.display_surface = surface
         self.init_menu()
@@ -79,10 +82,16 @@ class SettingsMenu:
         self.groupSound.add(SliderMovable(self.settings.screen_w / 2, 100, 0, self.settings))
         self.groupSound.add(Slider(self.settings.screen_w / 2, 200, 1))
         self.groupSound.add(SliderMovable(self.settings.screen_w / 2, 200, 1, self.settings))
-        self.groupSound.add(Button(self.settings.screen_w / 2 - 30, 500, "main_menu", self.settings))
+        self.groupSound.add(Button(self.settings.screen_w / 2+150, 500, "main_menu", self.settings))
+        self.groupSound.add(Button(self.settings.screen_w / 2-150, 500, "back", self.settings))
 
     def draw(self):
         self.display_surface.fill("black")
         self.groupSound.update(self)
         self.groupSound.draw(self.display_surface)
+        if self.state == "back":
+            self.state = "main_menu"
+            self.settings.vol = self.prevSound
+            self.settings.updateSound()
         return self.state
+

@@ -15,7 +15,7 @@ class Button(pygame.sprite.Sprite):
         self.played = False
 
         self.image = self.imageNormal
-        self.rect = self.image.get_rect(topleft=(x, y))
+        self.rect = self.image.get_rect(topleft=(x-self.imageHover.get_width()/2, y))
 
     def update(self, el):
         mouse = pygame.mouse.get_pos()
@@ -47,9 +47,9 @@ class MainMenu:
 
     def init_menu(self):
         self.menu = pygame.sprite.Group()
-        self.menu.add(Button(self.settings.screen_w / 2 - 30, 100, "playing", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2 - 30, 200, "settings", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2 - 30, 300, "exit_to_desktop", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 100, "playing", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2 , 200, "settings", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 300, "exit_to_desktop", self.settings))
 
     def draw(self):
         self.display_surface.fill("black")
