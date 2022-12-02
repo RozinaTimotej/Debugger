@@ -42,8 +42,8 @@ class Button(pygame.sprite.Sprite):
         super().__init__()
         self.job = job
         self.settings = settings
-        self.imageNormal = pygame.image.load('./Assets/menu/start.png').convert_alpha()
-        self.imageHover = pygame.image.load('./Assets/menu/start_hover.png').convert_alpha()
+        self.imageNormal = pygame.image.load('./Assets/menu/'+job+'.png').convert_alpha()
+        self.imageHover = pygame.image.load('./Assets/menu/'+job+'_hover.png').convert_alpha()
         self.image = self.imageNormal
         self.rect = self.image.get_rect(topleft=(x, y))
         self.played = False
