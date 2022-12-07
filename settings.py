@@ -64,14 +64,16 @@ class Settings():
         self.hitEnemy = pygame.mixer.Sound("./Assets/sounds/hit_enemy.wav")
         self.HoverSound = pygame.mixer.Sound("./Assets/sounds/hover.wav")
         self.ClickSound = pygame.mixer.Sound("./Assets/sounds/test.wav")
-        self.playerWalk = sound("./Assets/sounds/walk/", self.vol[1])
+        self.playerWalk = sound("./Assets/sounds/walk/", self.vol[1]*3)
         self.tile = tiles("./Assets/tla/")
         self.finish = pygame.image.load("./Assets/finish/e.png").convert_alpha()
         self.enemyFrames = {"run": import_folder("./Assets/enemy/run/game/")}
-        self.playerFrames = {"front": import_folder("./Assets/player/idle/game/"),
-                       "run": import_folder("./Assets/player/run/game/"),
-                       "jump": import_folder("./Assets/player/jump/game/"),
-                       "holdWall": import_folder("./Assets/player/hold/game/")}
+        self.playerFrames = {
+            "front": import_folder("./Assets/player/idle/game/"),
+               "run": import_folder("./Assets/player/run/game/"),
+               "jump": import_folder("./Assets/player/jump/game/"),
+               "holdWall": import_folder("./Assets/player/hold/game/")
+        }
         self.updateSound()
         self.menuMusic.play(-1, 0, 2000)
 
@@ -82,3 +84,4 @@ class Settings():
         pygame.mixer.Sound.set_volume(self.hitEnemy, self.vol[1])
         pygame.mixer.Sound.set_volume(self.HoverSound, self.vol[1])
         pygame.mixer.Sound.set_volume(self.ClickSound, self.vol[1])
+        pygame.mixer.Sound.set_volume(self.ClickSound, self.vol[1]*3)
