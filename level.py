@@ -1,6 +1,6 @@
 import math
 import pygame
-from tiles import Tla, Finish
+from tiles import Tla, Finish,Tile
 from player import Player
 from enemy import Enemy
 from background import Background1, Background2
@@ -23,19 +23,23 @@ class Level:
         self.finish = pygame.sprite.GroupSingle()
         self.space = pygame.sprite.Group()
         self.stars = pygame.sprite.Group()
-
+        self.enemyBlocks = pygame.sprite.Group()
         for r_i, row in enumerate(layout):
             for c_i, col in enumerate(row):
-                if col == 'p':
-                    self.player.add(Player((c_i * self.settings.tile_size, r_i * self.settings.tile_size),self.settings,self.settings.playerFrames))
-                if col == 'h':
-                    self.enemies.add(Enemy((c_i * self.settings.tile_size, r_i * self.settings.tile_size),self.settings, self.settings.enemyFrames))
-                if col == 't1':
-                    self.tiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.tile[col[1]],self.settings))
-                if col == 'td':
-                    self.topDieTiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.tile[col[1]],self.settings))
-                if col == 'e':
-                    self.finish.add(Finish(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.finish, self.settings))
+                col_split = col.split("_")
+                for char in col_split:
+                    if char == 'p':
+                        self.player.add(Player((c_i * self.settings.tile_size, r_i * self.settings.tile_size),self.settings,self.settings.playerFrames))
+                    if char == 'h':
+                        self.enemies.add(Enemy((c_i * self.settings.tile_size, r_i * self.settings.tile_size),self.settings, self.settings.enemyFrames))
+                    if char == 't1':
+                        self.tiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.tile[char[1]],self.settings))
+                    if char == 'td':
+                        self.topDieTiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.tile[char[1]],self.settings))
+                    if char == 'e':
+                        self.finish.add(Finish(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.finish, self.settings))
+                    if char == 'iw':
+                        self.enemyBlocks.add(Tile(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings))
 
         len_x = math.ceil((self.settings.screen_w + self.settings.screen_w / 4) / 1367) + 1
         for i in range(-1, len_x + 1):
@@ -102,7 +106,7 @@ class Level:
                 if enemy.direction.x < 0 or enemy.direction.x > 0:
                     self.init_level(self.data)
                 break
-            for sprite in self.tiles.sprites():
+            for sprite in self.enemyBlocks.sprites():
                 if sprite.rect.colliderect(enemy.rect):
                     if enemy.direction.x < 0:
                         enemy.rect.left = sprite.rect.right
@@ -174,6 +178,7 @@ class Level:
             self.space.update(self.move)
             self.stars.update(self.move)
             self.tiles.update(self.move)
+            self.enemyBlocks.update(self.move)
             self.topDieTiles.update(self.move)
             self.finish.update(self.move)
             self.enemies.update(self.move)
