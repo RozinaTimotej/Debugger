@@ -25,11 +25,14 @@ class Button(pygame.sprite.Sprite):
                 pygame.mixer.Sound.play(self.HoverSound)
                 self.played = True
             if self.rect.collidepoint(mouse) and pressed:
-                el.state = self.job
-                if el.state == "playing" or not el.state == "pause_menu":
-                    self.settings.pause = False
+                if self.job == "playing" and not el.state == "pause_menu":
                     self.settings.menuMusic.stop()
                     self.settings.gameMusic.play(-1, 0, 2000)
+                el.state = self.job
+                if el.state == "playing":
+                    self.settings.pause = False
+                if el.state == "settings":
+                    el.settingsMenu.updatePrevSound()
                 pygame.mixer.Sound.play(self.ClickSound)
             self.image = self.imageHover
 
@@ -39,10 +42,11 @@ class Button(pygame.sprite.Sprite):
 
 
 class MainMenu:
-    def __init__(self, surface, settings):
+    def __init__(self, surface, settings, settingsMenu):
         self.menu = None
         self.settings = settings
         self.state = "main_menu"
+        self.settingsMenu = settingsMenu
         self.display_surface = surface
         self.init_menu()
 
@@ -59,10 +63,11 @@ class MainMenu:
         return self.state
 
 class PauseMenu:
-    def __init__(self, surface, settings):
+    def __init__(self, surface, settings, settingsMenu):
         self.menu = None
         self.settings = settings
         self.state = "pause_menu"
+        self.settingsMenu = settingsMenu
         self.display_surface = surface
         self.init_menu()
 

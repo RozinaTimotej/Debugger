@@ -73,6 +73,7 @@ class SettingsMenu:
         self.settings = settings
         self.prevSound = copy.deepcopy(settings.vol)
         self.state = "settings"
+        self.prevState = settings.state
         self.display_surface = surface
         self.init_menu()
 
@@ -85,13 +86,23 @@ class SettingsMenu:
         self.groupSound.add(Button(self.settings.screen_w / 2+150, 500, "main_menu", self.settings))
         self.groupSound.add(Button(self.settings.screen_w / 2-150, 500, "back", self.settings))
 
+    def updateState(self, state):
+        self.prevState = state
+
+    def updatePrevSound(self):
+        self.prevSound = copy.deepcopy(self.settings.vol)
+
     def draw(self):
-        self.display_surface.fill("black")
         self.groupSound.update(self)
         self.groupSound.draw(self.display_surface)
         if self.state == "back":
             self.state = "main_menu"
             self.settings.vol = self.prevSound
             self.settings.updateSound()
-        return self.state
+            return self.prevState
+        elif self.state == "main_menu":
+            return self.prevState
+        else:
+            print(self.state)
+            return self.state
 

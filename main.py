@@ -11,12 +11,11 @@ clock = pygame.time.Clock()
 pygame.init()
 screen = pygame.display.set_mode((settings.screen_w, settings.screen_h))
 settings = Settings()
-startMenu = MainMenu(screen, settings)
-pauseMenu = PauseMenu(screen, settings)
 settingMenu = SettingsMenu(screen, settings)
+startMenu = MainMenu(screen, settings,settingMenu)
+pauseMenu = PauseMenu(screen, settings,settingMenu)
 level = Level(settings.levels[settings.levelIndex], screen, settings)
 font = pygame.font.SysFont("Arial", 18)
-state = "main_menu"
 
 def update_fps():
     fps = str(int(clock.get_fps()))
@@ -26,29 +25,36 @@ def update_fps():
 
 while True:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT or state == "exit_to_desktop":
+        if event.type == pygame.QUIT or settings.state == "exit_to_desktop":
             pygame.quit()
             sys.exit()
         elif event.type == KEYDOWN:
-            if event.key == K_ESCAPE and (state == "playing" or state == "pause_menu"):
+            if event.key == K_ESCAPE and (settings.state == "playing" or settings.state == "pause_menu"):
                 settings.pause = not settings.pause
-    if state == "playing" or state == "pause_menu":
-        state = level.draw()
+    if settings.state == "playing" or settings.state == "pause_menu":
+        settings.state = level.draw()
         if settings.pause:
-            state = pauseMenu.draw()
+            settings.state = pauseMenu.draw()
+            settingMenu.updateState("pause_menu")
             pauseMenu.state = "pause_menu"
-    elif state == "main_menu":
-        state = startMenu.draw()
+    elif settings.state == "main_menu":
+        settings.state = startMenu.draw()
+        settingMenu.updateState("main_menu")
         startMenu.state = "main_menu"
-    elif state == "settings":
-        state = settingMenu.draw()
+    elif settings.state == "settings" and not settings.pause:
+        screen.fill("black")
+        settings.state = settingMenu.draw()
         settingMenu.state = "settings"
-    elif state == "finish":
-        state = "playing"
+    elif settings.state == "settings" and settings.pause:
+        settings.state = level.draw()
+        settings.state = settingMenu.draw()
+        settingMenu.state = "settings"
+    elif settings.state == "finish":
+        settings.state = "playing"
         settings.levelIndex += 1
         if settings.levelIndex >= len(settings.levels):
             settings.levelIndex = 0
-            state = "main_menu"
+            settings.state = "main_menu"
             settings.gameMusic.stop()
             settings.menuMusic.play(-1, 0, 2000)
             print("No more levels, loading main menu")
