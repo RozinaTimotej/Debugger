@@ -57,6 +57,8 @@ class Settings():
         self.screen_w = screen_w
         self.screen_h = screen_h
         self.tile_size = tile_size
+        self.inGame = False
+        self.pause = False
         self.vol = [music_volume, effects_volume]
         self.playerJump = pygame.mixer.Sound("./Assets/sounds/jump_02.wav")
         self.menuMusic = pygame.mixer.Sound("./Assets/sounds/menumusic.mp3")

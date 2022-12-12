@@ -171,8 +171,8 @@ class Level:
         self.v_col_player()
         self.v_col_enemy()
 
-    def draw(self, pause):
-        if not pause:
+    def draw(self):
+        if not self.settings.pause:
             self.h_col_plain()
             self.v_col_plain()
             self.space.update(self.move)

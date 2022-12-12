@@ -4,7 +4,7 @@ import settings
 from settings import *
 from level import Level
 from pygame.locals import *
-from mainMenu import MainMenu
+from mainMenu import MainMenu, PauseMenu
 from settingMenu import SettingsMenu
 
 clock = pygame.time.Clock()
@@ -12,10 +12,10 @@ pygame.init()
 screen = pygame.display.set_mode((settings.screen_w, settings.screen_h))
 settings = Settings()
 startMenu = MainMenu(screen, settings)
+pauseMenu = PauseMenu(screen, settings)
 settingMenu = SettingsMenu(screen, settings)
 level = Level(settings.levels[settings.levelIndex], screen, settings)
 font = pygame.font.SysFont("Arial", 18)
-pause = False
 state = "main_menu"
 
 def update_fps():
@@ -30,10 +30,13 @@ while True:
             pygame.quit()
             sys.exit()
         elif event.type == KEYDOWN:
-            if event.key == K_ESCAPE and state == "playing":
-                pause = not pause
-    if state == "playing":
-        state = level.draw(pause)
+            if event.key == K_ESCAPE and (state == "playing" or state == "pause_menu"):
+                settings.pause = not settings.pause
+    if state == "playing" or state == "pause_menu":
+        state = level.draw()
+        if settings.pause:
+            state = pauseMenu.draw()
+            pauseMenu.state = "pause_menu"
     elif state == "main_menu":
         state = startMenu.draw()
         startMenu.state = "main_menu"

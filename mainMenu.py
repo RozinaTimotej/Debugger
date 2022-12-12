@@ -26,7 +26,8 @@ class Button(pygame.sprite.Sprite):
                 self.played = True
             if self.rect.collidepoint(mouse) and pressed:
                 el.state = self.job
-                if el.state == "playing":
+                if el.state == "playing" or not el.state == "pause_menu":
+                    self.settings.pause = False
                     self.settings.menuMusic.stop()
                     self.settings.gameMusic.play(-1, 0, 2000)
                 pygame.mixer.Sound.play(self.ClickSound)
@@ -48,11 +49,30 @@ class MainMenu:
     def init_menu(self):
         self.menu = pygame.sprite.Group()
         self.menu.add(Button(self.settings.screen_w / 2, 100, "playing", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2 , 200, "settings", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 200, "settings", self.settings))
         self.menu.add(Button(self.settings.screen_w / 2, 300, "exit_to_desktop", self.settings))
 
     def draw(self):
         self.display_surface.fill("black")
+        self.menu.update(self)
+        self.menu.draw(self.display_surface)
+        return self.state
+
+class PauseMenu:
+    def __init__(self, surface, settings):
+        self.menu = None
+        self.settings = settings
+        self.state = "pause_menu"
+        self.display_surface = surface
+        self.init_menu()
+
+    def init_menu(self):
+        self.menu = pygame.sprite.Group()
+        self.menu.add(Button(self.settings.screen_w / 2, 100, "playing", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 200, "settings", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 300, "exit_to_desktop", self.settings))
+
+    def draw(self):
         self.menu.update(self)
         self.menu.draw(self.display_surface)
         return self.state
