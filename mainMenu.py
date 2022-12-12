@@ -57,6 +57,7 @@ class MainMenu:
         self.menu.add(Button(self.settings.screen_w / 2, 300, "exit_to_desktop", self.settings))
 
     def draw(self):
+        self.state = "main_menu"
         self.display_surface.fill("black")
         self.menu.update(self)
         self.menu.draw(self.display_surface)
@@ -78,6 +79,7 @@ class PauseMenu:
         self.menu.add(Button(self.settings.screen_w / 2, 300, "exit_to_desktop", self.settings))
 
     def draw(self):
+        self.state = "pause_menu"
         self.menu.update(self)
         self.menu.draw(self.display_surface)
         return self.state

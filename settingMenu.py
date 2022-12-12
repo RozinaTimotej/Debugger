@@ -93,6 +93,7 @@ class SettingsMenu:
         self.prevSound = copy.deepcopy(self.settings.vol)
 
     def draw(self):
+        self.state = "settings"
         self.groupSound.update(self)
         self.groupSound.draw(self.display_surface)
         if self.state == "back":
@@ -103,6 +104,5 @@ class SettingsMenu:
         elif self.state == "main_menu":
             return self.prevState
         else:
-            print(self.state)
             return self.state
 

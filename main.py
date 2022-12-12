@@ -36,19 +36,15 @@ while True:
         if settings.pause:
             settings.state = pauseMenu.draw()
             settingMenu.updateState("pause_menu")
-            pauseMenu.state = "pause_menu"
     elif settings.state == "main_menu":
         settings.state = startMenu.draw()
         settingMenu.updateState("main_menu")
-        startMenu.state = "main_menu"
     elif settings.state == "settings" and not settings.pause:
         screen.fill("black")
         settings.state = settingMenu.draw()
-        settingMenu.state = "settings"
     elif settings.state == "settings" and settings.pause:
-        settings.state = level.draw()
+        level.draw()
         settings.state = settingMenu.draw()
-        settingMenu.state = "settings"
     elif settings.state == "finish":
         settings.state = "playing"
         settings.levelIndex += 1
