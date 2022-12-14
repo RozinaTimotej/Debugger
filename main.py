@@ -12,8 +12,8 @@ pygame.init()
 screen = pygame.display.set_mode((settings.screen_w, settings.screen_h))
 settings = Settings()
 settingMenu = SettingsMenu(screen, settings)
-startMenu = MainMenu(screen, settings,settingMenu)
-pauseMenu = PauseMenu(screen, settings,settingMenu)
+startMenu = MainMenu(screen, settings, settingMenu)
+pauseMenu = PauseMenu(screen, settings, settingMenu)
 level = Level(settings.levels[settings.levelIndex], screen, settings)
 font = pygame.font.SysFont("Arial", 18)
 
@@ -31,11 +31,12 @@ while True:
         elif event.type == KEYDOWN:
             if event.key == K_ESCAPE and (settings.state == "playing" or settings.state == "pause_menu"):
                 settings.pause = not settings.pause
-    if settings.state == "playing" or settings.state == "pause_menu":
+    if settings.state == "playing" and not settings.pause:
         settings.state = level.draw()
-        if settings.pause:
-            settings.state = pauseMenu.draw()
-            settingMenu.updateState("pause_menu")
+    if settings.pause and (settings.state == "pause_menu" or settings.state == "playing"):
+        level.draw()
+        settings.state = pauseMenu.draw()
+        settingMenu.updateState("pause_menu")
     elif settings.state == "main_menu":
         settings.state = startMenu.draw()
         settingMenu.updateState("main_menu")
