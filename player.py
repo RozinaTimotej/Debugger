@@ -85,7 +85,7 @@ class Player(pygame.sprite.Sprite):
         self.canJump = False
     def input(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_UP] == False:
+        if not keys[pygame.K_UP]:
             self.canJump = True
         if keys[pygame.K_RIGHT]:
             if self.soundDelay == -1:
