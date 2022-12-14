@@ -27,7 +27,7 @@ class Player(pygame.sprite.Sprite):
         self.on_wall = False
         self.wall_jumped = True
         self.facing_right = True
-        self.jumpTime = 0
+        self.canJump = False
         self.jumps = 0
         self.doubleJump = False
         self.direction = pygame.math.Vector2(0.0)
@@ -82,10 +82,11 @@ class Player(pygame.sprite.Sprite):
         self.jumps += 1
         self.wall_jumped = True
         self.on_wall = False
-        self.jumpTime = 0
+        self.canJump = False
     def input(self):
         keys = pygame.key.get_pressed()
-
+        if keys[pygame.K_UP] == False:
+            self.canJump = True
         if keys[pygame.K_RIGHT]:
             if self.soundDelay == -1:
                 self.soundDelay = 0
@@ -101,7 +102,7 @@ class Player(pygame.sprite.Sprite):
             self.jumpFromWall()
             pygame.mixer.Sound.play(self.settings.playerJump)
 
-        if keys[pygame.K_UP] and self.jumpTime > 15 and self.jumps < 2 and not self.on_wall: #ce je na steni, mora biti do naslednjega skoka vsaj 1/4 sekunde, skoči lahko samo 2x
+        if keys[pygame.K_UP] and self.canJump == True and self.jumps < 2 and not self.on_wall: #ce je na steni, mora biti do naslednjega skoka vsaj 1/4 sekunde, skoči lahko samo 2x
             self.frame_index = 0
             pygame.mixer.Sound.play(self.settings.playerJump)
             if self.jumps == 0:
@@ -111,9 +112,7 @@ class Player(pygame.sprite.Sprite):
                 self.direction.y = 0
                 self.direction.y = 8 * self.jumpHeight / 9
                 self.jumps += 1
-            self.jumpTime = 0
-
-        self.jumpTime += 1
+            self.canJump = False
 
     def set_gravity(self):
         self.direction.y += self.gravity
