@@ -198,7 +198,7 @@ class Level:
         for bullet in self.bullets.sprites():
             if bullet.state == "dead":
                 self.bullets.remove(bullet)
-            bullet.updateDest((self.player.sprite.rect.x,self.player.sprite.rect.y))
+            bullet.updateDest(self.player.sprite.rect.x, self.player.sprite.rect.y)
 
     def bullet_Col(self):
         player = self.player.sprite

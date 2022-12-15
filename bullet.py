@@ -24,10 +24,9 @@ class Bullet(pygame.sprite.Sprite):
         self.dir_i = "die"
         self.state = "dying"
 
-    def updateDest(self,dest):
-        self.destination = dest
-        dx = self.rect.x - self.destination[0]
-        dy = self.rect.y - self.destination[1]
+    def updateDest(self,destx,desty):
+        dx = self.rect.x - destx
+        dy = self.rect.y - desty
         rads = atan2(-dy, dx)
         rads %= 2 * pi
         self.degs = degrees(rads)
