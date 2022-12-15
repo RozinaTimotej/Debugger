@@ -2,10 +2,10 @@ import math
 import pygame
 from tiles import Tla, Finish,Tile
 from player import Player
-from enemy import Enemy
+from enemy import Enemy, FlyingEnemy
 from background import Background1, Background2
-
-
+from math import atan2, degrees, pi,sqrt
+from bullet import Bullet
 class Level:
     def __init__(self, data, surface, settings):
         self.display_surface = surface
@@ -24,22 +24,25 @@ class Level:
         self.space = pygame.sprite.Group()
         self.stars = pygame.sprite.Group()
         self.enemyBlocks = pygame.sprite.Group()
+        self.bullets = pygame.sprite.Group()
         for r_i, row in enumerate(layout):
             for c_i, col in enumerate(row):
                 col_split = col.split("_")
                 for char in col_split:
                     if char == 'p':
                         self.player.add(Player((c_i * self.settings.tile_size, r_i * self.settings.tile_size),self.settings,self.settings.playerFrames))
-                    if char == 'h':
+                    if char == 'h1':
                         self.enemies.add(Enemy((c_i * self.settings.tile_size, r_i * self.settings.tile_size),self.settings, self.settings.enemyFrames))
                     if char == 't1':
                         self.tiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.tile[char[1]],self.settings))
                     if char == 'td':
                         self.topDieTiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.tile[char[1]],self.settings))
-                    if char == 'e':
+                    if char == 'e1':
                         self.finish.add(Finish(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.finish, self.settings))
                     if char == 'iw':
                         self.enemyBlocks.add(Tile(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings))
+                    if char == 'h2':
+                        self.enemies.add(FlyingEnemy((c_i * self.settings.tile_size, r_i * self.settings.tile_size), self.settings,self.settings.enemyFlyFrames))
 
         len_x = math.ceil((self.settings.screen_w + self.settings.screen_w / 4) / 1367) + 1
         for i in range(-1, len_x + 1):
@@ -102,7 +105,7 @@ class Level:
             enemy.rect.x += enemy.direction.x * enemy.speed
 
         for enemy in self.enemies.sprites():
-            if enemy.rect.colliderect(player.rect):
+            if enemy.rect.colliderect(player.rect) and enemy.state == "alive":
                 if enemy.direction.x < 0 or enemy.direction.x > 0:
                     self.init_level(self.data)
                 break
@@ -117,6 +120,7 @@ class Level:
                         enemy.facing_right = False
                         enemy.rect.right = sprite.rect.left
                     break
+
 
     def h_col_plain(self):  # collisioni za levo/desno in pa logika za držanje stene
         self.h_col_player()
@@ -161,26 +165,74 @@ class Level:
     def v_col_enemy(self):
         player = self.player.sprite
         for enemy in self.enemies.sprites():
-            if enemy.rect.colliderect(self.player.sprite.rect):
+            if enemy.rect.colliderect(self.player.sprite.rect) and enemy.state == "alive":
                 if self.player.sprite.direction.y > 0:
                     pygame.mixer.Sound.play(self.settings.hitEnemy)
-                    self.enemies.remove(enemy)
+                    enemy.death()
                     player.direction.y = player.jumpHeight / 2
+
 
     def v_col_plain(self):  # collisioni za gor/dol in pa logika za skok
         self.v_col_player()
         self.v_col_enemy()
 
+    def check_Enemies(self):
+        for enemy in self.enemies.sprites():
+            if enemy.state == "dead":
+                self.enemies.remove(enemy)
+            if enemy.dir_i == "fly":
+                dx = self.player.sprite.rect.x - enemy.rect.x
+                dy = self.player.sprite.rect.y - enemy.rect.y
+                dist = sqrt(dx * dx + dy * dy)
+                rads = atan2(-dy, dx)
+                rads %= 2 * pi
+                degs = degrees(rads)
+                if enemy.facing_right and 300 < degs < 360 and dist < 250:
+                    self.bullets.add(Bullet((enemy.rect.x+64,enemy.rect.y+32), self.settings,self.settings.bulletFrames,enemy.facing_right))
+                    enemy.shoot()
+                elif (not enemy.facing_right) and 180 < degs < 240 and dist < 250:
+                    self.bullets.add(Bullet((enemy.rect.x-32, enemy.rect.y+32), self.settings, self.settings.bulletFrames,enemy.facing_right))
+                    enemy.shoot()
+
+    def bullets_update(self):
+        for bullet in self.bullets.sprites():
+            if bullet.state == "dead":
+                self.bullets.remove(bullet)
+            bullet.updateDest((self.player.sprite.rect.x,self.player.sprite.rect.y))
+
+    def bullet_Col(self):
+        player = self.player.sprite
+        for bullet in self.bullets.sprites():
+            dx = player.rect.x - bullet.rect.x
+            dy = player.rect.y - bullet.rect.y
+            dist = sqrt(dx * dx + dy * dy)
+            if dist > 0:
+                dx /= dist
+                dy /= dist
+            move_distx = min(self.player.sprite.speed * 1.1, int(dist))
+            move_disty = min(self.player.sprite.speed*0.8, int(dist))
+            bullet.rect.x += move_distx * dx
+            bullet.rect.y += move_disty * dy
+            for sprite in self.tiles.sprites():
+                if sprite.rect.colliderect(bullet.rect) and bullet.state == "alive":
+                    bullet.death()
+                if bullet.rect.colliderect(player.rect) and bullet.state == "alive":
+                    bullet.death()
+                    self.init_level(self.data)
     def draw(self):
         if not self.settings.pause:
             self.h_col_plain()
             self.v_col_plain()
+            self.check_Enemies()
+            self.bullets_update()
+            self.bullet_Col()
             self.space.update(self.move)
             self.stars.update(self.move)
             self.tiles.update(self.move)
             self.enemyBlocks.update(self.move)
             self.topDieTiles.update(self.move)
             self.finish.update(self.move)
+            self.bullets.update(self.move)
             self.enemies.update(self.move)
             self.player.update()
 
@@ -189,6 +241,7 @@ class Level:
         self.tiles.draw(self.display_surface)
         self.topDieTiles.draw(self.display_surface)
         self.finish.draw(self.display_surface)
+        self.bullets.draw(self.display_surface)
         self.cam()
         self.enemies.draw(self.display_surface)
         self.player.draw(self.display_surface)

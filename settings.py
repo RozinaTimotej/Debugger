@@ -3,12 +3,12 @@ import pygame
 
 d = 'levels'
 
-def import_folder(path):  # nalaganje vseh *.png datotek
+def import_folder(path,size):  # nalaganje vseh *.png datotek
     arr = []
     for filename in os.listdir(path):
         if not filename.endswith('.png'):
             continue
-        arr.append(pygame.transform.scale(pygame.image.load(path + filename).convert_alpha(), (64, 64)))
+        arr.append(pygame.transform.scale(pygame.image.load(path + filename).convert_alpha(), size))
     return arr
 def sound(path, volume):  # nalaganje vseh *.png datotek
     arr = []
@@ -70,12 +70,21 @@ class Settings():
         self.playerWalk = sound("./Assets/sounds/walk/", self.vol[1]*3)
         self.tile = tiles("./Assets/tla/")
         self.finish = pygame.image.load("./Assets/finish/e.png").convert_alpha()
-        self.enemyFrames = {"run": import_folder("./Assets/enemy/run/game/")}
+        self.enemyFrames = {"run": import_folder("./Assets/enemy/run/game/", (64,64))}
+        self.enemyFlyFrames = {
+            "fly": import_folder("./Assets/flyingenemy/fly/game/", (64,64)),
+            "die": import_folder("./Assets/flyingenemy/death/game/", (64,64)),
+            "shoot": import_folder("./Assets/flyingenemy/attack/game/", (64,64)),
+        }
+        self.bulletFrames = {
+            "fly":import_folder("./Assets/bullet/fly/game/", (25,4)),
+            "die": import_folder("./Assets/bullet/hit/game/", (64, 64)),
+        }
         self.playerFrames = {
-            "front": import_folder("./Assets/player/idle/game/"),
-               "run": import_folder("./Assets/player/run/game/"),
-               "jump": import_folder("./Assets/player/jump/game/"),
-               "holdWall": import_folder("./Assets/player/hold/game/")
+           "front": import_folder("./Assets/player/idle/game/", (64,64)),
+           "run": import_folder("./Assets/player/run/game/", (64,64)),
+           "jump": import_folder("./Assets/player/jump/game/", (64,64)),
+           "holdWall": import_folder("./Assets/player/hold/game/", (64,64))
         }
         self.updateSound()
         self.menuMusic.play(-1, 0, 2000)
