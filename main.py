@@ -31,6 +31,7 @@ while True:
         elif event.type == KEYDOWN:
             if event.key == K_ESCAPE and (settings.state == "playing" or settings.state == "pause_menu"):
                 settings.pause = not settings.pause
+                settings.state = "playing"
     if settings.state == "playing" and not settings.pause:
         settings.state = level.draw()
     if settings.pause and (settings.state == "pause_menu" or settings.state == "playing"):
