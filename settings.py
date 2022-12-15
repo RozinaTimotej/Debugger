@@ -81,10 +81,10 @@ class Settings():
             "die": import_folder("./Assets/bullet/hit/game/", (64, 64)),
         }
         self.playerFrames = {
-           "front": import_folder("./Assets/player/idle/game/", (64,64)),
-           "run": import_folder("./Assets/player/run/game/", (64,64)),
-           "jump": import_folder("./Assets/player/jump/game/", (64,64)),
-           "holdWall": import_folder("./Assets/player/hold/game/", (64,64))
+           "front": import_folder("./Assets/player/idle/game/", (40,60)),
+           "run": import_folder("./Assets/player/run/game/", (40,60)),
+           "jump": import_folder("./Assets/player/jump/game/", (40,60)),
+           "holdWall": import_folder("./Assets/player/hold/game/", (40,60))
         }
         self.updateSound()
         self.menuMusic.play(-1, 0, 2000)
