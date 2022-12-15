@@ -26,8 +26,6 @@ class Enemy(pygame.sprite.Sprite):
     def death(self):
         self.state = "dead"
 
-    def shoot(self):
-        self.state = "alive"
     def update(self, move):
         self.rect.x += move
 
