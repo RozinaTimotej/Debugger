@@ -20,6 +20,7 @@ class Level:
         self.topDieTiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.enemies = pygame.sprite.Group()
+        self.flyingEnemies= pygame.sprite.Group()
         self.finish = pygame.sprite.GroupSingle()
         self.space = pygame.sprite.Group()
         self.stars = pygame.sprite.Group()
@@ -42,7 +43,7 @@ class Level:
                     if char == 'iw':
                         self.enemyBlocks.add(Tile(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings))
                     if char == 'h2':
-                        self.enemies.add(FlyingEnemy((c_i * self.settings.tile_size, r_i * self.settings.tile_size), self.settings,self.settings.enemyFlyFrames))
+                        self.flyingEnemies.add(FlyingEnemy((c_i * self.settings.tile_size, r_i * self.settings.tile_size), self.settings,self.settings.enemyFlyFrames))
 
         len_x = math.ceil((self.settings.screen_w + self.settings.screen_w / 4) / 1367) + 1
         for i in range(-1, len_x + 1):
@@ -121,10 +122,33 @@ class Level:
                         enemy.rect.right = sprite.rect.left
                     break
 
+    def h_col_flyingEnemy(self):
+        player = self.player.sprite
+        for enemy in self.flyingEnemies.sprites():
+            enemy.rect.x += enemy.direction.x * enemy.speed
+
+        for enemy in self.flyingEnemies.sprites():
+            if enemy.rect.colliderect(player.rect) and enemy.state == "alive":
+                if enemy.direction.x < 0 or enemy.direction.x > 0:
+                    self.init_level(self.data)
+                break
+            for sprite in self.enemyBlocks.sprites():
+                if sprite.rect.colliderect(enemy.rect):
+                    if enemy.direction.x < 0:
+                        enemy.rect.left = sprite.rect.right
+                        enemy.direction.x = 1
+                        enemy.facing_right = True
+                    elif enemy.direction.x > 0:
+                        enemy.direction.x = -1
+                        enemy.facing_right = False
+                        enemy.rect.right = sprite.rect.left
+                    break
+
 
     def h_col_plain(self):  # collisioni za levo/desno in pa logika za držanje stene
         self.h_col_player()
         self.h_col_enemy()
+        self.h_col_flyingEnemy()
 
     def v_col_player(self):
         player = self.player.sprite
@@ -171,15 +195,30 @@ class Level:
                     enemy.death()
                     player.direction.y = player.jumpHeight / 2
 
+    def v_col_flyingEnemy(self):
+        player = self.player.sprite
+        for enemy in self.flyingEnemies.sprites():
+            if enemy.rect.colliderect(self.player.sprite.rect) and enemy.state == "alive":
+                if self.player.sprite.direction.y > 0:
+                    pygame.mixer.Sound.play(self.settings.hitEnemy)
+                    enemy.death()
+                    player.direction.y = player.jumpHeight / 2
+
 
     def v_col_plain(self):  # collisioni za gor/dol in pa logika za skok
         self.v_col_player()
         self.v_col_enemy()
+        self.v_col_flyingEnemy()
 
     def check_Enemies(self):
         for enemy in self.enemies.sprites():
             if enemy.state == "dead":
                 self.enemies.remove(enemy)
+
+    def check_FlyingEnemies(self):
+        for enemy in self.flyingEnemies.sprites():
+            if enemy.state == "dead":
+                self.flyingEnemies.remove(enemy)
             if enemy.dir_i == "fly":
                 dx = self.player.sprite.rect.x+20 - enemy.rect.x
                 dy = self.player.sprite.rect.y+32 - enemy.rect.y
@@ -224,6 +263,7 @@ class Level:
             self.h_col_plain()
             self.v_col_plain()
             self.check_Enemies()
+            self.check_FlyingEnemies()
             self.bullets_update()
             self.bullet_Col()
             self.space.update(self.move)
@@ -234,6 +274,7 @@ class Level:
             self.finish.update(self.move)
             self.bullets.update(self.move)
             self.enemies.update(self.move)
+            self.flyingEnemies.update(self.move)
             self.player.update()
 
         self.space.draw(self.display_surface)
@@ -244,6 +285,7 @@ class Level:
         self.bullets.draw(self.display_surface)
         self.cam()
         self.enemies.draw(self.display_surface)
+        self.flyingEnemies.draw(self.display_surface)
         self.player.draw(self.display_surface)
 
         return self.status
