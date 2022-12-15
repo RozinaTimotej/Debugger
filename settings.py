@@ -77,7 +77,7 @@ class Settings():
             "shoot": import_folder("./Assets/flyingenemy/attack/game/", (64,64)),
         }
         self.bulletFrames = {
-            "fly":import_folder("./Assets/bullet/fly/game/", (25,4)),
+            "fly": import_folder("./Assets/bullet/fly/game/", (25,4)),
             "die": import_folder("./Assets/bullet/hit/game/", (64, 64)),
         }
         self.playerFrames = {

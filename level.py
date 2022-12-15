@@ -37,7 +37,7 @@ class Level:
                         self.tiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.tile[char[1]],self.settings))
                     if char == 'td':
                         self.topDieTiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.tile[char[1]],self.settings))
-                    if char == 'e1':
+                    if char == 'e':
                         self.finish.add(Finish(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.finish, self.settings))
                     if char == 'iw':
                         self.enemyBlocks.add(Tile(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings))
@@ -181,17 +181,17 @@ class Level:
             if enemy.state == "dead":
                 self.enemies.remove(enemy)
             if enemy.dir_i == "fly":
-                dx = self.player.sprite.rect.x - enemy.rect.x
-                dy = self.player.sprite.rect.y - enemy.rect.y
+                dx = self.player.sprite.rect.x+20 - enemy.rect.x
+                dy = self.player.sprite.rect.y+32 - enemy.rect.y
                 dist = sqrt(dx * dx + dy * dy)
                 rads = atan2(-dy, dx)
                 rads %= 2 * pi
                 degs = degrees(rads)
                 if enemy.facing_right and 300 < degs < 360 and dist < 250:
-                    self.bullets.add(Bullet((enemy.rect.x+64,enemy.rect.y+32), self.settings,self.settings.bulletFrames,enemy.facing_right))
+                    self.bullets.add(Bullet((enemy.rect.x+64,enemy.rect.y+32), self.settings,self.settings.bulletFrames,enemy.facing_right, pygame.time.get_ticks()))
                     enemy.shoot()
                 elif (not enemy.facing_right) and 180 < degs < 240 and dist < 250:
-                    self.bullets.add(Bullet((enemy.rect.x-32, enemy.rect.y+32), self.settings, self.settings.bulletFrames,enemy.facing_right))
+                    self.bullets.add(Bullet((enemy.rect.x-32, enemy.rect.y+32), self.settings, self.settings.bulletFrames,enemy.facing_right,pygame.time.get_ticks()))
                     enemy.shoot()
 
     def bullets_update(self):
@@ -203,8 +203,8 @@ class Level:
     def bullet_Col(self):
         player = self.player.sprite
         for bullet in self.bullets.sprites():
-            dx = player.rect.x - bullet.rect.x
-            dy = player.rect.y - bullet.rect.y
+            dx = player.rect.x+20 - bullet.rect.x
+            dy = player.rect.y+32 - bullet.rect.y
             dist = sqrt(dx * dx + dy * dy)
             if dist > 0:
                 dx /= dist

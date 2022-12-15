@@ -6,7 +6,7 @@ from math import atan2,pi,degrees,sqrt
 
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, pos, settings, frames, facingRight):
+    def __init__(self, pos, settings, frames, facingRight, startTicks):
         super().__init__()
         self.settings = settings
         self.frames = frames
@@ -19,6 +19,8 @@ class Bullet(pygame.sprite.Sprite):
         self.speedInfo = self.speed
         self.animMult = {"fly": 6,"die":30}
         self.state = "alive"
+        self.startTicks = startTicks
+
     def death(self):
         self.frame_index = 0
         self.dir_i = "die"
@@ -33,6 +35,8 @@ class Bullet(pygame.sprite.Sprite):
 
 
     def update(self, move):
+        if pygame.time.get_ticks() - self.startTicks > 1500 and self.state == "alive":
+            self.death()
         self.frame_index += 0.02 * self.animMult[self.dir_i]
         if self.frame_index >= len(self.frames[self.dir_i]):
             self.frame_index = 0
