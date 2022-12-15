@@ -17,10 +17,10 @@ class Bullet(pygame.sprite.Sprite):
         self.facing_right = facingRight
         self.speed = 2
         self.speedInfo = self.speed
-        self.animMult = {"fly": 6,"die":30}
+        self.animMult = {"fly": 6,"die":20}
         self.state = "alive"
         self.startTicks = startTicks
-
+        self.degs = 0
     def death(self):
         self.frame_index = 0
         self.dir_i = "die"
@@ -37,6 +37,8 @@ class Bullet(pygame.sprite.Sprite):
     def update(self, move):
         if pygame.time.get_ticks() - self.startTicks > 1500 and self.state == "alive":
             self.death()
+        if self.state == "dying":
+            self.degs = 0
         self.frame_index += 0.02 * self.animMult[self.dir_i]
         if self.frame_index >= len(self.frames[self.dir_i]):
             self.frame_index = 0
