@@ -234,7 +234,7 @@ class Level:
             if enemy.dir_i == "fly":
                 dx = self.player.sprite.rect.x+20 - enemy.rect.x
                 dy = self.player.sprite.rect.y+32 - enemy.rect.y
-                dist = sqrt(dx * dx + dy * dy)
+                dist = (dx ** 2 + dy ** 2) ** .5
                 rads = atan2(-dy, dx)
                 rads %= 2 * pi
                 degs = degrees(rads)
@@ -248,13 +248,15 @@ class Level:
     def check_KamikazeEnemies(self):
         player = self.player.sprite.rect
         for enemy in self.kamikazeEnemy.sprites():
+            if enemy.state == "remove":
+                self.kamikazeEnemy.remove(enemy)
             if enemy.dir_i == "stand":
                 dx = self.player.sprite.rect.x + 20 - enemy.rect.x
                 dy = self.player.sprite.rect.y + 32 - enemy.rect.y
-                dist = sqrt(dx * dx + dy * dy)
-                if dist < 250:
+                dist = (dx ** 2 + dy ** 2) ** .5
+                if dist < 150:
                     enemy.shoot()
-                elif dist < 250:
+                elif dist < 150:
                     enemy.shoot()
             if enemy.state == "locate_enemy":
                 enemy.kamikaze(player.x+player.width/2, player.y+player.height/2)
@@ -270,7 +272,7 @@ class Level:
         for bullet in self.bullets.sprites():
             dx = player.rect.x+20 - bullet.rect.x
             dy = player.rect.y+32 - bullet.rect.y
-            dist = sqrt(dx * dx + dy * dy)
+            dist = (dx ** 2 + dy ** 2) ** .5
             if dist > 0:
                 dx /= dist
                 dy /= dist
@@ -281,9 +283,19 @@ class Level:
             for sprite in self.tiles.sprites():
                 if sprite.rect.colliderect(bullet.rect) and bullet.state == "alive":
                     bullet.death()
-                if bullet.rect.colliderect(player.rect) and bullet.state == "alive":
-                    bullet.death()
-                    self.init_level(self.data)
+            if bullet.rect.colliderect(player.rect) and bullet.state == "alive":
+                bullet.death()
+                self.init_level(self.data)
+
+    def kamikaze_Col(self):
+        player = self.player.sprite
+        for enemy in self.kamikazeEnemy.sprites():
+            for sprite in self.tiles.sprites():
+                if sprite.rect.colliderect(enemy.rect) and enemy.state == "attack":
+                    enemy.death()
+            if enemy.rect.colliderect(player.rect) and enemy.state == "attack":
+                enemy.death()
+                self.init_level(self.data)
     def draw(self):
         if not self.settings.pause:
             self.h_col_plain()
@@ -293,6 +305,7 @@ class Level:
             self.check_KamikazeEnemies()
             self.bullets_update()
             self.bullet_Col()
+            self.kamikaze_Col()
             self.space.update(self.move)
             self.stars.update(self.move)
             self.tiles.update(self.move)

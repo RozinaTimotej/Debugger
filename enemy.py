@@ -94,19 +94,39 @@ class KamikazeEnemy(pygame.sprite.Sprite):
         self.animMult = {"fly": 6,"die":10,"ready":6,"attack":6,"stand":6}
         self.dest = pygame.math.Vector2(0.0)
         self.state = "alive"
+        self.dx = 0
+        self.dy = 0
+        self.degs = 0
+        self.dist = 0
 
     def death(self):
         self.frame_index = 0
+        self.state = "dead"
+        self.dir_i = "die"
 
     def shoot(self):
         self.dest.x = self.rect.x
-        self.dest.y = self.rect.y - 200
+        self.dest.y = self.rect.y - 100
+        dx = self.dest.x - self.rect.x
+        dy = self.dest.y - self.rect.y
+        self.dist = (dx ** 2 + dy ** 2) ** .5
+        if not self.dist == 0:
+            self.dx = dx/self.dist
+            self.dy = dy/self.dist
+
         self.state = "flying"
         self.dir_i = "fly"
 
     def kamikaze(self,x,y):
+        print("test")
         self.dest.x = x
         self.dest.y = y
+        dx = self.dest.x - self.rect.x
+        dy = self.dest.y - self.rect.y
+        self.dist = (dx ** 2 + dy ** 2) ** .5
+        if not self.dist == 0:
+            self.dx = dx / self.dist
+            self.dy = dy / self.dist
         self.frame_index = 0
         self.state = "attack"
         self.dir_i = "attack"
@@ -114,27 +134,23 @@ class KamikazeEnemy(pygame.sprite.Sprite):
 
     def update(self, move):
         self.rect.x += move
-        if not self.state == "dead":
+        if not self.state == "dead" and not self.state == "alive":
+            self.rect.x += self.speed * self.dx
+            self.rect.y += self.speed * self.dy
+
             dx = self.dest.x - self.rect.x
             dy = self.dest.y - self.rect.y
-            dist = (dx ** 2 + dy ** 2) ** .5
-            if not dist == 0:
-                dx /= dist
-                dy /= dist
+            self.dist = (dx ** 2 + dy ** 2) ** .5
 
-            self.rect.x += self.speed * dx
-            self.rect.y += self.speed * dy
-
-            rads = atan2(-dy, dx)
-            rads %= 2 * pi
-            degs = degrees(rads)
-            if dx == 0 and dy == 0 and self.state == "flying":
+            if (self.dist < 10 or self.dist > 150) and self.state == "flying":
+                self.dx = 0
+                self.dy = 0
                 self.state = "ready"
                 self.dir_i = "ready"
                 self.frame_index = 0
 
-            if dist < 5 and self.state == "attack":
-                self.state = "dead"
+            if self.dist > 1500 and self.state == "attack":
+                self.state = "remove"
                 self.dir_i = "die"
 
             if not (self.state == "attack" and int(self.frame_index) == 2):
@@ -147,6 +163,6 @@ class KamikazeEnemy(pygame.sprite.Sprite):
                     self.dir_i = "fly"
 
         if self.state == "attack":
-            self.image = pygame.transform.rotate(self.frames[self.dir_i][int(self.frame_index)], degs)
+            self.image = pygame.transform.rotate(self.frames[self.dir_i][int(self.frame_index)], self.degs)
         else:
             self.image = pygame.transform.flip(self.frames[self.dir_i][int(self.frame_index)], self.facing_right, False)
