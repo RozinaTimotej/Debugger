@@ -227,6 +227,7 @@ class Level:
                             enemy.rect.bottom = sprite.rect.top
                             enemy.state = "super_dead"
                     if sprite.rect.colliderect(enemy.rect) and enemy.state == "attack":
+                        enemy.rect.left = sprite.rect.right
                         enemy.death("dead")
 
     def v_col_plain(self):  # collisioni za gor/dol in pa logika za skok
