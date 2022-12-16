@@ -234,7 +234,10 @@ class Level:
                             enemy.state = "super_dead"
                             break
                     if sprite.rect.colliderect(enemy.rect) and enemy.state == "attack":
-                        enemy.rect.left = sprite.rect.right
+                        if enemy.dx > 0:
+                            enemy.rect.right = sprite.rect.left
+                        else:
+                            enemy.rect.left = sprite.rect.right
                         enemy.death("dead")
                         break
 
@@ -273,6 +276,9 @@ class Level:
         for enemy in self.kamikazeEnemy.sprites():
             if enemy.state == "remove":
                 self.kamikazeEnemy.remove(enemy)
+            if enemy.state == "super_dead" and pygame.time.get_ticks() - enemy.tod > 5000:
+                enemy.state = "alive"
+                enemy.dir_i = "stand"
             if enemy.dir_i == "stand":
                 dx = self.player.sprite.rect.x + 20 - enemy.rect.x
                 dy = self.player.sprite.rect.y + 32 - enemy.rect.y

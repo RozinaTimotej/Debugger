@@ -100,9 +100,13 @@ class KamikazeEnemy(pygame.sprite.Sprite):
 
     def death(self,state):
         self.frame_index = 0
+        self.tod = pygame.time.get_ticks()
         self.rect.x -= self.speed * self.dx
         self.dx = 0
         self.dy = 0
+        self.degs = 0
+        self.dist = 0
+        self.speed = 3
         self.state = state
         self.dir_i = "die"
 
@@ -111,6 +115,10 @@ class KamikazeEnemy(pygame.sprite.Sprite):
         self.dest.y = self.rect.y - 100
         dx = self.dest.x - self.rect.x
         dy = self.dest.y - self.rect.y
+        if dx > 0:
+            self.facing_right = True
+        else:
+            self.facing_right = False
         self.dist = (dx ** 2 + dy ** 2) ** .5
         if not self.dist == 0:
             self.dx = dx/self.dist
