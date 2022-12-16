@@ -74,7 +74,7 @@ class Level:
         player.rect.x += player.direction.x * player.speed
 
         for sprite in self.tiles.sprites():
-            if pygame.sprite.collide_mask(player,sprite):
+            if player.rect.colliderect(sprite.rect):
                 if player.direction.x < 0:
                     if player.jumps > 0 and not player.wall_jumped:
                         player.direction.y = 0
@@ -169,7 +169,7 @@ class Level:
             player.rect.top = 0
 
         for sprite in self.tiles.sprites():
-            if pygame.sprite.collide_mask(player,sprite):
+            if player.rect.colliderect(sprite.rect):
                 if player.direction.y > 0:
                     player.rect.bottom = sprite.rect.top
                     player.direction.y = 0
