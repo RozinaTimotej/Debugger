@@ -43,7 +43,7 @@ for filename in os.listdir("./levels"):
 
 tile_size = 64
 screen_w = 1200
-screen_h = tile_size * len(map[0])
+screen_h = 768
 music_volume = 0.1
 effects_volume = 0.1
 
