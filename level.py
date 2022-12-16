@@ -2,7 +2,7 @@ import math
 import pygame
 from tiles import Tla, Finish,Tile
 from player import Player
-from enemy import Enemy, FlyingEnemy
+from enemy import Enemy, FlyingEnemy, KamikazeEnemy
 from background import Background1, Background2
 from math import atan2, degrees, pi,sqrt
 from bullet import Bullet
@@ -21,6 +21,7 @@ class Level:
         self.player = pygame.sprite.GroupSingle()
         self.enemies = pygame.sprite.Group()
         self.flyingEnemies= pygame.sprite.Group()
+        self.kamikazeEnemy = pygame.sprite.Group()
         self.finish = pygame.sprite.GroupSingle()
         self.space = pygame.sprite.Group()
         self.stars = pygame.sprite.Group()
@@ -44,6 +45,8 @@ class Level:
                         self.enemyBlocks.add(Tile(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings))
                     if char == 'h2':
                         self.flyingEnemies.add(FlyingEnemy((c_i * self.settings.tile_size, r_i * self.settings.tile_size), self.settings,self.settings.enemyFlyFrames))
+                    if char == 'h3':
+                        self.kamikazeEnemy.add(KamikazeEnemy((c_i * self.settings.tile_size+16, r_i * self.settings.tile_size+32), self.settings,self.settings.kamikazeEnemyFrames))
 
         len_x = math.ceil((self.settings.screen_w + self.settings.screen_w / 4) / 1367) + 1
         for i in range(-1, len_x + 1):
@@ -210,6 +213,15 @@ class Level:
         self.v_col_enemy()
         self.v_col_flyingEnemy()
 
+    def v_col_kamikazeEnemy(self):
+        player = self.player.sprite
+        for enemy in self.kamikazeEnemy.sprites():
+            if enemy.rect.colliderect(self.player.sprite.rect) and enemy.state == "alive":
+                if self.player.sprite.direction.y > 0:
+                    pygame.mixer.Sound.play(self.settings.hitEnemy)
+                    enemy.death()
+                    player.direction.y = player.jumpHeight / 2
+
     def check_Enemies(self):
         for enemy in self.enemies.sprites():
             if enemy.state == "dead":
@@ -232,6 +244,20 @@ class Level:
                 elif (not enemy.facing_right) and 180 < degs < 240 and dist < 250:
                     self.bullets.add(Bullet((enemy.rect.x-32, enemy.rect.y+32), self.settings, self.settings.bulletFrames,enemy.facing_right,pygame.time.get_ticks()))
                     enemy.shoot()
+
+    def check_KamikazeEnemies(self):
+        player = self.player.sprite.rect
+        for enemy in self.kamikazeEnemy.sprites():
+            if enemy.dir_i == "stand":
+                dx = self.player.sprite.rect.x + 20 - enemy.rect.x
+                dy = self.player.sprite.rect.y + 32 - enemy.rect.y
+                dist = sqrt(dx * dx + dy * dy)
+                if dist < 250:
+                    enemy.shoot()
+                elif dist < 250:
+                    enemy.shoot()
+            if enemy.state == "locate_enemy":
+                enemy.kamikaze(player.x+player.width/2, player.y+player.height/2)
 
     def bullets_update(self):
         for bullet in self.bullets.sprites():
@@ -264,6 +290,7 @@ class Level:
             self.v_col_plain()
             self.check_Enemies()
             self.check_FlyingEnemies()
+            self.check_KamikazeEnemies()
             self.bullets_update()
             self.bullet_Col()
             self.space.update(self.move)
@@ -275,6 +302,7 @@ class Level:
             self.bullets.update(self.move)
             self.enemies.update(self.move)
             self.flyingEnemies.update(self.move)
+            self.kamikazeEnemy.update(self.move)
             self.player.update()
 
         self.space.draw(self.display_surface)
@@ -286,6 +314,7 @@ class Level:
         self.cam()
         self.enemies.draw(self.display_surface)
         self.flyingEnemies.draw(self.display_surface)
+        self.kamikazeEnemy.draw(self.display_surface)
         self.player.draw(self.display_surface)
 
         return self.status

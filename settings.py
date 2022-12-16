@@ -76,6 +76,13 @@ class Settings():
             "die": import_folder("./Assets/flyingenemy/death/game/", (64,64)),
             "shoot": import_folder("./Assets/flyingenemy/attack/game/", (64,64)),
         }
+        self.kamikazeEnemyFrames = {
+            "fly": import_folder("./Assets/enemybird/fly/game/", (32, 32)),
+            "die": import_folder("./Assets/enemybird/death/game/", (32, 32)),
+            "ready": import_folder("./Assets/enemybird/blink/game/", (32, 32)),
+            "attack": import_folder("./Assets/enemybird/attack/game/", (32, 32)),
+            "stand": import_folder("./Assets/enemybird/stand/game/", (32, 32)),
+        }
         self.bulletFrames = {
             "fly": import_folder("./Assets/bullet/fly/game/", (25,4)),
             "die": import_folder("./Assets/bullet/hit/game/", (64, 64)),
