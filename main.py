@@ -47,7 +47,7 @@ while True:
     elif settings.state == "settings" and settings.pause:
         level.draw()
         settings.state = settingMenu.draw()
-    elif settings.state == "finish":
+    elif settings.state == "next_lvl":
         settings.state = "playing"
         settings.levelIndex += 1
         if settings.levelIndex >= len(settings.levels):

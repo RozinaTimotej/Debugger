@@ -89,7 +89,7 @@ class Level:
 
         for sprite in self.finish.sprites():
             if pygame.sprite.collide_mask(player,sprite):
-                self.status = "finish"
+                self.status = "next_lvl"
                 break
 
         for coin in self.coins.sprites():
