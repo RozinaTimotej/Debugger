@@ -79,12 +79,12 @@ class Level:
                     if player.jumps > 0 and not player.wall_jumped:
                         player.direction.y = 0
                         player.on_wall = True
-                    player.rect.left = sprite.rect.right+0.005
+                    player.rect.left = sprite.rect.right+0.05
                 elif player.direction.x > 0:
                     if player.jumps > 0 and not player.wall_jumped:
                         player.direction.y = 0
                         player.on_wall = True
-                    player.rect.right = sprite.rect.left-0.005
+                    player.rect.right = sprite.rect.left-0.05
                 break
 
         for sprite in self.finish.sprites():
