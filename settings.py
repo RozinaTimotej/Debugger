@@ -70,6 +70,7 @@ class Settings():
         self.playerWalk = sound("./Assets/sounds/walk/", self.vol[1]*3)
         self.tile = tiles("./Assets/tla/")
         self.finish = pygame.image.load("./Assets/finish/e.png").convert_alpha()
+        self.coin = import_folder("./Assets/coin/game/", (20,20))
         self.enemyFrames = {"run": import_folder("./Assets/enemy/run/game/", (64,64))}
         self.enemyFlyFrames = {
             "fly": import_folder("./Assets/flyingenemy/fly/game/", (64,64)),
