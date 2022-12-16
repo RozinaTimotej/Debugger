@@ -14,7 +14,7 @@ class Enemy(pygame.sprite.Sprite):
         self.frame_index = 0
         self.image = self.frames[self.dir_i][self.frame_index]
         self.rect = self.image.get_rect(topleft=pos)
-        self.facing_right = False
+        self.facing_right = True
         self.speed = 1
         self.speedInfo = self.speed
         self.animMult = {"front": 6, "run": 6, "jump": 6, "fall": 6, "holdWall": 6}
@@ -101,6 +101,9 @@ class KamikazeEnemy(pygame.sprite.Sprite):
 
     def death(self):
         self.frame_index = 0
+        self.rect.x -= self.speed * self.dx
+        self.dx = 0
+        self.dy = 0
         self.state = "dead"
         self.dir_i = "die"
 
@@ -134,7 +137,7 @@ class KamikazeEnemy(pygame.sprite.Sprite):
 
     def update(self, move):
         self.rect.x += move
-        if not self.state == "dead" and not self.state == "alive":
+        if not self.state == "dead" and not self.state == "alive" and not self.state == "super_dead":
             self.rect.x += self.speed * self.dx
             self.rect.y += self.speed * self.dy
 

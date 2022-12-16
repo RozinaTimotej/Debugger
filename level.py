@@ -290,12 +290,18 @@ class Level:
     def kamikaze_Col(self):
         player = self.player.sprite
         for enemy in self.kamikazeEnemy.sprites():
-            for sprite in self.tiles.sprites():
-                if sprite.rect.colliderect(enemy.rect) and enemy.state == "attack":
+            if not enemy.state == "super_dead":
+                for sprite in self.tiles.sprites():
+                    if enemy.state == "dead":
+                        enemy.rect.y += 1
+                        if sprite.rect.colliderect(enemy.rect):
+                            enemy.rect.bottom = sprite.rect.top
+                            enemy.state = "super_dead"
+                    if sprite.rect.colliderect(enemy.rect) and enemy.state == "attack":
+                        enemy.death()
+                if enemy.rect.colliderect(player.rect) and enemy.state == "attack":
                     enemy.death()
-            if enemy.rect.colliderect(player.rect) and enemy.state == "attack":
-                enemy.death()
-                self.init_level(self.data)
+                    self.init_level(self.data)
     def draw(self):
         if not self.settings.pause:
             self.h_col_plain()
@@ -318,16 +324,16 @@ class Level:
             self.kamikazeEnemy.update(self.move)
             self.player.update()
 
+        self.cam()
         self.space.draw(self.display_surface)
         self.stars.draw(self.display_surface)
+        self.enemies.draw(self.display_surface)
+        self.flyingEnemies.draw(self.display_surface)
+        self.kamikazeEnemy.draw(self.display_surface)
         self.tiles.draw(self.display_surface)
         self.topDieTiles.draw(self.display_surface)
         self.finish.draw(self.display_surface)
         self.bullets.draw(self.display_surface)
-        self.cam()
-        self.enemies.draw(self.display_surface)
-        self.flyingEnemies.draw(self.display_surface)
-        self.kamikazeEnemy.draw(self.display_surface)
         self.player.draw(self.display_surface)
 
         return self.status
