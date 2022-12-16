@@ -74,7 +74,7 @@ class Level:
         player.rect.x += player.direction.x * player.speed
 
         for sprite in self.tiles.sprites():
-            if sprite.rect.colliderect(player.rect):
+            if pygame.sprite.collide_mask(player,sprite):
                 if player.direction.x < 0:
                     if player.jumps > 0 and not player.wall_jumped:
                         player.direction.y = 0
@@ -88,12 +88,16 @@ class Level:
                 break
 
         for sprite in self.finish.sprites():
-            if sprite.rect.colliderect(player.rect):
+            if pygame.sprite.collide_mask(player,sprite):
                 self.status = "finish"
                 break
 
+        for coin in self.coins.sprites():
+            if pygame.sprite.collide_mask(player,coin):
+                self.coins.remove(coin)
+
         for sprite in self.topDieTiles.sprites():
-            if sprite.rect.colliderect(player.rect):
+            if pygame.sprite.collide_mask(player,sprite):
                 if player.direction.x < 0:
                     if player.jumps > 0 and not player.wall_jumped:
                         player.direction.y = 0
@@ -112,7 +116,7 @@ class Level:
             enemy.rect.x += enemy.direction.x * enemy.speed
 
         for enemy in self.enemies.sprites():
-            if enemy.rect.colliderect(player.rect) and enemy.state == "alive":
+            if pygame.sprite.collide_mask(player,enemy) and enemy.state == "alive":
                 if enemy.direction.x < 0 or enemy.direction.x > 0:
                     self.init_level(self.data)
                 break
@@ -134,7 +138,7 @@ class Level:
             enemy.rect.x += enemy.direction.x * enemy.speed
 
         for enemy in self.flyingEnemies.sprites():
-            if enemy.rect.colliderect(player.rect) and enemy.state == "alive":
+            if pygame.sprite.collide_mask(player,enemy) and enemy.state == "alive":
                 if enemy.direction.x < 0 or enemy.direction.x > 0:
                     self.init_level(self.data)
                 break
@@ -165,7 +169,7 @@ class Level:
             player.rect.top = 0
 
         for sprite in self.tiles.sprites():
-            if sprite.rect.colliderect(player.rect):
+            if pygame.sprite.collide_mask(player,sprite):
                 if player.direction.y > 0:
                     player.rect.bottom = sprite.rect.top
                     player.direction.y = 0
@@ -180,7 +184,7 @@ class Level:
                 break
 
         for sprite in self.topDieTiles.sprites():
-            if sprite.rect.colliderect(player.rect):
+            if pygame.sprite.collide_mask(player,sprite):
                 if player.direction.y > 0:
                     player.rect.bottom = sprite.rect.top
                     player.direction.y = 0
@@ -201,6 +205,7 @@ class Level:
                     pygame.mixer.Sound.play(self.settings.hitEnemy)
                     enemy.death()
                     player.direction.y = player.jumpHeight / 2
+                    break
 
     def v_col_flyingEnemy(self):
         player = self.player.sprite
@@ -210,13 +215,14 @@ class Level:
                     pygame.mixer.Sound.play(self.settings.hitEnemy)
                     enemy.death()
                     player.direction.y = player.jumpHeight / 2
+                    break
 
     def h_col_kamikaze(self):
         player = self.player.sprite
         for enemy in self.kamikazeEnemy.sprites():
             if not enemy.state == "super_dead":
                 enemy.h_move()
-                if enemy.rect.colliderect(player.rect) and enemy.state == "attack":
+                if pygame.sprite.collide_mask(player,enemy) and enemy.state == "attack":
                     enemy.death("super_dead")
                     self.init_level(self.data)
                     break
@@ -226,9 +232,11 @@ class Level:
                         if sprite.rect.colliderect(enemy.rect):
                             enemy.rect.bottom = sprite.rect.top
                             enemy.state = "super_dead"
+                            break
                     if sprite.rect.colliderect(enemy.rect) and enemy.state == "attack":
                         enemy.rect.left = sprite.rect.right
                         enemy.death("dead")
+                        break
 
     def v_col_plain(self):  # collisioni za gor/dol in pa logika za skok
         self.v_col_player()
@@ -298,7 +306,8 @@ class Level:
             for sprite in self.tiles.sprites():
                 if sprite.rect.colliderect(bullet.rect) and bullet.state == "alive":
                     bullet.death()
-            if bullet.rect.colliderect(player.rect) and bullet.state == "alive":
+                    break
+            if pygame.sprite.collide_mask(player,bullet) and bullet.state == "alive":
                 bullet.death()
                 self.init_level(self.data)
 
@@ -307,13 +316,14 @@ class Level:
         for enemy in self.kamikazeEnemy.sprites():
             if not enemy.state == "super_dead":
                 enemy.v_move()
-                if enemy.rect.colliderect(player.rect) and enemy.state == "attack":
+                if pygame.sprite.collide_mask(player,enemy) and enemy.state == "attack":
                     enemy.death("super_dead")
                     self.init_level(self.data)
                     break
                 for sprite in self.tiles.sprites():
                     if sprite.rect.colliderect(enemy.rect) and enemy.state == "attack":
                         enemy.death("super_dead")
+                        break
     def draw(self):
         if not self.settings.pause:
             self.h_col_plain()
