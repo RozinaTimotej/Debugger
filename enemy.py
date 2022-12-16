@@ -121,7 +121,6 @@ class KamikazeEnemy(pygame.sprite.Sprite):
         self.dir_i = "fly"
 
     def kamikaze(self,x,y):
-        print("test")
         self.dest.x = x
         self.dest.y = y
         dx = self.dest.x - self.rect.x

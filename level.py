@@ -273,7 +273,7 @@ class Level:
             dx = player.rect.x+20 - bullet.rect.x
             dy = player.rect.y+32 - bullet.rect.y
             dist = (dx ** 2 + dy ** 2) ** .5
-            if dist > 0:
+            if not dist == 0:
                 dx /= dist
                 dy /= dist
             move_distx = min(self.player.sprite.speed * 1.1, int(dist))
