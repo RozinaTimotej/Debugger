@@ -89,7 +89,7 @@ class KamikazeEnemy(pygame.sprite.Sprite):
         self.image = self.frames[self.dir_i][self.frame_index]
         self.rect = self.image.get_rect(topleft=pos)
         self.facing_right = False
-        self.speed = 2
+        self.speed = 3
         self.speedInfo = self.speed
         self.animMult = {"fly": 6,"die":10,"ready":6,"attack":6,"stand":6}
         self.dest = pygame.math.Vector2(0.0)
@@ -129,6 +129,9 @@ class KamikazeEnemy(pygame.sprite.Sprite):
         if not self.dist == 0:
             self.dx = dx / self.dist
             self.dy = dy / self.dist
+        rads = atan2(-dy, dx)
+        rads %= 2 * pi
+        self.degs = degrees(rads)-190
         self.frame_index = 0
         self.state = "attack"
         self.dir_i = "attack"
