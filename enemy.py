@@ -65,7 +65,6 @@ class FlyingEnemy(pygame.sprite.Sprite):
         self.dir_i = "shoot"
     def update(self, move):
         self.rect.x += move
-
         self.frame_index += 0.02 * self.animMult[self.dir_i]
         if self.frame_index >= len(self.frames[self.dir_i]):
             self.frame_index = 0
@@ -99,12 +98,12 @@ class KamikazeEnemy(pygame.sprite.Sprite):
         self.degs = 0
         self.dist = 0
 
-    def death(self):
+    def death(self,state):
         self.frame_index = 0
         self.rect.x -= self.speed * self.dx
         self.dx = 0
         self.dy = 0
-        self.state = "dead"
+        self.state = state
         self.dir_i = "die"
 
     def shoot(self):
@@ -137,11 +136,15 @@ class KamikazeEnemy(pygame.sprite.Sprite):
         self.dir_i = "attack"
         self.speed *= 3
 
+    def h_move(self):
+        self.rect.x += self.speed * self.dx
+
+    def v_move(self):
+        self.rect.y += self.speed * self.dy
     def update(self, move):
         self.rect.x += move
         if not self.state == "dead" and not self.state == "alive" and not self.state == "super_dead":
-            self.rect.x += self.speed * self.dx
-            self.rect.y += self.speed * self.dy
+
 
             dx = self.dest.x - self.rect.x
             dy = self.dest.y - self.rect.y

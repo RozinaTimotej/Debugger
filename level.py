@@ -155,6 +155,7 @@ class Level:
         self.h_col_player()
         self.h_col_enemy()
         self.h_col_flyingEnemy()
+        self.h_col_kamikaze()
 
     def v_col_player(self):
         player = self.player.sprite
@@ -210,20 +211,30 @@ class Level:
                     enemy.death()
                     player.direction.y = player.jumpHeight / 2
 
+    def h_col_kamikaze(self):
+        player = self.player.sprite
+        for enemy in self.kamikazeEnemy.sprites():
+            if not enemy.state == "super_dead":
+                enemy.h_move()
+                if enemy.rect.colliderect(player.rect) and enemy.state == "attack":
+                    enemy.death("super_dead")
+                    self.init_level(self.data)
+                    break
+                for sprite in self.tiles.sprites():
+                    if enemy.state == "dead":
+                        enemy.rect.y += 1
+                        if sprite.rect.colliderect(enemy.rect):
+                            enemy.rect.bottom = sprite.rect.top
+                            enemy.state = "super_dead"
+                    if sprite.rect.colliderect(enemy.rect) and enemy.state == "attack":
+                        enemy.death("dead")
 
     def v_col_plain(self):  # collisioni za gor/dol in pa logika za skok
         self.v_col_player()
         self.v_col_enemy()
         self.v_col_flyingEnemy()
+        self.v_col_kamikaze()
 
-    def v_col_kamikazeEnemy(self):
-        player = self.player.sprite
-        for enemy in self.kamikazeEnemy.sprites():
-            if enemy.rect.colliderect(self.player.sprite.rect) and enemy.state == "alive":
-                if self.player.sprite.direction.y > 0:
-                    pygame.mixer.Sound.play(self.settings.hitEnemy)
-                    enemy.death()
-                    player.direction.y = player.jumpHeight / 2
 
     def check_Enemies(self):
         for enemy in self.enemies.sprites():
@@ -290,21 +301,18 @@ class Level:
                 bullet.death()
                 self.init_level(self.data)
 
-    def kamikaze_Col(self):
+    def v_col_kamikaze(self):
         player = self.player.sprite
         for enemy in self.kamikazeEnemy.sprites():
             if not enemy.state == "super_dead":
-                for sprite in self.tiles.sprites():
-                    if enemy.state == "dead":
-                        enemy.rect.y += 1
-                        if sprite.rect.colliderect(enemy.rect):
-                            enemy.rect.bottom = sprite.rect.top
-                            enemy.state = "super_dead"
-                    if sprite.rect.colliderect(enemy.rect) and enemy.state == "attack":
-                        enemy.death()
+                enemy.v_move()
                 if enemy.rect.colliderect(player.rect) and enemy.state == "attack":
-                    enemy.death()
+                    enemy.death("super_dead")
                     self.init_level(self.data)
+                    break
+                for sprite in self.tiles.sprites():
+                    if sprite.rect.colliderect(enemy.rect) and enemy.state == "attack":
+                        enemy.death("super_dead")
     def draw(self):
         if not self.settings.pause:
             self.h_col_plain()
@@ -314,7 +322,6 @@ class Level:
             self.check_KamikazeEnemies()
             self.bullets_update()
             self.bullet_Col()
-            self.kamikaze_Col()
             self.space.update(self.move)
             self.stars.update(self.move)
             self.tiles.update(self.move)
