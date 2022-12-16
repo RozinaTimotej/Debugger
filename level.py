@@ -1,6 +1,6 @@
 import math
 import pygame
-from tiles import Tla, Finish,Tile
+from tiles import Tla, Finish,Tile, Coin
 from player import Player
 from enemy import Enemy, FlyingEnemy, KamikazeEnemy
 from background import Background1, Background2
@@ -27,6 +27,7 @@ class Level:
         self.stars = pygame.sprite.Group()
         self.enemyBlocks = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
+        self.coins = pygame.sprite.Group()
         for r_i, row in enumerate(layout):
             for c_i, col in enumerate(row):
                 col_split = col.split("_")
@@ -47,6 +48,8 @@ class Level:
                         self.flyingEnemies.add(FlyingEnemy((c_i * self.settings.tile_size, r_i * self.settings.tile_size), self.settings,self.settings.enemyFlyFrames))
                     if char == 'h3':
                         self.kamikazeEnemy.add(KamikazeEnemy((c_i * self.settings.tile_size+16, r_i * self.settings.tile_size+32), self.settings,self.settings.kamikazeEnemyFrames))
+                    if char == 'c':
+                        self.coins.add(Coin(c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.coin, self.settings))
 
         len_x = math.ceil((self.settings.screen_w + self.settings.screen_w / 4) / 1367) + 1
         for i in range(-1, len_x + 1):
@@ -322,6 +325,7 @@ class Level:
             self.enemies.update(self.move)
             self.flyingEnemies.update(self.move)
             self.kamikazeEnemy.update(self.move)
+            self.coins.update(self.move)
             self.player.update()
 
         self.cam()
@@ -333,6 +337,7 @@ class Level:
         self.tiles.draw(self.display_surface)
         self.topDieTiles.draw(self.display_surface)
         self.finish.draw(self.display_surface)
+        self.coins.draw(self.display_surface)
         self.bullets.draw(self.display_surface)
         self.player.draw(self.display_surface)
 

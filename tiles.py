@@ -29,3 +29,22 @@ class Finish(StaticTile):
         super().__init__(size, x, y, surface, settings)
         offset_y = y + size
         self.rect = self.image.get_rect(bottomleft=(x, offset_y))
+
+class Coin(pygame.sprite.Sprite):
+    def __init__(self, x,y, frames, settings):
+        super().__init__()
+        self.settings = settings
+        self.frames = frames
+        self.frame_index = 0
+        self.image = self.frames[self.frame_index]
+        self.rect = self.image.get_rect(topleft=(x+(64-20)/2,y+(64-20)/2))
+        self.animMult = 6
+
+    def update(self, move):
+        self.rect.x += move
+
+        self.frame_index += 0.02 * self.animMult
+        if self.frame_index >= len(self.frames):
+            self.frame_index = 0
+
+        self.image = self.frames[int(self.frame_index)]
