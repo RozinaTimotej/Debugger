@@ -170,7 +170,7 @@ class Level:
 
         for sprite in self.tiles.sprites():
             if player.rect.colliderect(sprite.rect):
-                if player.direction.y > 0:
+                if player.direction.y > 0 and abs(sprite.rect.top - player.rect.bottom) < self.settings.tile_size:
                     player.rect.bottom = sprite.rect.top
                     player.direction.y = 0
                     if player.jumps > 0:
@@ -178,7 +178,7 @@ class Level:
                     player.jumps = 0
                     player.on_wall = False
                     player.wall_jumped = False
-                elif player.direction.y < 0:
+                elif player.direction.y < 0 and abs(sprite.rect.bottom - player.rect.top) < self.settings.tile_size:
                     player.direction.y = 0
                     player.rect.top = sprite.rect.bottom
                 break
