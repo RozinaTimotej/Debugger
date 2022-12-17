@@ -72,21 +72,22 @@ class Level:
     def h_col_player(self):
         player = self.player.sprite
         player.rect.x += player.direction.x * player.speed
-
+        dist = 0
         for sprite in self.tiles.sprites():
             if player.rect.colliderect(sprite.rect):
                 if player.direction.x < 0:
                     if player.jumps > 0 and not player.wall_jumped:
-                        player.direction.y = 0
-                        player.on_wall = True
-                    player.rect.left = sprite.rect.right+0.05
+                        dist = player.rect.top - sprite.rect.top
+                    player.rect.left = sprite.rect.right
                 elif player.direction.x > 0:
                     if player.jumps > 0 and not player.wall_jumped:
-                        player.direction.y = 0
-                        player.on_wall = True
-                    player.rect.right = sprite.rect.left-0.05
+                        dist = player.rect.top - sprite.rect.top
+                    player.rect.right = sprite.rect.left
                 break
 
+        if dist > self.settings.tile_size // 30:
+            player.direction.y = 0
+            player.on_wall = True
         for sprite in self.finish.sprites():
             if pygame.sprite.collide_mask(player,sprite):
                 self.status = "next_lvl"
@@ -95,7 +96,6 @@ class Level:
         for coin in self.coins.sprites():
             if pygame.sprite.collide_mask(player,coin):
                 self.coins.remove(coin)
-
         for sprite in self.topDieTiles.sprites():
             if pygame.sprite.collide_mask(player,sprite):
                 if player.direction.x < 0:
