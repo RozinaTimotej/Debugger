@@ -72,6 +72,7 @@ class Settings():
         self.finish = pygame.image.load("./Assets/finish/e.png").convert_alpha()
         self.coin = import_folder("./Assets/coin/game/", (20,20))
         self.enemyFrames = {"run": import_folder("./Assets/enemy/run/game/", (64,64))}
+        self.spikeFrames = {"spike": import_folder("./Assets/spike/game/", (32,29))}
         self.enemyFlyFrames = {
             "fly": import_folder("./Assets/flyingenemy/fly/game/", (64,64)),
             "die": import_folder("./Assets/flyingenemy/death/game/", (64,64)),

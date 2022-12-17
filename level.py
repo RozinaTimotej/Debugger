@@ -6,6 +6,7 @@ from enemy import Enemy, FlyingEnemy, KamikazeEnemy
 from background import Background1, Background2
 from math import atan2, degrees, pi,sqrt
 from bullet import Bullet
+from spike import Spike
 class Level:
     def __init__(self, data, surface, settings):
         self.display_surface = surface
@@ -17,7 +18,6 @@ class Level:
 
     def init_level(self, layout):  # gre čez level in ga naloži
         self.tiles = pygame.sprite.Group()
-        self.topDieTiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.enemies = pygame.sprite.Group()
         self.flyingEnemies= pygame.sprite.Group()
@@ -28,6 +28,8 @@ class Level:
         self.enemyBlocks = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
         self.coins = pygame.sprite.Group()
+        self.spikes = pygame.sprite.Group()
+
         for r_i, row in enumerate(layout):
             for c_i, col in enumerate(row):
                 col_split = col.split("_")
@@ -38,8 +40,6 @@ class Level:
                         self.enemies.add(Enemy((c_i * self.settings.tile_size, r_i * self.settings.tile_size),self.settings, self.settings.enemyFrames))
                     if char == 't1':
                         self.tiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.tile[char[1]],self.settings))
-                    if char == 'td':
-                        self.topDieTiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.tile[char[1]],self.settings))
                     if char == 'e':
                         self.finish.add(Finish(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.finish, self.settings))
                     if char == 'iw':
@@ -50,6 +50,8 @@ class Level:
                         self.kamikazeEnemy.add(KamikazeEnemy((c_i * self.settings.tile_size+16, r_i * self.settings.tile_size+32), self.settings,self.settings.kamikazeEnemyFrames))
                     if char == 'c':
                         self.coins.add(Coin(c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.coin, self.settings))
+                    if char == 's':
+                        self.spikes.add(Spike((c_i * self.settings.tile_size + 16, r_i * self.settings.tile_size + 40), self.settings, self.settings.spikeFrames))
 
         len_x = math.ceil((self.settings.screen_w + self.settings.screen_w / 4) / 1367) + 1
         for i in range(-1, len_x + 1):
@@ -96,19 +98,6 @@ class Level:
         for coin in self.coins.sprites():
             if pygame.sprite.collide_mask(player,coin):
                 self.coins.remove(coin)
-        for sprite in self.topDieTiles.sprites():
-            if pygame.sprite.collide_mask(player,sprite):
-                if player.direction.x < 0:
-                    if player.jumps > 0 and not player.wall_jumped:
-                        player.direction.y = 0
-                        player.on_wall = True
-                    player.rect.left = sprite.rect.right
-                elif player.direction.x > 0:
-                    if player.jumps > 0 and not player.wall_jumped:
-                        player.direction.y = 0
-                        player.on_wall = True
-                    player.rect.right = sprite.rect.left
-                break
 
     def h_col_enemy(self):
         player = self.player.sprite
@@ -179,20 +168,6 @@ class Level:
                     player.on_wall = False
                     player.wall_jumped = False
                 elif player.direction.y < 0 and abs(sprite.rect.bottom - player.rect.top) < self.settings.tile_size:
-                    player.direction.y = 0
-                    player.rect.top = sprite.rect.bottom
-                break
-
-        for sprite in self.topDieTiles.sprites():
-            if pygame.sprite.collide_mask(player,sprite):
-                if player.direction.y > 0:
-                    player.rect.bottom = sprite.rect.top
-                    player.direction.y = 0
-                    player.jumps = 0
-                    player.on_wall = False
-                    player.wall_jumped = False
-                    self.init_level(self.data)
-                elif player.direction.y < 0:
                     player.direction.y = 0
                     player.rect.top = sprite.rect.bottom
                 break
@@ -330,10 +305,17 @@ class Level:
                     if sprite.rect.colliderect(enemy.rect) and enemy.state == "attack":
                         enemy.death("super_dead")
                         break
+    def col(self):
+        player = self.player.sprite
+        for sprite in self.spikes.sprites():
+            if pygame.sprite.collide_mask(player,sprite) and sprite.deadly:
+                self.init_level(self.data)
+                break
     def draw(self):
         if not self.settings.pause:
             self.h_col_plain()
             self.v_col_plain()
+            self.col()
             self.check_Enemies()
             self.check_FlyingEnemies()
             self.check_KamikazeEnemies()
@@ -343,12 +325,12 @@ class Level:
             self.stars.update(self.move)
             self.tiles.update(self.move)
             self.enemyBlocks.update(self.move)
-            self.topDieTiles.update(self.move)
             self.finish.update(self.move)
             self.bullets.update(self.move)
             self.enemies.update(self.move)
             self.flyingEnemies.update(self.move)
             self.kamikazeEnemy.update(self.move)
+            self.spikes.update(self.move)
             self.coins.update(self.move)
             self.player.update()
 
@@ -359,9 +341,9 @@ class Level:
         self.flyingEnemies.draw(self.display_surface)
         self.kamikazeEnemy.draw(self.display_surface)
         self.tiles.draw(self.display_surface)
-        self.topDieTiles.draw(self.display_surface)
         self.finish.draw(self.display_surface)
         self.coins.draw(self.display_surface)
+        self.spikes.draw(self.display_surface)
         self.bullets.draw(self.display_surface)
         self.player.draw(self.display_surface)
 
