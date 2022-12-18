@@ -61,6 +61,7 @@ class Settings():
         self.pause = False
         self.state = "name"
         self.event = pygame.event.get()
+        self.font = pygame.font.SysFont("Arial", 18)
         self.vol = [music_volume, effects_volume]
         self.playerJump = pygame.mixer.Sound("./Assets/sounds/jump_02.wav")
         self.menuMusic = pygame.mixer.Sound("./Assets/sounds/menumusic.mp3")

@@ -55,7 +55,6 @@ class Changename:
         self.state = "name"
         self.groupSound.update(self)
         self.groupSound.draw(self.display_surface)
-        font = pygame.font.SysFont("Arial", 18)
-        txt = font.render(self.name, True, pygame.Color("coral"))
+        txt = self.settings.font.render(self.name, True, pygame.Color("coral"))
         self.display_surface.blit(txt, (self.settings.screen_w / 2,350))
         return self.state

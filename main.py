@@ -17,11 +17,10 @@ changeName = Changename(screen,settings)
 startMenu = MainMenu(screen, settings, settingMenu)
 pauseMenu = PauseMenu(screen, settings, settingMenu)
 level = Level(settings.levels[settings.levelIndex], screen, settings)
-font = pygame.font.SysFont("Arial", 18)
 
 def update_fps():
     fps = str(int(clock.get_fps()))
-    fps_text = font.render(fps, True, pygame.Color("coral"))
+    fps_text = settings.font.render(fps, True, pygame.Color("coral"))
     return fps_text
 
 
