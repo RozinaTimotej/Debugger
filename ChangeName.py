@@ -75,3 +75,5 @@ class Changename:
             return self.state
         elif not self.state == "main_menu":
             return self.state
+        else:
+            return "name"
