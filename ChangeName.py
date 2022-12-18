@@ -26,7 +26,7 @@ class Input(pygame.sprite.Sprite):
             self.typing = False
 
         if self.typing:
-            for event in el.evt:
+            for event in el.settings.event:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_BACKSPACE:
                         el.name = el.name[:-1]
@@ -43,7 +43,6 @@ class Changename:
         self.state = "name"
         self.name = ""
         self.display_surface = surface
-        self.evt = pygame.event.get()
         self.init_menu()
 
     def init_menu(self):
@@ -52,9 +51,8 @@ class Changename:
         self.groupSound.add(Button(self.settings.screen_w / 2+150, 500, "main_menu", self.settings))
         self.groupSound.add(Button(self.settings.screen_w / 2-150, 500, "exit_to_desktop", self.settings))
 
-    def draw(self, evt):
+    def draw(self):
         self.state = "name"
-        self.evt = evt
         self.groupSound.update(self)
         self.groupSound.draw(self.display_surface)
         font = pygame.font.SysFont("Arial", 18)

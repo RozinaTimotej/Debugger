@@ -26,8 +26,8 @@ def update_fps():
 
 
 while True:
-    evt = pygame.event.get()
-    for event in evt:
+    settings.event = pygame.event.get()
+    for event in settings.event:
         if event.type == pygame.QUIT or settings.state == "exit_to_desktop":
             pygame.quit()
             sys.exit()
@@ -43,7 +43,7 @@ while True:
         settingMenu.updateState("pause_menu")
     elif settings.state == "name":
         screen.fill("black")
-        settings.state = changeName.draw(evt)
+        settings.state = changeName.draw()
     elif settings.state == "main_menu":
         settings.state = startMenu.draw()
         settingMenu.updateState("main_menu")

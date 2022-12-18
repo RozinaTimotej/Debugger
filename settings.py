@@ -60,6 +60,7 @@ class Settings():
         self.inGame = False
         self.pause = False
         self.state = "name"
+        self.event = pygame.event.get()
         self.vol = [music_volume, effects_volume]
         self.playerJump = pygame.mixer.Sound("./Assets/sounds/jump_02.wav")
         self.menuMusic = pygame.mixer.Sound("./Assets/sounds/menumusic.mp3")
