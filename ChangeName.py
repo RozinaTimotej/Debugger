@@ -15,7 +15,7 @@ class Input(pygame.sprite.Sprite):
         self.start = x - self.w / 2
         self.y = y
         self.image = pygame.Surface((self.w, self.h))
-        self.image.fill("Gray")
+        self.image.fill((30, 30, 30))
         self.rect = self.image.get_rect(topleft=(x - self.w / 2, y))
 
     def update(self, el):
@@ -23,8 +23,10 @@ class Input(pygame.sprite.Sprite):
         pressed = pygame.mouse.get_pressed()[0]
         if self.rect.collidepoint(mouse) and pressed:
             self.typing = True
+            self.image.fill((80, 80, 80))
         elif not self.rect.collidepoint(mouse) and pressed:
             self.typing = False
+            self.image.fill((30, 30, 30))
 
         if self.typing:
             for event in el.settings.event:
@@ -36,12 +38,15 @@ class Input(pygame.sprite.Sprite):
                             el.name += pygame.key.name(event.key).upper()
                         else:
                             el.name += pygame.key.name(event.key)
+        rect = pygame.Rect((self.start - 1, self.y - 1), (self.w + 2, self.h + 2))
 
         if len(el.name) > 3:
             el.valid = True
+            pygame.draw.rect(el.display_surface, "green", rect)
         elif len(el.name) > 0:
-            rect = pygame.Rect((self.start-1,self.y-1), (self.w+2, self.h+2))
             pygame.draw.rect(el.display_surface, "red", rect)
+        elif self.typing:
+            pygame.draw.rect(el.display_surface, "blue", rect)
 
 class Changename:
     def __init__(self, surface, settings):
@@ -64,11 +69,9 @@ class Changename:
         self.groupSound.update(self)
         self.groupSound.draw(self.display_surface)
         txt = self.settings.font.render(self.name, True, pygame.Color("coral"))
-        self.display_surface.blit(txt, (self.settings.screen_w / 2, 350))
+        self.display_surface.blit(txt, (self.settings.screen_w / 2 - 140, 350+4))
         if self.state == "main_menu" and self.valid:
             self.settings.updateName(self.name)
             return self.state
         elif not self.state == "main_menu":
             return self.state
-        else:
-            return "name"
