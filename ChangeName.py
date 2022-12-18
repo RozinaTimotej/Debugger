@@ -36,12 +36,16 @@ class Input(pygame.sprite.Sprite):
                         else:
                             el.name += pygame.key.name(event.key)
 
+        if len(el.name) > 3:
+            el.valid = True
+
 class Changename:
     def __init__(self, surface, settings):
         self.groupSound = None
         self.settings = settings
         self.state = "name"
         self.name = ""
+        self.valid = False
         self.display_surface = surface
         self.init_menu()
 
@@ -56,5 +60,11 @@ class Changename:
         self.groupSound.update(self)
         self.groupSound.draw(self.display_surface)
         txt = self.settings.font.render(self.name, True, pygame.Color("coral"))
-        self.display_surface.blit(txt, (self.settings.screen_w / 2,350))
-        return self.state
+        self.display_surface.blit(txt, (self.settings.screen_w / 2, 350))
+        if self.state == "main_menu" and self.valid:
+            self.settings.updateName(self.name)
+            return self.state
+        elif not self.state == "main_menu":
+            return self.state
+        else:
+            return "name"

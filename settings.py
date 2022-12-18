@@ -62,6 +62,7 @@ class Settings():
         self.state = "name"
         self.event = pygame.event.get()
         self.font = pygame.font.SysFont("Arial", 18)
+        self.name = ""
         self.vol = [music_volume, effects_volume]
         self.playerJump = pygame.mixer.Sound("./Assets/sounds/jump_02.wav")
         self.menuMusic = pygame.mixer.Sound("./Assets/sounds/menumusic.mp3")
@@ -100,6 +101,8 @@ class Settings():
         self.updateSound()
         self.menuMusic.play(-1, 0, 2000)
 
+    def updateName(self, name):
+        self.name = name
     def updateSound(self):
         pygame.mixer.Sound.set_volume(self.playerJump, self.vol[1])
         pygame.mixer.Sound.set_volume(self.menuMusic, self.vol[0])
