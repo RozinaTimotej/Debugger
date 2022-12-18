@@ -6,12 +6,14 @@ from level import Level
 from pygame.locals import *
 from mainMenu import MainMenu, PauseMenu
 from settingMenu import SettingsMenu
+from ChangeName import Changename
 
 clock = pygame.time.Clock()
 pygame.init()
 screen = pygame.display.set_mode((settings.screen_w, settings.screen_h))
 settings = Settings()
 settingMenu = SettingsMenu(screen, settings)
+changeName = Changename(screen,settings)
 startMenu = MainMenu(screen, settings, settingMenu)
 pauseMenu = PauseMenu(screen, settings, settingMenu)
 level = Level(settings.levels[settings.levelIndex], screen, settings)
@@ -24,7 +26,8 @@ def update_fps():
 
 
 while True:
-    for event in pygame.event.get():
+    evt = pygame.event.get()
+    for event in evt:
         if event.type == pygame.QUIT or settings.state == "exit_to_desktop":
             pygame.quit()
             sys.exit()
@@ -38,6 +41,9 @@ while True:
         level.draw()
         settings.state = pauseMenu.draw()
         settingMenu.updateState("pause_menu")
+    elif settings.state == "name":
+        screen.fill("black")
+        settings.state = changeName.draw(evt)
     elif settings.state == "main_menu":
         settings.state = startMenu.draw()
         settingMenu.updateState("main_menu")

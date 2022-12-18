@@ -59,7 +59,7 @@ class Settings():
         self.tile_size = tile_size
         self.inGame = False
         self.pause = False
-        self.state = "main_menu"
+        self.state = "name"
         self.vol = [music_volume, effects_volume]
         self.playerJump = pygame.mixer.Sound("./Assets/sounds/jump_02.wav")
         self.menuMusic = pygame.mixer.Sound("./Assets/sounds/menumusic.mp3")
