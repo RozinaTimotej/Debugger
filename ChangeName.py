@@ -10,10 +10,11 @@ class Input(pygame.sprite.Sprite):
         super().__init__()
         self.id = id
         self.w = 300
+        self.h = 30
         self.typing = False
         self.start = x - self.w / 2
         self.y = y
-        self.image = pygame.Surface((self.w, 30))
+        self.image = pygame.Surface((self.w, self.h))
         self.image.fill("Gray")
         self.rect = self.image.get_rect(topleft=(x - self.w / 2, y))
 
@@ -38,6 +39,9 @@ class Input(pygame.sprite.Sprite):
 
         if len(el.name) > 3:
             el.valid = True
+        elif len(el.name) > 0:
+            rect = pygame.Rect((self.start-1,self.y-1), (self.w+2, self.h+2))
+            pygame.draw.rect(el.display_surface, "red", rect)
 
 class Changename:
     def __init__(self, surface, settings):
