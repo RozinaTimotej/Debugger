@@ -44,6 +44,7 @@ class Input(pygame.sprite.Sprite):
             el.valid = True
             pygame.draw.rect(el.display_surface, "green", rect)
         elif len(el.name) > 0:
+            el.valid = False
             pygame.draw.rect(el.display_surface, "red", rect)
         elif self.typing:
             pygame.draw.rect(el.display_surface, "blue", rect)
