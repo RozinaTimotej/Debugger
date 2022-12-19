@@ -25,8 +25,10 @@ class LevelButton(pygame.sprite.Sprite):
             self.image.blit(self.textSurf, [self.w / 2 - self.w1/2, self.h / 2 - self.h1/2])
             if pressed:
                 self.settings.levelIndex = int(self.id)
+                self.settings.menuMusic.stop()
+                self.settings.gameMusic.play(-1, 0, 2000)
                 el.state = "playing"
-        elif not (self.rect.collidepoint(mouse) and  4 * self.settings.screen_h / 5 > mouse[1] > 1 * self.settings.screen_h / 5):
+        elif not (self.rect.collidepoint(mouse) and 4 * self.settings.screen_h / 5 > mouse[1] > 1 * self.settings.screen_h / 5):
             self.image.fill((30, 30, 30))
             self.image.blit(self.textSurf, [self.w / 2 - self.w1/2, self.h / 2 - self.h1/2])
 
