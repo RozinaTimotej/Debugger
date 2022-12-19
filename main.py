@@ -7,6 +7,8 @@ from mainMenu import MainMenu, PauseMenu
 from settingMenu import SettingsMenu
 from ChangeName import Changename
 from lvlSelect import LevelSelect
+from endLevel import DieMenu
+from finishMenu import FinishMenu
 
 clock = pygame.time.Clock()
 pygame.init()
@@ -16,6 +18,8 @@ settingMenu = SettingsMenu(screen, settings)
 changeName = Changename(screen,settings)
 startMenu = MainMenu(screen, settings, settingMenu)
 pauseMenu = PauseMenu(screen, settings, settingMenu)
+dieMenu = DieMenu(screen,settings)
+finishMenu = FinishMenu(screen,settings)
 levelSelect = LevelSelect(screen, settings)
 level = Level(settings.levels[settings.levelIndex], screen, settings)
 
@@ -47,6 +51,18 @@ while True:
     elif settings.state == "name":
         screen.fill("black")
         settings.state = changeName.draw()
+    elif settings.state == "die_menu":
+        level.draw()
+        settings.state = dieMenu.draw()
+        if settings.state == "restart":
+            level = Level(settings.levels[settings.levelIndex], screen, settings)
+            settings.state = "playing"
+    elif settings.state == "finish_menu":
+        level.draw()
+        settings.state = finishMenu.draw()
+        if settings.state == "restart":
+            level = Level(settings.levels[settings.levelIndex], screen, settings)
+            settings.state = "playing"
     elif settings.state == "select":
         screen.fill("black")
         settings.state = levelSelect.draw()
@@ -61,7 +77,7 @@ while True:
     elif settings.state == "settings" and settings.pause:
         level.draw()
         settings.state = settingMenu.draw()
-    elif settings.state == "next_lvl":
+    elif settings.state == "next_level":
         settings.state = "playing"
         settings.levelIndex += 1
         if settings.levelIndex >= len(settings.levels):

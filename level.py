@@ -92,7 +92,8 @@ class Level:
             player.on_wall = True
         for sprite in self.finish.sprites():
             if pygame.sprite.collide_mask(player,sprite):
-                self.status = "next_lvl"
+                self.status = "finish_menu"
+                self.settings.pause = True
                 break
 
         for coin in self.coins.sprites():
@@ -107,7 +108,7 @@ class Level:
         for enemy in self.enemies.sprites():
             if pygame.sprite.collide_mask(player,enemy) and enemy.state == "alive":
                 if enemy.direction.x < 0 or enemy.direction.x > 0:
-                    self.init_level(self.data)
+                    self.die()
                 break
             for sprite in self.enemyBlocks.sprites():
                 if sprite.rect.colliderect(enemy.rect):
@@ -129,7 +130,7 @@ class Level:
         for enemy in self.flyingEnemies.sprites():
             if pygame.sprite.collide_mask(player,enemy) and enemy.state == "alive":
                 if enemy.direction.x < 0 or enemy.direction.x > 0:
-                    self.init_level(self.data)
+                    self.die()
                 break
             for sprite in self.enemyBlocks.sprites():
                 if sprite.rect.colliderect(enemy.rect):
@@ -199,7 +200,7 @@ class Level:
                 enemy.h_move()
                 if pygame.sprite.collide_mask(player,enemy) and enemy.state == "attack":
                     enemy.death("super_dead")
-                    self.init_level(self.data)
+                    self.die()
                     break
                 for sprite in self.tiles.sprites():
                     if enemy.state == "dead":
@@ -290,7 +291,7 @@ class Level:
                     break
             if pygame.sprite.collide_mask(player,bullet) and bullet.state == "alive":
                 bullet.death()
-                self.init_level(self.data)
+                self.die()
 
     def v_col_kamikaze(self):
         player = self.player.sprite
@@ -299,7 +300,7 @@ class Level:
                 enemy.v_move()
                 if pygame.sprite.collide_mask(player,enemy) and enemy.state == "attack":
                     enemy.death("super_dead")
-                    self.init_level(self.data)
+                    self.die()
                     break
                 for sprite in self.tiles.sprites():
                     if sprite.rect.colliderect(enemy.rect) and enemy.state == "attack":
@@ -309,8 +310,11 @@ class Level:
         player = self.player.sprite
         for sprite in self.spikes.sprites():
             if pygame.sprite.collide_mask(player,sprite) and sprite.deadly:
-                self.init_level(self.data)
+                self.die()
                 break
+    def die(self):
+        self.status = "die_menu"
+        self.settings.pause = True
     def draw(self):
         if not self.settings.pause:
             self.h_col_plain()
