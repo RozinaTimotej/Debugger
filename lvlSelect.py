@@ -20,20 +20,26 @@ class LevelButton(pygame.sprite.Sprite):
         self.rect.y += el.y
         mouse = pygame.mouse.get_pos()
         pressed = pygame.mouse.get_pressed()[0]
-        if self.rect.collidepoint(mouse):
+        if self.rect.collidepoint(mouse) and mouse[1] < 4*self.settings.screen_h/5:
             self.image.fill((80, 80, 80))
             self.image.blit(self.textSurf, [self.w / 2 - self.w1/2, self.h / 2 - self.h1/2])
             if pressed:
                 self.settings.levelIndex = int(self.id)
                 el.state = "playing"
-        elif not self.rect.collidepoint(mouse):
+        elif not (self.rect.collidepoint(mouse) and mouse[1] < 4*self.settings.screen_h/5):
             self.image.fill((30, 30, 30))
             self.image.blit(self.textSurf, [self.w / 2 - self.w1/2, self.h / 2 - self.h1/2])
 
+class Block(pygame.sprite.Sprite):
+    def __init__(self, x,y,w,h, settings):
+        super().__init__()
+        self.image = pygame.Surface((w, h))
+        self.rect = self.image.get_rect(topleft=(x, y))
+        self.image.fill((0, 0, 0))
 
 class LevelSelect:
     def __init__(self, surface, settings):
-        self.groupSound = None
+        self.buttons = None
         self.settings = settings
         self.state = "select"
         self.y = 0
@@ -41,11 +47,14 @@ class LevelSelect:
         self.init_menu()
 
     def init_menu(self):
-        self.groupSound = pygame.sprite.Group()
+        self.lvls = pygame.sprite.Group()
+        self.buttons = pygame.sprite.Group()
+        self.ui = pygame.sprite.Group()
         for i,lvl in enumerate(self.settings.levels):
-            self.groupSound.add(LevelButton((self.settings.screen_w / 5 * (i % 5))+((self.settings.screen_w / 5) /2), 200 * (1+(i // 5)), i,self.settings))
-        self.groupSound.add(Button(self.settings.screen_w / 2+150, 700, "main_menu", self.settings))
-        self.groupSound.add(Button(self.settings.screen_w / 2-150, 700, "exit_to_desktop", self.settings))
+            self.lvls.add(LevelButton((self.settings.screen_w / 5 * (i % 5))+((self.settings.screen_w / 5) /2), 200 * (1+(i // 5)), i,self.settings))
+        self.buttons.add(Button(self.settings.screen_w / 2+150, 700, "main_menu", self.settings))
+        self.buttons.add(Button(self.settings.screen_w / 2-150, 700, "exit_to_desktop", self.settings))
+        self.ui.add(Block(0, 4*self.settings.screen_h/5, self.settings.screen_w, self.settings.screen_h/5, self.settings))
 
     def draw(self):
         self.state = "select"
@@ -56,6 +65,9 @@ class LevelSelect:
         for event in self.settings.event:
             if event.type == pygame.MOUSEWHEEL:
                 self.y += event.y*2
-        self.groupSound.update(self)
-        self.groupSound.draw(self.display_surface)
+        self.lvls.update(self)
+        self.buttons.update(self)
+        self.lvls.draw(self.display_surface)
+        self.ui.draw(self.display_surface)
+        self.buttons.draw(self.display_surface)
         return self.state
