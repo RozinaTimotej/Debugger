@@ -24,6 +24,9 @@ class Button(pygame.sprite.Sprite):
                 if self.job == "playing" and not el.state == "pause_menu":
                     self.settings.menuMusic.stop()
                     self.settings.gameMusic.play(-1, 0, 2000)
+                if self.job == "main_menu" and el.state == "pause_menu":
+                    self.settings.gameMusic.stop()
+                    self.settings.menuMusic.play(-1, 0, 2000)
                 el.state = self.job
                 if el.state == "playing":
                     self.settings.pause = False
