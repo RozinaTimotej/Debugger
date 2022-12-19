@@ -104,10 +104,10 @@ class Settings():
     def updateName(self, name):
         self.name = name
     def updateSound(self):
-        pygame.mixer.Sound.set_volume(self.playerJump, self.vol[1])
-        pygame.mixer.Sound.set_volume(self.menuMusic, self.vol[0])
-        pygame.mixer.Sound.set_volume(self.gameMusic, self.vol[0])
-        pygame.mixer.Sound.set_volume(self.hitEnemy, self.vol[1])
-        pygame.mixer.Sound.set_volume(self.HoverSound, self.vol[1])
+        pygame.mixer.Sound.set_volume(self.playerJump, self.vol[1]/3)
+        pygame.mixer.Sound.set_volume(self.menuMusic, self.vol[0]/3)
+        pygame.mixer.Sound.set_volume(self.gameMusic, self.vol[0]/3)
+        pygame.mixer.Sound.set_volume(self.hitEnemy, self.vol[1]/3)
+        pygame.mixer.Sound.set_volume(self.HoverSound, self.vol[1]/3)
+        pygame.mixer.Sound.set_volume(self.ClickSound, self.vol[1]/3)
         pygame.mixer.Sound.set_volume(self.ClickSound, self.vol[1])
-        pygame.mixer.Sound.set_volume(self.ClickSound, self.vol[1]*3)

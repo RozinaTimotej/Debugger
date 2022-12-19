@@ -8,10 +8,6 @@ class Button(pygame.sprite.Sprite):
         self.settings = settings
         self.imageNormal = pygame.image.load('./Assets/menu/'+folder+'/'+job+".png").convert_alpha()
         self.imageHover = pygame.image.load('./Assets/menu/'+folder+'/'+job+"_hover.png").convert_alpha()
-        self.HoverSound = pygame.mixer.Sound("./Assets/sounds/hover.wav")
-        self.ClickSound = pygame.mixer.Sound("./Assets/sounds/test.wav")
-        pygame.mixer.Sound.set_volume(self.HoverSound, self.settings.vol[1])
-        pygame.mixer.Sound.set_volume(self.ClickSound, self.settings.vol[1])
         self.played = False
 
         self.image = self.imageNormal
@@ -22,7 +18,7 @@ class Button(pygame.sprite.Sprite):
         pressed = pygame.mouse.get_pressed()[0]
         if self.rect.collidepoint(mouse):
             if not self.played:
-                pygame.mixer.Sound.play(self.HoverSound)
+                pygame.mixer.Sound.play(self.settings.HoverSound)
                 self.played = True
             if self.rect.collidepoint(mouse) and pressed:
                 if self.job == "playing" and not el.state == "pause_menu":
@@ -33,7 +29,7 @@ class Button(pygame.sprite.Sprite):
                     self.settings.pause = False
                 if el.state == "settings":
                     el.settingsMenu.updatePrevSound()
-                pygame.mixer.Sound.play(self.ClickSound)
+                pygame.mixer.Sound.play(self.settings.ClickSound)
             self.image = self.imageHover
 
         else:
