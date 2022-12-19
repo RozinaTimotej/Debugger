@@ -59,7 +59,7 @@ class Settings():
         self.tile_size = tile_size
         self.inGame = False
         self.pause = False
-        self.state = "select"
+        self.state = "name"
         self.event = pygame.event.get()
         self.font = pygame.font.SysFont("Arial", 18)
         self.name = ""

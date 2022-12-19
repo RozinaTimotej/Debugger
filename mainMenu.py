@@ -52,7 +52,7 @@ class MainMenu:
 
     def init_menu(self):
         self.menu = pygame.sprite.Group()
-        self.menu.add(Button(self.settings.screen_w / 2, 100, "playing", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 100, "select", self.settings))
         self.menu.add(Button(self.settings.screen_w / 2, 200, "settings", self.settings))
         self.menu.add(Button(self.settings.screen_w / 2, 300, "exit_to_desktop", self.settings))
 
