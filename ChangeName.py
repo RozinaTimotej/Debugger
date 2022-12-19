@@ -2,7 +2,7 @@ import copy
 
 import pygame
 
-from settingMenu import Button
+from mainMenu import Button
 validChars = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./"
 shiftChars = '~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?'
 class Input(pygame.sprite.Sprite):
@@ -61,8 +61,8 @@ class Changename:
     def init_menu(self):
         self.groupSound = pygame.sprite.Group()
         self.groupSound.add(Input(self.settings.screen_w / 2, 350, "input"))
-        self.groupSound.add(Button(self.settings.screen_w / 2+150, 500, "main_menu", self.settings))
-        self.groupSound.add(Button(self.settings.screen_w / 2-150, 500, "exit_to_desktop", self.settings))
+        self.groupSound.add(Button(self.settings.screen_w / 2+150, 500,"name", "main_menu", self.settings))
+        self.groupSound.add(Button(self.settings.screen_w / 2-150, 500,"name", "exit_to_desktop", self.settings))
 
     def draw(self):
         self.state = "name"

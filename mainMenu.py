@@ -2,12 +2,12 @@ import pygame
 
 
 class Button(pygame.sprite.Sprite):
-    def __init__(self, x, y, job, settings):
+    def __init__(self, x, y, folder ,job, settings):
         super().__init__()
         self.job = job
         self.settings = settings
-        self.imageNormal = pygame.image.load('./Assets/menu/'+job+".png").convert_alpha()
-        self.imageHover = pygame.image.load('./Assets/menu/'+job+"_hover.png").convert_alpha()
+        self.imageNormal = pygame.image.load('./Assets/menu/'+folder+'/'+job+".png").convert_alpha()
+        self.imageHover = pygame.image.load('./Assets/menu/'+folder+'/'+job+"_hover.png").convert_alpha()
         self.HoverSound = pygame.mixer.Sound("./Assets/sounds/hover.wav")
         self.ClickSound = pygame.mixer.Sound("./Assets/sounds/test.wav")
         pygame.mixer.Sound.set_volume(self.HoverSound, self.settings.vol[1])
@@ -52,9 +52,9 @@ class MainMenu:
 
     def init_menu(self):
         self.menu = pygame.sprite.Group()
-        self.menu.add(Button(self.settings.screen_w / 2, 100, "select", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 200, "settings", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 300, "exit_to_desktop", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 100,"main", "select", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 200,"main", "settings", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 300,"main", "exit_to_desktop", self.settings))
 
     def draw(self):
         self.state = "main_menu"
@@ -74,9 +74,10 @@ class PauseMenu:
 
     def init_menu(self):
         self.menu = pygame.sprite.Group()
-        self.menu.add(Button(self.settings.screen_w / 2, 100, "playing", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 200, "settings", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 300, "exit_to_desktop", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 100,"pause", "playing", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 200,"pause", "main_menu", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 300,"pause", "settings", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 400,"pause", "exit_to_desktop", self.settings))
 
     def draw(self):
         self.state = "pause_menu"

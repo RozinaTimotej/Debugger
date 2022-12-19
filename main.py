@@ -40,6 +40,8 @@ while True:
     if settings.pause and (settings.state == "pause_menu" or settings.state == "playing"):
         level.draw()
         settings.state = pauseMenu.draw()
+        if settings.state == "main_menu":
+            level = Level(settings.levels[settings.levelIndex], screen, settings)
         settingMenu.updateState("pause_menu")
     elif settings.state == "name":
         screen.fill("black")

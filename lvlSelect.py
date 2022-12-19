@@ -52,8 +52,8 @@ class LevelSelect:
         self.ui = pygame.sprite.Group()
         for i,lvl in enumerate(self.settings.levels):
             self.lvls.add(LevelButton((self.settings.screen_w / 5 * (i % 5))+((self.settings.screen_w / 5) /2), 200 * (1+(i // 5)), i,self.settings))
-        self.buttons.add(Button(self.settings.screen_w / 2+150, 700, "main_menu", self.settings))
-        self.buttons.add(Button(self.settings.screen_w / 2-150, 700, "exit_to_desktop", self.settings))
+        self.buttons.add(Button(self.settings.screen_w / 2+150, 700,"pause", "main_menu", self.settings))
+        self.buttons.add(Button(self.settings.screen_w / 2-150, 700,"pause", "exit_to_desktop", self.settings))
         self.ui.add(Block(0, 4*self.settings.screen_h/5, self.settings.screen_w, self.settings.screen_h/5, self.settings))
 
     def draw(self):
