@@ -38,6 +38,8 @@ while True:
         elif event.type == KEYDOWN:
             if event.key == K_ESCAPE and (settings.state == "playing" or settings.state == "pause_menu"):
                 settings.pause = not settings.pause
+                if not settings.pause:
+                    level.updateStartTime()
                 settings.state = "playing"
     if settings.state == "playing" and not settings.pause:
         settings.state = level.draw()
@@ -47,6 +49,8 @@ while True:
         if settings.state == "main_menu":
             settings.pause = False
             level = Level(settings.levels[settings.levelIndex], screen, settings)
+        elif settings.state == "playing":
+            level.updateStartTime()
         settingMenu.updateState("pause_menu")
     elif settings.state == "name":
         screen.fill("black")

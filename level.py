@@ -13,9 +13,19 @@ class Level:
         self.settings = settings
         self.data = data
         self.init_level(data)
+        self.uniTime = 0
+        self.time = 0
+        self.startTime = 0
         self.move = 0
         self.status = "playing"
 
+    def updateTime(self):
+        self.time = (pygame.time.get_ticks() - self.startTime)/1000
+    def drawTime(self):
+        return self.settings.font.render("{:0.2f}".format(self.time+self.uniTime), True, pygame.Color("coral"))
+    def updateStartTime(self):
+        self.uniTime += self.time
+        self.startTime = pygame.time.get_ticks()
     def init_level(self, layout):  # gre čez level in ga naloži
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
@@ -58,6 +68,8 @@ class Level:
             self.space.add(Background1(i * 1367 - self.settings.screen_w / 2, 0,self.settings))
         for i in range(-1, len_x + 1):
             self.stars.add(Background2(i * 1367 - self.settings.screen_w / 2, 0,self.settings))
+
+        self.startTime = pygame.time.get_ticks()
 
     def cam(self):  # ce je igralec znotraj 2 in 3 četrtine se kamera ne premika, drugače se
         player = self.player.sprite
@@ -317,6 +329,7 @@ class Level:
         self.settings.pause = True
     def draw(self):
         if not self.settings.pause:
+            self.updateTime()
             self.h_col_plain()
             self.v_col_plain()
             self.col()
@@ -350,5 +363,6 @@ class Level:
         self.spikes.draw(self.display_surface)
         self.bullets.draw(self.display_surface)
         self.player.draw(self.display_surface)
+        self.display_surface.blit(self.drawTime(), (50, 0))
 
         return self.status
