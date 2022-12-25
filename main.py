@@ -41,6 +41,8 @@ while True:
                 if not settings.pause:
                     level.updateStartTime()
                 settings.state = "playing"
+            if not level.started and event.key == K_SPACE:
+                level.starts()
     if settings.state == "playing" and not settings.pause:
         settings.state = level.draw()
     elif settings.pause and (settings.state == "pause_menu" or settings.state == "playing"):

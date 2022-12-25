@@ -17,12 +17,19 @@ class Level:
         self.time = 0
         self.startTime = 0
         self.move = 0
+        self.started = False
         self.status = "playing"
 
     def updateTime(self):
         self.time = (pygame.time.get_ticks() - self.startTime)/1000
     def drawTime(self):
         return self.settings.font.render("{:0.2f}".format(self.time+self.uniTime), True, pygame.Color("coral"))
+
+    def starts(self):
+        self.started = True
+        self.startTime = pygame.time.get_ticks()
+        self.uniTime = 0
+        self.time = 0
     def updateStartTime(self):
         self.uniTime += self.time
         self.startTime = pygame.time.get_ticks()
@@ -328,7 +335,7 @@ class Level:
         self.status = "die_menu"
         self.settings.pause = True
     def draw(self):
-        if not self.settings.pause:
+        if not self.settings.pause and self.started:
             self.updateTime()
             self.h_col_plain()
             self.v_col_plain()
