@@ -81,7 +81,7 @@ class LevelSelect:
                     self.y += event.y*2
                 elif event.y < 0 and not scroll_lckup:
                     self.y += event.y * 2
-
+        self.settings.background.draw(self.display_surface)
         self.lvls.update(self)
         self.buttons.update(self)
         self.lvls.draw(self.display_surface)

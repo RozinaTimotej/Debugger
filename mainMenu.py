@@ -60,7 +60,7 @@ class MainMenu:
 
     def draw(self):
         self.state = "main_menu"
-        self.display_surface.fill("black")
+        self.settings.background.draw(self.display_surface)
         self.menu.update(self)
         self.menu.draw(self.display_surface)
         return self.state

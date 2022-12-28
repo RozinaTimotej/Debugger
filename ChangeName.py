@@ -1,15 +1,12 @@
-import copy
-
 import pygame
 
 from mainMenu import Button
 validChars = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./"
-shiftChars = '~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?'
 class Input(pygame.sprite.Sprite):
     def __init__(self, x, y, id):
         super().__init__()
         self.id = id
-        self.w = 330
+        self.w = 320
         self.h = 30
         self.typing = False
         self.start = x - self.w / 2
@@ -33,8 +30,8 @@ class Input(pygame.sprite.Sprite):
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_BACKSPACE:
                         el.name = el.name[:-1]
-                    elif pygame.key.name(event.key) in validChars:
-                        if pygame.key.get_mods() & pygame.KMOD_CAPS:
+                    elif pygame.key.name(event.key) in validChars and len(el.name) < 31:
+                        if pygame.key.get_mods() & (pygame.KMOD_CAPS or pygame.KMOD_SHIFT):
                             el.name += pygame.key.name(event.key).upper()
                         else:
                             el.name += pygame.key.name(event.key)
@@ -67,6 +64,7 @@ class Changename:
 
     def draw(self):
         self.state = "name"
+        self.settings.background.draw(self.display_surface)
         self.nameGroup.update(self)
         self.nameGroup.draw(self.display_surface)
         txt = self.settings.font.render(self.name, True, pygame.Color("coral"))

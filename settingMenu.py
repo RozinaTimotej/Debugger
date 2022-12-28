@@ -68,6 +68,8 @@ class SettingsMenu:
 
     def draw(self):
         self.state = "settings"
+        if not self.settings.pause:
+            self.settings.background.draw(self.display_surface)
         self.groupSound.update(self)
         self.groupSound.draw(self.display_surface)
         if self.state == "back":

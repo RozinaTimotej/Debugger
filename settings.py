@@ -47,6 +47,11 @@ screen_h = 768
 music_volume = 0.1
 effects_volume = 0.1
 
+class Background(pygame.sprite.Sprite):
+    def __init__(self, x, y, surface):
+        super().__init__()
+        self.image = surface
+        self.rect = self.image.get_rect(topleft=(x, y))
 
 class Settings():
     def __init__(self):
@@ -64,6 +69,8 @@ class Settings():
         self.font = pygame.font.SysFont("Arial", 18)
         self.name = ""
         self.vol = [music_volume, effects_volume]
+        self.background = pygame.sprite.Group()
+        self.background.add(Background(0,0,pygame.image.load("./Assets/background/bg1.png")))
         self.playerJump = pygame.mixer.Sound("./Assets/sounds/jump_02.wav")
         self.menuMusic = pygame.mixer.Sound("./Assets/sounds/menumusic.mp3")
         self.gameMusic = pygame.mixer.Sound("./Assets/sounds/gameMusic.mp3")

@@ -55,7 +55,6 @@ while True:
             level.updateStartTime()
         settingMenu.updateState("pause_menu")
     elif settings.state == "name":
-        screen.fill("black")
         settings.state = changeName.draw()
     elif settings.state == "die_menu":
         level.draw()
@@ -70,7 +69,6 @@ while True:
             level = Level(settings.levels[settings.levelIndex], screen, settings)
             settings.state = "playing"
     elif settings.state == "select":
-        screen.fill("black")
         settings.state = levelSelect.draw()
         if settings.state == "playing":
             level = Level(settings.levels[settings.levelIndex], screen, settings)
@@ -78,7 +76,6 @@ while True:
         settings.state = startMenu.draw()
         settingMenu.updateState("main_menu")
     elif settings.state == "settings" and not settings.pause:
-        screen.fill("black")
         settings.state = settingMenu.draw()
     elif settings.state == "settings" and settings.pause:
         level.draw()
