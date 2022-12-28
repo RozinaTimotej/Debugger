@@ -5,13 +5,12 @@ from mainMenu import Button
 
 class Slider(pygame.sprite.Sprite):
 
-    def __init__(self, x, y, id):
+    def __init__(self, x, y,folder, id):
         super().__init__()
         self.id = id
         self.w = 300
         self.start = x - self.w / 2
-        self.image = pygame.Surface((self.w, 10))
-        self.image.fill("Red")
+        self.image = pygame.image.load('./Assets/menu/' + folder + '/slider_' +  str(id) + ".png").convert_alpha()
         self.rect = self.image.get_rect(topleft=(x - self.w / 2, y))
 
     def update(self, el):
@@ -22,49 +21,24 @@ class Slider(pygame.sprite.Sprite):
 
 
 class SliderMovable(pygame.sprite.Sprite):
-    def __init__(self, x, y, id, settings):
+    def __init__(self, x, y, id, settings, folder):
         super().__init__()
         self.id = id
         self.settings = settings
         self.y = y
-        self.w = 300
+        self.w = 275
         self.start = x - self.w / 2
         self.end = self.start + self.w
-        self.image = pygame.Surface((25, 25))
-        self.image.fill("blue")
-        self.rect = self.image.get_rect(topleft=(self.start + (self.settings.vol[id] * self.w) - 12, y - 10))
+        img_size = (50, 50)
+        self.imageNormal = pygame.transform.scale(pygame.image.load('./Assets/menu/' + folder + "/tile.png").convert_alpha(), img_size)
+        self.imageHover = pygame.transform.scale(pygame.image.load('./Assets/menu/' + folder + "/tile_hover.png").convert_alpha(), img_size)
+        self.image = self.imageNormal
+        self.rect = self.image.get_rect(center=(self.start + (self.settings.vol[id] * self.w), y+20))
 
     def update(self, el):
         self.settings.updateSound()
-        self.rect.x = self.start + (el.settings.vol[self.id] * self.w) - 12
+        self.rect.x = self.start + (el.settings.vol[self.id] * self.w) - 20
 
-
-# class Button(pygame.sprite.Sprite):
-#     def __init__(self, x, y, folder ,job, settings):
-#         super().__init__()
-#         self.job = job
-#         self.settings = settings
-#         self.imageNormal = pygame.image.load('./Assets/menu/'+folder+'/'+job+".png").convert_alpha()
-#         self.imageHover = pygame.image.load('./Assets/menu/'+folder+'/'+job+"_hover.png").convert_alpha()
-#         self.image = self.imageNormal
-#         self.rect = self.image.get_rect(topleft=((x-self.imageNormal.get_width()/2), y))
-#         self.played = False
-#
-#     def update(self, el):
-#         mouse = pygame.mouse.get_pos()
-#         pressed = pygame.mouse.get_pressed()[0]
-#         if self.rect.collidepoint(mouse):
-#             if not self.played:
-#                 pygame.mixer.Sound.play(self.settings.HoverSound)
-#                 self.played = True
-#             if self.rect.collidepoint(mouse) and pressed:
-#                 el.state = self.job
-#                 pygame.mixer.Sound.play(self.settings.ClickSound)
-#             self.image = self.imageHover
-#
-#         else:
-#             self.played = False
-#             self.image = self.imageNormal
 
 
 class SettingsMenu:
@@ -79,10 +53,10 @@ class SettingsMenu:
 
     def init_menu(self):
         self.groupSound = pygame.sprite.Group()
-        self.groupSound.add(Slider(self.settings.screen_w / 2, 100, 0))
-        self.groupSound.add(SliderMovable(self.settings.screen_w / 2, 100, 0, self.settings))
-        self.groupSound.add(Slider(self.settings.screen_w / 2, 200, 1))
-        self.groupSound.add(SliderMovable(self.settings.screen_w / 2, 200, 1, self.settings))
+        self.groupSound.add(Slider(self.settings.screen_w / 2, 100, "settings",0))
+        self.groupSound.add(SliderMovable(self.settings.screen_w / 2, 100, 0, self.settings, "settings"))
+        self.groupSound.add(Slider(self.settings.screen_w / 2, 200, "settings", 1))
+        self.groupSound.add(SliderMovable(self.settings.screen_w / 2, 200, 1, self.settings, "settings"))
         self.groupSound.add(Button(self.settings.screen_w / 2+150, 500,"settings", "main_menu", self.settings))
         self.groupSound.add(Button(self.settings.screen_w / 2-150, 500,"settings", "back", self.settings))
 

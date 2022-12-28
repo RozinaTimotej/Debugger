@@ -41,7 +41,7 @@ while True:
                 if not settings.pause:
                     level.updateStartTime()
                 settings.state = "playing"
-            if not level.started and event.key == K_SPACE:
+            if not level.started :
                 level.starts()
     if settings.state == "playing" and not settings.pause:
         settings.state = level.draw()
