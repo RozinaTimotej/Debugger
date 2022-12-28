@@ -121,6 +121,7 @@ class Level:
         for coin in self.coins.sprites():
             if pygame.sprite.collide_mask(player,coin):
                 self.coins.remove(coin)
+                self.uniTime -= 2.5
 
     def h_col_enemy(self):
         player = self.player.sprite

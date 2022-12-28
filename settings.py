@@ -77,7 +77,7 @@ class Settings():
         self.hitEnemy = pygame.mixer.Sound("./Assets/sounds/hit_enemy.wav")
         self.HoverSound = pygame.mixer.Sound("./Assets/sounds/hover.wav")
         self.ClickSound = pygame.mixer.Sound("./Assets/sounds/test.wav")
-        self.playerWalk = sound("./Assets/sounds/walk/", self.vol[1]*3)
+        self.playerWalk = sound("./Assets/sounds/walk/", self.vol[1])
         self.tile = tiles("./Assets/tla/")
         self.finish = pygame.image.load("./Assets/finish/e.png").convert_alpha()
         self.coin = import_folder("./Assets/coin/game/", (20,20))
@@ -118,4 +118,5 @@ class Settings():
         pygame.mixer.Sound.set_volume(self.hitEnemy, self.vol[1]/3)
         pygame.mixer.Sound.set_volume(self.HoverSound, self.vol[1]/3)
         pygame.mixer.Sound.set_volume(self.ClickSound, self.vol[1]/3)
-        pygame.mixer.Sound.set_volume(self.ClickSound, self.vol[1])
+        for x in self.playerWalk:
+            pygame.mixer.Sound.set_volume(x, self.vol[1])
