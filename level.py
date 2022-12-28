@@ -1,6 +1,6 @@
 import math
 import pygame
-from tiles import Tla, Finish,Tile, Coin
+from tiles import Tla, Finish,Tile, Coin, Start
 from player import Player
 from enemy import Enemy, FlyingEnemy, KamikazeEnemy
 from background import Background1, Background2
@@ -30,6 +30,7 @@ class Level:
         self.startTime = pygame.time.get_ticks()
         self.uniTime = 0
         self.time = 0
+        pygame.sprite.Group.empty(self.start)
     def updateStartTime(self):
         self.uniTime += self.time
         self.startTime = pygame.time.get_ticks()
@@ -46,7 +47,9 @@ class Level:
         self.bullets = pygame.sprite.Group()
         self.coins = pygame.sprite.Group()
         self.spikes = pygame.sprite.Group()
+        self.start = pygame.sprite.GroupSingle()
 
+        self.start.add(Start(self.settings.screen_h-300,self.settings.screen_w/2, self.settings.start))
         for r_i, row in enumerate(layout):
             for c_i, col in enumerate(row):
                 col_split = col.split("_")
@@ -371,5 +374,5 @@ class Level:
         self.bullets.draw(self.display_surface)
         self.player.draw(self.display_surface)
         self.display_surface.blit(self.drawTime(), (50, 0))
-
+        self.start.draw(self.display_surface)
         return self.status
