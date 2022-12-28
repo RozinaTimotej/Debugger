@@ -4,7 +4,7 @@ from tiles import Tla, Finish,Tile, Coin, Start
 from player import Player
 from enemy import Enemy, FlyingEnemy, KamikazeEnemy
 from background import Background1, Background2
-from math import atan2, degrees, pi,sqrt
+from math import atan2, degrees, pi
 from bullet import Bullet
 from spike import Spike
 class Level:

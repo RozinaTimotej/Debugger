@@ -9,7 +9,7 @@ class Input(pygame.sprite.Sprite):
     def __init__(self, x, y, id):
         super().__init__()
         self.id = id
-        self.w = 300
+        self.w = 330
         self.h = 30
         self.typing = False
         self.start = x - self.w / 2
@@ -51,7 +51,7 @@ class Input(pygame.sprite.Sprite):
 
 class Changename:
     def __init__(self, surface, settings):
-        self.groupSound = None
+        self.nameGroup = None
         self.settings = settings
         self.state = "name"
         self.name = ""
@@ -60,15 +60,15 @@ class Changename:
         self.init_menu()
 
     def init_menu(self):
-        self.groupSound = pygame.sprite.Group()
-        self.groupSound.add(Input(self.settings.screen_w / 2, 350, "input"))
-        self.groupSound.add(Button(self.settings.screen_w / 2+150, 500,"name", "main_menu", self.settings))
-        self.groupSound.add(Button(self.settings.screen_w / 2-150, 500,"name", "exit_to_desktop", self.settings))
+        self.nameGroup = pygame.sprite.Group()
+        self.nameGroup.add(Input(self.settings.screen_w / 2, 350, "input"))
+        self.nameGroup.add(Button(self.settings.screen_w / 2+85, 400,"name", "main_menu", self.settings))
+        self.nameGroup.add(Button(self.settings.screen_w / 2-85, 400,"name", "exit_to_desktop", self.settings))
 
     def draw(self):
         self.state = "name"
-        self.groupSound.update(self)
-        self.groupSound.draw(self.display_surface)
+        self.nameGroup.update(self)
+        self.nameGroup.draw(self.display_surface)
         txt = self.settings.font.render(self.name, True, pygame.Color("coral"))
         self.display_surface.blit(txt, (self.settings.screen_w / 2 - 140, 350+4))
         if self.state == "main_menu" and self.valid:

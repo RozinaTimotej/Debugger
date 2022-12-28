@@ -27,12 +27,15 @@ class Button(pygame.sprite.Sprite):
                 if self.job == "main_menu" and (el.state == "pause_menu" or el.state == "die_menu"):
                     self.settings.gameMusic.stop()
                     self.settings.menuMusic.play(-1, 0, 2000)
+                if el.state == "name" and ((el.valid and self.job == "main_menu") or (self.job == "exit_to_desktop")):
+                    pygame.mixer.Sound.play(self.settings.ClickSound)
+                elif not el.state == "name":
+                    pygame.mixer.Sound.play(self.settings.ClickSound)
                 el.state = self.job
                 if el.state == "playing":
                     self.settings.pause = False
                 if el.state == "settings":
                     el.settingsMenu.updatePrevSound()
-                pygame.mixer.Sound.play(self.settings.ClickSound)
             self.image = self.imageHover
 
         else:
