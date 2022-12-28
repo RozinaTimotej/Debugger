@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
         self.settings = settings
         self.soundDelay = 0
         self.s_index = 0
-
+        self.keys = {"left":False,"right":False,"up":False, "down": False}
         # premikanje igralca
         self.on_wall = False
         self.wall_jumped = True
@@ -83,26 +83,49 @@ class Player(pygame.sprite.Sprite):
         self.wall_jumped = True
         self.on_wall = False
         self.canJump = False
+
+    def detectKeys(self):
+        for event in self.settings.event:
+            if event.type == pygame.KEYDOWN:
+                if self.settings.jump == pygame.key.name(event.key):
+                    self.keys["up"] = True
+                elif self.settings.down == pygame.key.name(event.key):
+                    self.keys["down"] = True
+                elif self.settings.left == pygame.key.name(event.key):
+                    self.keys["left"] = True
+                elif self.settings.right == pygame.key.name(event.key):
+                    self.keys["right"] = True
+            else:
+                if event.type == pygame.KEYUP:
+                    if self.settings.jump == pygame.key.name(event.key):
+                        self.keys["up"] = False
+                    elif self.settings.down == pygame.key.name(event.key):
+                        self.keys["down"] = False
+                    elif self.settings.left == pygame.key.name(event.key):
+                        self.keys["left"] = False
+                    elif self.settings.right == pygame.key.name(event.key):
+                        self.keys["right"] = False
     def input(self):
-        keys = pygame.key.get_pressed()
-        if not keys[pygame.K_UP]:
+        self.detectKeys()
+
+        if not self.keys["up"]:
             self.canJump = True
-        if keys[pygame.K_RIGHT]:
+        if self.keys["right"]:
             if self.soundDelay == -1:
                 self.soundDelay = 0
             self.direction.x = 1
-        elif keys[pygame.K_LEFT]:
+        elif self.keys["left"]:
             if self.soundDelay == -1:
                 self.soundDelay = 0
             self.direction.x = -1
         else:
             self.soundDelay = -1
             self.direction.x = 0
-        if keys[pygame.K_UP] and self.on_wall and not self.wall_jumped:
+        if self.keys["up"] and self.on_wall and not self.wall_jumped:
             self.jumpFromWall()
             pygame.mixer.Sound.play(self.settings.playerJump)
 
-        if keys[pygame.K_UP] and self.canJump == True and self.jumps < 2 and not self.on_wall: #ce je na steni, mora biti do naslednjega skoka vsaj 1/4 sekunde, skoči lahko samo 2x
+        if self.keys["up"] and self.canJump and self.jumps < 2 and not self.on_wall: #ce je na steni, mora biti do naslednjega skoka vsaj 1/4 sekunde, skoči lahko samo 2x
             self.frame_index = 0
             pygame.mixer.Sound.play(self.settings.playerJump)
             if self.jumps == 0:

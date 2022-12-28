@@ -181,6 +181,9 @@ class Level:
             player.direction.y = 0
             player.rect.top = 0
 
+        if player.rect.y > self.settings.screen_h*1.2:
+            self.die()
+
         for sprite in self.tiles.sprites():
             if player.rect.colliderect(sprite.rect):
                 if player.direction.y > 0 and abs(sprite.rect.top - player.rect.bottom) < self.settings.tile_size:

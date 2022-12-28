@@ -68,6 +68,10 @@ class Settings():
         self.event = pygame.event.get()
         self.font = pygame.font.SysFont("Arial", 18)
         self.name = ""
+        self.jump = "up"
+        self.left = "left"
+        self.down = "down"
+        self.right = "right"
         self.vol = [music_volume, effects_volume]
         self.background = pygame.sprite.Group()
         self.background.add(Background(0,0,pygame.image.load("./Assets/background/bg1.png")))
