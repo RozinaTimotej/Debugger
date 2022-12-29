@@ -58,7 +58,7 @@ class Changename:
 
     def init_menu(self):
         self.nameGroup = pygame.sprite.Group()
-        self.nameGroup.add(Input(self.settings.screen_w / 2, 350, "input"))
+        self.nameGroup.add(Input(self.settings.screen_w / 2, 325, "input"))
         self.nameGroup.add(Button(self.settings.screen_w / 2+85, 400,"name", "main_menu", self.settings))
         self.nameGroup.add(Button(self.settings.screen_w / 2-85, 400,"name", "exit_to_desktop", self.settings))
 
@@ -68,7 +68,7 @@ class Changename:
         self.nameGroup.update(self)
         self.nameGroup.draw(self.display_surface)
         txt = self.settings.font.render(self.name, True, pygame.Color("coral"))
-        self.display_surface.blit(txt, (self.settings.screen_w / 2 - 140, 350+4))
+        self.display_surface.blit(txt, (self.settings.screen_w / 2 - 140, 325+4))
         if self.state == "main_menu" and self.valid:
             self.settings.updateName(self.name)
             return self.state

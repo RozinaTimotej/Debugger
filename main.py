@@ -48,6 +48,10 @@ while True:
     elif settings.pause and (settings.state == "pause_menu" or settings.state == "playing"):
         level.draw()
         settings.state = pauseMenu.draw()
+        if settings.state == "restart":
+            level = Level(settings.levels[settings.levelIndex], screen, settings)
+            settings.state = "playing"
+            settings.pause = False
         if settings.state == "main_menu":
             settings.pause = False
             level = Level(settings.levels[settings.levelIndex], screen, settings)

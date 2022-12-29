@@ -112,6 +112,8 @@ class SliderMovable(pygame.sprite.Sprite):
 
 class SettingsMenu:
     def __init__(self, surface, settings):
+        self.groupText = None
+        self.groupButtons = None
         self.groupSound = None
         self.settings = settings
         self.prevSound = copy.deepcopy(settings.vol)
@@ -125,10 +127,10 @@ class SettingsMenu:
         self.groupSound = pygame.sprite.Group()
         self.groupButtons = pygame.sprite.Group()
         self.groupText = pygame.sprite.Group()
-        self.groupSound.add(Slider(self.settings.screen_w / 2, 100, "settings",0))
-        self.groupSound.add(SliderMovable(self.settings.screen_w / 2, 100, 0, self.settings, "settings"))
-        self.groupSound.add(Slider(self.settings.screen_w / 2, 200, "settings", 1))
-        self.groupSound.add(SliderMovable(self.settings.screen_w / 2, 200, 1, self.settings, "settings"))
+        self.groupSound.add(Slider(self.settings.screen_w / 2, 200, "settings",0))
+        self.groupSound.add(SliderMovable(self.settings.screen_w / 2, 200, 0, self.settings, "settings"))
+        self.groupSound.add(Slider(self.settings.screen_w / 2, 275, "settings", 1))
+        self.groupSound.add(SliderMovable(self.settings.screen_w / 2, 275, 1, self.settings, "settings"))
         self.groupSound.add(Button(self.settings.screen_w / 2+150, 500,"settings", "main_menu", self.settings))
         self.groupSound.add(Button(self.settings.screen_w / 2-150, 500,"settings", "back", self.settings))
         self.groupButtons.add(Key(self.settings.screen_w / 2-25,340,"up",self.settings,self.settings.jump))

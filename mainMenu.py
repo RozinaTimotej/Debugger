@@ -54,9 +54,9 @@ class MainMenu:
 
     def init_menu(self):
         self.menu = pygame.sprite.Group()
-        self.menu.add(Button(self.settings.screen_w / 2, 100,"main", "select", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 200,"main", "settings", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 300,"main", "exit_to_desktop", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 250,"main", "select", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 350,"main", "settings", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 450,"main", "exit_to_desktop", self.settings))
 
     def draw(self):
         self.state = "main_menu"
@@ -77,9 +77,10 @@ class PauseMenu:
     def init_menu(self):
         self.menu = pygame.sprite.Group()
         self.menu.add(Button(self.settings.screen_w / 2, 100,"pause", "playing", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 200,"pause", "main_menu", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 300,"pause", "settings", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 400,"pause", "exit_to_desktop", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 200, "pause", "restart", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 300,"pause", "main_menu", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 400,"pause", "settings", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 500,"pause", "exit_to_desktop", self.settings))
 
     def draw(self):
         self.state = "pause_menu"
