@@ -28,7 +28,6 @@ class Input(pygame.sprite.Sprite):
         if self.typing:
             for event in el.settings.event:
                 if event.type == pygame.KEYDOWN:
-                    print(pygame.key.name(event.key).upper())
                     if event.key == pygame.K_BACKSPACE:
                         el.name = el.name[:-1]
                     elif pygame.key.name(event.key) in validChars and len(el.name) < 31:

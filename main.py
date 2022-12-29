@@ -35,13 +35,13 @@ while True:
         if event.type == pygame.QUIT or settings.state == "exit_to_desktop":
             pygame.quit()
             sys.exit()
-        elif event.type == KEYDOWN:
-            if event.key == K_ESCAPE and (settings.state == "playing" or settings.state == "pause_menu"):
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE and (settings.state == "playing" or settings.state == "pause_menu"):
                 settings.pause = not settings.pause
                 if not settings.pause:
                     level.updateStartTime()
                 settings.state = "playing"
-            if not level.started :
+            if not level.started:
                 level.starts()
     if settings.state == "playing" and not settings.pause:
         settings.state = level.draw()
