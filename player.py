@@ -87,23 +87,23 @@ class Player(pygame.sprite.Sprite):
     def detectKeys(self):
         for event in self.settings.event:
             if event.type == pygame.KEYDOWN:
-                if self.settings.jump == pygame.key.name(event.key):
+                if self.settings.buttons["up"] == pygame.key.name(event.key):
                     self.keys["up"] = True
-                elif self.settings.down == pygame.key.name(event.key):
+                elif self.settings.buttons["down"] == pygame.key.name(event.key):
                     self.keys["down"] = True
-                elif self.settings.left == pygame.key.name(event.key):
+                elif self.settings.buttons["left"] == pygame.key.name(event.key):
                     self.keys["left"] = True
-                elif self.settings.right == pygame.key.name(event.key):
+                elif self.settings.buttons["right"] == pygame.key.name(event.key):
                     self.keys["right"] = True
             else:
                 if event.type == pygame.KEYUP:
-                    if self.settings.jump == pygame.key.name(event.key):
+                    if self.settings.buttons["up"] == pygame.key.name(event.key):
                         self.keys["up"] = False
-                    elif self.settings.down == pygame.key.name(event.key):
+                    elif self.settings.buttons["down"] == pygame.key.name(event.key):
                         self.keys["down"] = False
-                    elif self.settings.left == pygame.key.name(event.key):
+                    elif self.settings.buttons["left"] == pygame.key.name(event.key):
                         self.keys["left"] = False
-                    elif self.settings.right == pygame.key.name(event.key):
+                    elif self.settings.buttons["right"] == pygame.key.name(event.key):
                         self.keys["right"] = False
     def input(self):
         self.detectKeys()

@@ -68,7 +68,13 @@ class Settings():
         self.event = pygame.event.get()
         self.font = pygame.font.SysFont("Arial", 18)
         self.name = ""
-        self.jump = "a"
+        self.buttons = {
+            "up": "up",
+            "down": "down",
+            "left": "left",
+            "right": "right"
+        }
+        self.jump = "up"
         self.left = "left"
         self.down = "down"
         self.right = "right"

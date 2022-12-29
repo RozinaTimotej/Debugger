@@ -30,33 +30,17 @@ class Txt(pygame.sprite.Sprite):
         self.y = y
 
     def update(self):
-        if self.id == "up":
-            if not(self.settings.jump == "right" or self.settings.jump == "up" or self.settings.jump == "down" or self.settings.jump == "left"):
-                self.txt = self.settings.jump
-            else:
-                self.txt = ""
-        if self.id == "down":
-            if not(self.settings.down == "right" or self.settings.down == "up" or self.settings.down == "down" or self.settings.down == "left"):
-                self.txt = self.settings.down
-            else:
-                self.txt = ""
-        if self.id == "left":
-            if not(self.settings.left == "right" or self.settings.left == "up" or self.settings.left == "down" or self.settings.left == "left"):
-                self.txt = self.settings.left
-            else:
-                self.txt = ""
-        if self.id == "right":
-            if not(self.settings.right == "right" or self.settings.right == "up" or self.settings.right == "down" or self.settings.right == "left"):
-                self.txt = self.settings.right
-            else:
-                self.txt = ""
+        if not(self.settings.buttons[self.id] == "right" or self.settings.buttons[self.id] == "up" or self.settings.buttons[self.id] == "down" or self.settings.buttons[self.id] == "left"):
+            self.txt = self.settings.buttons[self.id]
+        else:
+            self.txt = ""
 
         txt = self.settings.font.render(self.txt.upper(), True, pygame.Color("black"))
         self.display_surface.blit(txt, (self.x+20, self.y+10))
 
 class Key(pygame.sprite.Sprite):
 
-    def __init__(self, x, y,dir,settings,txt):
+    def __init__(self, x, y, dir,settings,txt):
         super().__init__()
         self.settings = settings
         self.id = dir
@@ -77,14 +61,7 @@ class Key(pygame.sprite.Sprite):
         if self.pressed:
             for event in self.settings.event:
                 if event.type == pygame.KEYUP:
-                    if self.id == "up":
-                        self.settings.jump = pygame.key.name(event.key)
-                    if self.id == "down":
-                        self.settings.down = pygame.key.name(event.key)
-                    if self.id == "left":
-                        self.settings.left = pygame.key.name(event.key)
-                    if self.id == "right":
-                        self.settings.right = pygame.key.name(event.key)
+                    self.settings.buttons[self.id] = pygame.key.name(event.key)
                     if not (pygame.key.name(event.key) == "left" or pygame.key.name(
                             event.key) == "right" or pygame.key.name(event.key) == "up" or pygame.key.name(
                             event.key) == "down"):
@@ -96,6 +73,13 @@ class Key(pygame.sprite.Sprite):
                     if event.key == pygame.K_ESCAPE or event.type == pygame.QUIT:
                         self.pressed = False
 
+    def checkButton(self):
+        if not (self.settings.buttons[self.id] == "left" or self.settings.buttons[self.id] == "right" or self.settings.buttons[self.id] == "up" or self.settings.buttons[self.id] == "down"):
+            self.image = self.settings.keys["uni"]
+            self.pressed = False
+        else:
+            self.image = self.settings.keys[self.settings.buttons[self.id]]
+            self.pressed = False
 
 class SliderMovable(pygame.sprite.Sprite):
     def __init__(self, x, y, id, settings, folder):
@@ -123,6 +107,7 @@ class SettingsMenu:
         self.groupSound = None
         self.settings = settings
         self.prevSound = copy.deepcopy(settings.vol)
+        self.prevButtons = copy.deepcopy(settings.buttons)
         self.state = "settings"
         self.prevState = settings.state
         self.display_surface = surface
@@ -152,6 +137,7 @@ class SettingsMenu:
 
     def updatePrevSound(self):
         self.prevSound = copy.deepcopy(self.settings.vol)
+        self.prevButtons = copy.deepcopy(self.settings.buttons)
 
     def draw(self):
         self.state = "settings"
@@ -165,6 +151,9 @@ class SettingsMenu:
         if self.state == "back":
             self.state = "main_menu"
             self.settings.vol = self.prevSound
+            self.settings.buttons = self.prevButtons
+            for b in self.groupButtons.sprites():
+                b.checkButton()
             self.settings.updateSound()
             return self.prevState
         elif self.state == "main_menu":
