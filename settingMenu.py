@@ -57,7 +57,15 @@ class Key(pygame.sprite.Sprite):
         pressed = pygame.mouse.get_pressed()[0]
         if self.rect.collidepoint(mouse) and pressed:
             self.pressed = True
-            self.image = self.settings.keys["uni"]
+            self.image = self.settings.keysPressed["uni"]
+        elif pressed:
+            if not (self.settings.buttons[self.id] == "left" or self.settings.buttons[self.id] == "right" or
+                    self.settings.buttons[self.id] == "up" or self.settings.buttons[self.id] == "down"):
+                self.image = self.settings.keys["uni"]
+                self.pressed = False
+            else:
+                self.image = self.settings.keys[self.settings.buttons[self.id]]
+                self.pressed = False
         if self.pressed:
             for event in self.settings.event:
                 if event.type == pygame.KEYUP:

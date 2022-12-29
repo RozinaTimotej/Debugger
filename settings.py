@@ -106,6 +106,13 @@ class Settings():
             "right": pygame.image.load("./Assets/menu/keys/KeyboardButtonsDir_right.png"),
             "uni": pygame.image.load("./Assets/menu/keys/KeyboardButtons_Base.png")
         }
+        self.keysPressed = {
+            "up": pygame.image.load("./Assets/menu/keys/KeyboardButtonsDir_up0.png"),
+            "down": pygame.image.load("./Assets/menu/keys/KeyboardButtonsDir_down0.png"),
+            "left": pygame.image.load("./Assets/menu/keys/KeyboardButtonsDir_left0.png"),
+            "right": pygame.image.load("./Assets/menu/keys/KeyboardButtonsDir_right0.png"),
+            "uni": pygame.image.load("./Assets/menu/keys/KeyboardButtons_Base0.png")
+        }
         self.kamikazeEnemyFrames = {
             "fly": import_folder("./Assets/enemybird/fly/game/", (32, 32)),
             "die": import_folder("./Assets/enemybird/death/game/", (32, 32)),
