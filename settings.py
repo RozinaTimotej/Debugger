@@ -68,7 +68,7 @@ class Settings():
         self.event = pygame.event.get()
         self.font = pygame.font.SysFont("Arial", 18)
         self.name = ""
-        self.jump = "up"
+        self.jump = "a"
         self.left = "left"
         self.down = "down"
         self.right = "right"
@@ -92,6 +92,13 @@ class Settings():
             "fly": import_folder("./Assets/flyingenemy/fly/game/", (64,64)),
             "die": import_folder("./Assets/flyingenemy/death/game/", (64,64)),
             "shoot": import_folder("./Assets/flyingenemy/attack/game/", (64,64)),
+        }
+        self.keys = {
+            "up": pygame.image.load("./Assets/menu/keys/KeyboardButtonsDir_up.png"),
+            "down": pygame.image.load("./Assets/menu/keys/KeyboardButtonsDir_down.png"),
+            "left": pygame.image.load("./Assets/menu/keys/KeyboardButtonsDir_left.png"),
+            "right": pygame.image.load("./Assets/menu/keys/KeyboardButtonsDir_right.png"),
+            "uni": pygame.image.load("./Assets/menu/keys/KeyboardButtons_Base.png")
         }
         self.kamikazeEnemyFrames = {
             "fly": import_folder("./Assets/enemybird/fly/game/", (32, 32)),
