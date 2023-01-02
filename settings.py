@@ -31,8 +31,8 @@ def tiles(path):  # nalaganje vseh *.png datotek
     return arr
 
 map = []
-
-for filename in os.listdir("./levels"):
+scores = []
+for filename in sorted(os.listdir("./levels"),key=lambda x:int(x.split(".")[0])):
     arr = []
     if not filename.endswith('.txt'):
         continue
@@ -40,6 +40,16 @@ for filename in os.listdir("./levels"):
         for line in f.readlines():
             arr.append(line.strip().split(','))
     map.append(arr)
+
+for filename in sorted(os.listdir("./highscores"),key=lambda x:int(x.split(".")[0])):
+    arr2 = {}
+    if not filename.endswith('.txt'):
+        continue
+    with open("./highscores/" + filename, 'r') as f:  # nalaganje levela iz datoteke
+        for line in f.readlines():
+            line = line.strip()
+            arr2[line.split(";")[0]] = line.split(";")[1]
+    scores.append(arr2)
 
 tile_size = 64
 screen_w = 1200
@@ -59,6 +69,7 @@ class Settings():
         global music_volume, effects_volume, tile_size, screen_w, screen_h
         self.levelIndex = 0
         self.levels = map
+        self.scores = scores
         self.screen_w = screen_w
         self.screen_h = screen_h
         self.tile_size = tile_size

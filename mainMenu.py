@@ -54,8 +54,9 @@ class MainMenu:
 
     def init_menu(self):
         self.menu = pygame.sprite.Group()
-        self.menu.add(Button(self.settings.screen_w / 2, 250,"main", "select", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 350,"main", "settings", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 150,"main", "select", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 250,"main", "settings", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 350, "main", "highscoreselect", self.settings))
         self.menu.add(Button(self.settings.screen_w / 2, 450,"main", "exit_to_desktop", self.settings))
 
     def draw(self):
