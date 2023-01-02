@@ -158,6 +158,7 @@ class SettingsMenu:
         self.state = "settings"
         if not self.settings.pause:
             self.settings.background.draw(self.display_surface)
+        self.settings.logo.draw(self.display_surface)
         self.groupSound.update(self)
         self.groupButtons.update()
         self.groupSound.draw(self.display_surface)

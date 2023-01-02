@@ -1,6 +1,6 @@
 import pygame
 from mainMenu import Button
-
+from lvlSelect import Block
 class PlayerScore(pygame.sprite.Sprite):
     def __init__(self, x, y, name ,score, settings,state):
         super().__init__()
@@ -29,13 +29,6 @@ class PlayerScore(pygame.sprite.Sprite):
             self.image.fill((30, 30, 30))
             self.image.blit(self.textSurf, [self.w / 2 - self.w1 / 2, self.h / 2 - self.h1 / 2])
 
-
-class Block(pygame.sprite.Sprite):
-    def __init__(self, x, y, w, h, settings):
-        super().__init__()
-        self.image = pygame.Surface((w, h))
-        self.rect = self.image.get_rect(topleft=(x, y))
-        self.image.fill((100, 0, 0))
 
 
 class HighScore:
@@ -87,5 +80,6 @@ class HighScore:
         self.buttons.update(self)
         self.lvls.draw(self.display_surface)
         self.ui.draw(self.display_surface)
+        self.settings.logo.draw(self.display_surface)
         self.buttons.draw(self.display_surface)
         return self.state

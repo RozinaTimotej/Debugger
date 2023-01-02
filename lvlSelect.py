@@ -43,7 +43,7 @@ class Block(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.Surface((w, h))
         self.rect = self.image.get_rect(topleft=(x, y))
-        self.image.fill((100, 0, 0))
+        self.image.fill((15, 36, 69))
 
 
 class LevelSelect:
@@ -94,6 +94,7 @@ class LevelSelect:
         self.buttons.update(self)
         self.lvls.draw(self.display_surface)
         self.ui.draw(self.display_surface)
+        self.settings.logo.draw(self.display_surface)
         self.buttons.draw(self.display_surface)
         return self.state
 
@@ -145,5 +146,6 @@ class HighScoreLevel:
         self.buttons.update(self)
         self.lvls.draw(self.display_surface)
         self.ui.draw(self.display_surface)
+        self.settings.logo.draw(self.display_surface)
         self.buttons.draw(self.display_surface)
         return self.state
