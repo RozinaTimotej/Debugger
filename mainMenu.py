@@ -20,8 +20,6 @@ class Button(pygame.sprite.Sprite):
             if not self.played:
                 pygame.mixer.Sound.play(self.settings.HoverSound)
                 self.played = True
-            if pressed:
-                print(self.settings.leftClick)
             if self.rect.collidepoint(mouse) and pressed and not self.settings.leftClick:
                 self.settings.leftClick = True
                 if self.job == "playing" and not el.state == "pause_menu":
