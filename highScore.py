@@ -72,7 +72,7 @@ class HighScore:
             scroll_lckup = True
             if self.y < 0:
                 self.y = 0
-        elif self.lvls.sprites()[0].rect.y > (self.settings.screen_h / 5) + 35:
+        if self.lvls.sprites()[0].rect.y > (self.settings.screen_h / 5) + 35:
             scroll_lckdown = True
             if self.y > 0:
                 self.y = 0
