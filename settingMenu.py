@@ -16,7 +16,7 @@ class Slider(pygame.sprite.Sprite):
     def update(self, el):
         mouse = pygame.mouse.get_pos()
         pressed = pygame.mouse.get_pressed()[0]
-        if self.rect.collidepoint(mouse) and pressed and not self.settings.leftClick:
+        if self.rect.collidepoint(mouse) and pressed:
             self.settings.leftClick = True
             el.settings.vol[self.id] = (mouse[0] - self.start) / self.w
 
@@ -67,9 +67,11 @@ class Key(pygame.sprite.Sprite):
                     self.settings.buttons[self.id] == "up" or self.settings.buttons[self.id] == "down"):
                 self.image = self.settings.keys["uni"]
                 self.pressed = False
+                self.settings.leftClick = False
             else:
                 self.image = self.settings.keys[self.settings.buttons[self.id]]
                 self.pressed = False
+                self.settings.leftClick = False
         if self.pressed and not self.settings.leftClick:
             self.settings.leftClick = True
             for event in self.settings.event:
