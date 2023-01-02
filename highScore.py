@@ -45,7 +45,7 @@ class HighScore:
         self.state = "highscore"
         self.y = 0
         self.display_surface = surface
-        self.scores = dict(sorted(settings.scores[level].items(),key=lambda item:float(item[1]),reverse=True))
+        self.scores = dict(sorted(settings.scores[level].items(),key=lambda item:float(item[1]),reverse=False))
         self.init_menu()
 
     def init_menu(self):

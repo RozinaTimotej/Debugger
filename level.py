@@ -116,6 +116,7 @@ class Level:
             if pygame.sprite.collide_mask(player,sprite):
                 self.status = "finish_menu"
                 self.settings.pause = True
+                self.settings.score = self.time+self.uniTime
                 break
 
         for coin in self.coins.sprites():

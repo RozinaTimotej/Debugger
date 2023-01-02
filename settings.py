@@ -32,8 +32,10 @@ def tiles(path):  # nalaganje vseh *.png datotek
 
 map = []
 scores = []
-for filename in sorted(os.listdir("./levels"),key=lambda x:int(x.split(".")[0])):
+for i,filename in enumerate(sorted(os.listdir("./levels"),key=lambda x:int(x.split(".")[0]))):
     arr = []
+    f = open("./highScores/"+str(i+1)+".txt", "a")
+    f.close()
     if not filename.endswith('.txt'):
         continue
     with open("./levels/" + filename, 'r') as f:  # nalaganje levela iz datoteke
@@ -41,7 +43,7 @@ for filename in sorted(os.listdir("./levels"),key=lambda x:int(x.split(".")[0]))
             arr.append(line.strip().split(','))
     map.append(arr)
 
-for filename in sorted(os.listdir("./highscores"),key=lambda x:int(x.split(".")[0])):
+for filename in sorted(os.listdir("./highScores"),key=lambda x:int(x.split(".")[0])):
     arr2 = {}
     if not filename.endswith('.txt'):
         continue
@@ -74,7 +76,9 @@ class Settings():
         self.screen_h = screen_h
         self.tile_size = tile_size
         self.inGame = False
+        self.wrote = False
         self.pause = False
+        self.score = 0
         self.state = "name"
         self.event = pygame.event.get()
         self.font = pygame.font.SysFont("Arial", 18)
@@ -155,3 +159,13 @@ class Settings():
         pygame.mixer.Sound.set_volume(self.ClickSound, self.vol[1]/3)
         for x in self.playerWalk:
             pygame.mixer.Sound.set_volume(x, self.vol[1])
+
+    def writeScore(self):
+        for i,level in enumerate(self.scores):
+            print(level)
+            f = open("./highScores/"+str(i+1)+".txt", "w")
+            string = ""
+            for score in level.items():
+                string += str(score[0])+";"+str(score[1])+"\n"
+            f.write(string)
+            f.close()
