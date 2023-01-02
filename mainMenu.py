@@ -20,11 +20,14 @@ class Button(pygame.sprite.Sprite):
             if not self.played:
                 pygame.mixer.Sound.play(self.settings.HoverSound)
                 self.played = True
-            if self.rect.collidepoint(mouse) and pressed:
+            if pressed:
+                print(self.settings.leftClick)
+            if self.rect.collidepoint(mouse) and pressed and not self.settings.leftClick:
+                self.settings.leftClick = True
                 if self.job == "playing" and not el.state == "pause_menu":
                     self.settings.menuMusic.stop()
                     self.settings.gameMusic.play(-1, 0, 2000)
-                if self.job == "main_menu" and (el.state == "pause_menu" or el.state == "die_menu"):
+                if self.job == "main_menu" and (el.state == "pause_menu" or el.state == "die_menu" or el.state == "finish_menu"):
                     self.settings.gameMusic.stop()
                     self.settings.menuMusic.play(-1, 0, 2000)
                 if el.state == "name" and ((el.valid and self.job == "main_menu") or (self.job == "exit_to_desktop")):
@@ -54,14 +57,15 @@ class MainMenu:
 
     def init_menu(self):
         self.menu = pygame.sprite.Group()
-        self.menu.add(Button(self.settings.screen_w / 2, 150,"main", "select", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 200,"main", "select", self.settings))
         self.menu.add(Button(self.settings.screen_w / 2, 250,"main", "settings", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 350, "main", "highscoreselect", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 450,"main", "exit_to_desktop", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 300, "main", "highscoreselect", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 350,"main", "exit_to_desktop", self.settings))
 
     def draw(self):
         self.state = "main_menu"
         self.settings.background.draw(self.display_surface)
+        self.settings.logo.draw(self.display_surface)
         self.menu.update(self)
         self.menu.draw(self.display_surface)
         return self.state

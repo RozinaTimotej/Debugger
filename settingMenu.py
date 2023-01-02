@@ -4,9 +4,10 @@ from mainMenu import Button
 
 class Slider(pygame.sprite.Sprite):
 
-    def __init__(self, x, y,folder, id):
+    def __init__(self, x, y,folder, id, settings):
         super().__init__()
         self.id = id
+        self.settings = settings
         self.w = 300
         self.start = x - self.w / 2
         self.image = pygame.image.load('./Assets/menu/' + folder + '/slider_' +  str(id) + ".png").convert_alpha()
@@ -15,7 +16,8 @@ class Slider(pygame.sprite.Sprite):
     def update(self, el):
         mouse = pygame.mouse.get_pos()
         pressed = pygame.mouse.get_pressed()[0]
-        if self.rect.collidepoint(mouse) and pressed:
+        if self.rect.collidepoint(mouse) and pressed and not self.settings.leftClick:
+            self.settings.leftClick = True
             el.settings.vol[self.id] = (mouse[0] - self.start) / self.w
 
 class Txt(pygame.sprite.Sprite):
@@ -55,10 +57,12 @@ class Key(pygame.sprite.Sprite):
     def update(self):
         mouse = pygame.mouse.get_pos()
         pressed = pygame.mouse.get_pressed()[0]
-        if self.rect.collidepoint(mouse) and pressed:
+        if self.rect.collidepoint(mouse) and pressed and not self.settings.leftClick:
+            self.settings.leftClick = True
             self.pressed = True
             self.image = self.settings.keysPressed["uni"]
-        elif pressed:
+        elif pressed and not self.settings.leftClick:
+            self.settings.leftClick = True
             if not (self.settings.buttons[self.id] == "left" or self.settings.buttons[self.id] == "right" or
                     self.settings.buttons[self.id] == "up" or self.settings.buttons[self.id] == "down"):
                 self.image = self.settings.keys["uni"]
@@ -66,7 +70,8 @@ class Key(pygame.sprite.Sprite):
             else:
                 self.image = self.settings.keys[self.settings.buttons[self.id]]
                 self.pressed = False
-        if self.pressed:
+        if self.pressed and not self.settings.leftClick:
+            self.settings.leftClick = True
             for event in self.settings.event:
                 if event.type == pygame.KEYUP:
                     self.settings.buttons[self.id] = pygame.key.name(event.key)
@@ -127,9 +132,9 @@ class SettingsMenu:
         self.groupSound = pygame.sprite.Group()
         self.groupButtons = pygame.sprite.Group()
         self.groupText = pygame.sprite.Group()
-        self.groupSound.add(Slider(self.settings.screen_w / 2, 200, "settings",0))
+        self.groupSound.add(Slider(self.settings.screen_w / 2, 200, "settings",0,self.settings))
         self.groupSound.add(SliderMovable(self.settings.screen_w / 2, 200, 0, self.settings, "settings"))
-        self.groupSound.add(Slider(self.settings.screen_w / 2, 275, "settings", 1))
+        self.groupSound.add(Slider(self.settings.screen_w / 2, 275, "settings", 1,self.settings))
         self.groupSound.add(SliderMovable(self.settings.screen_w / 2, 275, 1, self.settings, "settings"))
         self.groupSound.add(Button(self.settings.screen_w / 2+150, 500,"settings", "main_menu", self.settings))
         self.groupSound.add(Button(self.settings.screen_w / 2-150, 500,"settings", "back", self.settings))

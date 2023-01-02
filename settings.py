@@ -1,5 +1,6 @@
 import os
 import pygame
+from logo import Logo
 
 d = 'levels'
 
@@ -95,6 +96,7 @@ class Settings():
         self.right = "right"
         self.vol = [music_volume, effects_volume]
         self.background = pygame.sprite.Group()
+        self.leftClick = False
         self.background.add(Background(0,0,pygame.image.load("./Assets/background/bg1.png")))
         self.playerJump = pygame.mixer.Sound("./Assets/sounds/jump_02.wav")
         self.menuMusic = pygame.mixer.Sound("./Assets/sounds/menumusic.mp3")
@@ -107,6 +109,8 @@ class Settings():
         self.finish = pygame.image.load("./Assets/finish/e.png").convert_alpha()
         self.coin = import_folder("./Assets/coin/game/", (20,20))
         self.start = pygame.image.load("./Assets/start/start.png").convert_alpha()
+        self.logo = pygame.sprite.GroupSingle()
+        self.logo.add(Logo(380,80,self))
         self.enemyFrames = {"run": import_folder("./Assets/enemy/run/game/", (64,64))}
         self.spikeFrames = {"spike": import_folder("./Assets/spike/game/", (32,29))}
         self.enemyFlyFrames = {

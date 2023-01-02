@@ -3,9 +3,10 @@ import pygame
 from mainMenu import Button
 validChars = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./"
 class Input(pygame.sprite.Sprite):
-    def __init__(self, x, y, id):
+    def __init__(self, x, y, id,settings):
         super().__init__()
         self.id = id
+        self.settings = settings
         self.w = 320
         self.h = 30
         self.typing = False
@@ -18,10 +19,11 @@ class Input(pygame.sprite.Sprite):
     def update(self, el):
         mouse = pygame.mouse.get_pos()
         pressed = pygame.mouse.get_pressed()[0]
-        if self.rect.collidepoint(mouse) and pressed:
+        if self.rect.collidepoint(mouse) and pressed and not self.settings.leftClick:
+            self.settings.leftClick = True
             self.typing = True
             self.image.fill((80, 80, 80))
-        elif not self.rect.collidepoint(mouse) and pressed:
+        elif not self.rect.collidepoint(mouse) and pressed and not self.settings.leftClick:
             self.typing = False
             self.image.fill((30, 30, 30))
 
@@ -58,13 +60,14 @@ class Changename:
 
     def init_menu(self):
         self.nameGroup = pygame.sprite.Group()
-        self.nameGroup.add(Input(self.settings.screen_w / 2, 325, "input"))
+        self.nameGroup.add(Input(self.settings.screen_w / 2, 325, "input",self.settings))
         self.nameGroup.add(Button(self.settings.screen_w / 2+85, 400,"name", "main_menu", self.settings))
         self.nameGroup.add(Button(self.settings.screen_w / 2-85, 400,"name", "exit_to_desktop", self.settings))
 
     def draw(self):
         self.state = "name"
         self.settings.background.draw(self.display_surface)
+        self.settings.logo.draw(self.display_surface)
         self.nameGroup.update(self)
         self.nameGroup.draw(self.display_surface)
         txt = self.settings.font.render(self.name, True, pygame.Color("coral"))

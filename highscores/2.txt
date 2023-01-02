@@ -1,2 +1,1 @@
-Timi;400
-Test;200
+Test;32

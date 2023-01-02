@@ -44,6 +44,8 @@ while True:
                 settings.state = "playing"
             if not level.started:
                 level.starts()
+    if not pygame.mouse.get_pressed()[0]:
+        settings.leftClick = False
     if settings.state == "playing" and not settings.pause:
         settings.state = level.draw()
     elif settings.pause and (settings.state == "pause_menu" or settings.state == "playing"):

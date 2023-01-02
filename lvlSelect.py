@@ -25,7 +25,8 @@ class LevelButton(pygame.sprite.Sprite):
         if self.rect.collidepoint(mouse) and 4 * self.settings.screen_h / 5 > mouse[1] > 1 * self.settings.screen_h / 5:
             self.image.fill((80, 80, 80))
             self.image.blit(self.textSurf, [self.w / 2 - self.w1 / 2, self.h / 2 - self.h1 / 2])
-            if pressed:
+            if pressed and not self.settings.leftClick:
+                self.settings.leftClick = True
                 if not self.setstate == "highscore":
                     self.settings.menuMusic.stop()
                     self.settings.gameMusic.play(-1, 0, 2000)
