@@ -98,6 +98,8 @@ class Settings():
         self.background = pygame.sprite.Group()
         self.leftClick = False
         self.background.add(Background(0,0,pygame.image.load("./Assets/background/bg1.png")))
+        self.deathSound = pygame.mixer.Sound("./Assets/sounds/death.mp3")
+        self.coinSound = pygame.mixer.Sound("./Assets/sounds/coin.mp3")
         self.playerJump = pygame.mixer.Sound("./Assets/sounds/jump_02.wav")
         self.menuMusic = pygame.mixer.Sound("./Assets/sounds/menumusic.mp3")
         self.gameMusic = pygame.mixer.Sound("./Assets/sounds/gameMusic.mp3")
@@ -161,6 +163,8 @@ class Settings():
         pygame.mixer.Sound.set_volume(self.hitEnemy, self.vol[1]/3)
         pygame.mixer.Sound.set_volume(self.HoverSound, self.vol[1]/3)
         pygame.mixer.Sound.set_volume(self.ClickSound, self.vol[1]/3)
+        pygame.mixer.Sound.set_volume(self.coinSound, self.vol[1])
+        pygame.mixer.Sound.set_volume(self.deathSound, self.vol[1])
         for x in self.playerWalk:
             pygame.mixer.Sound.set_volume(x, self.vol[1])
 

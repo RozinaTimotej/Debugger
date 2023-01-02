@@ -123,6 +123,7 @@ class Level:
             if pygame.sprite.collide_mask(player,coin):
                 self.coins.remove(coin)
                 self.uniTime -= 2.5
+                pygame.mixer.Sound.play(self.settings.coinSound, 0)
 
     def h_col_enemy(self):
         player = self.player.sprite
@@ -342,6 +343,7 @@ class Level:
     def die(self):
         self.status = "die_menu"
         self.settings.pause = True
+        pygame.mixer.Sound.play(self.settings.deathSound,0)
     def draw(self):
         if not self.settings.pause and self.started:
             self.updateTime()
