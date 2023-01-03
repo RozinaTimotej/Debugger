@@ -37,10 +37,10 @@ for i,filename in enumerate(sorted(os.listdir("./levels"),key=lambda x:int(x.spl
     arr = []
     f = open("./highScores/"+str(i+1)+".txt", "a")
     f.close()
-    if not filename.endswith('.txt'):
+    if not filename.endswith('.csv'):
         continue
     with open("./levels/" + filename, 'r') as f:  # nalaganje levela iz datoteke
-        for line in f.readlines():
+        for line in f.readlines()[1:]:
             arr.append(line.strip().split(','))
     map.append(arr)
 
