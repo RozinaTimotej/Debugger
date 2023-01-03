@@ -106,6 +106,6 @@ while True:
             print("Loading next level: (level %s)" % str(int(settings.levelIndex)+1))
         level = Level(settings.levels[settings.levelIndex], screen, settings)
     screen.blit(update_fps(), (settings.screen_w-20, 0))
-    screen.blit(settings.font.render(settings.name, True, pygame.Color("coral")), (60,0))
+    screen.blit(settings.font.render(settings.name, True, pygame.Color("coral")), (100,0))
     clock.tick(60)
     pygame.display.update()
