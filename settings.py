@@ -82,7 +82,7 @@ class Settings():
         self.score = 0
         self.state = "name"
         self.event = pygame.event.get()
-        self.font = pygame.font.SysFont("Arial", 18)
+        self.font = pygame.font.SysFont("Courier", 18)
         self.name = ""
         self.buttons = {
             "up": "up",

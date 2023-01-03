@@ -32,7 +32,7 @@ class Input(pygame.sprite.Sprite):
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_BACKSPACE:
                         el.name = el.name[:-1]
-                    elif pygame.key.name(event.key) in validChars and len(el.name) < 31:
+                    elif pygame.key.name(event.key) in validChars and len(el.name) < 20:
                         if pygame.key.get_mods() & (pygame.KMOD_CAPS or pygame.KMOD_SHIFT):
                             el.name += pygame.key.name(event.key).upper()
                         else:

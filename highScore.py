@@ -4,9 +4,8 @@ from lvlSelect import Block
 class PlayerScore(pygame.sprite.Sprite):
     def __init__(self, x, y, name ,score, settings,state):
         super().__init__()
-        self.id = id
         self.settings = settings
-        self.w = 200
+        self.w = 380
         self.h = 30
         self.start = x - self.w / 2
         self.y = y
@@ -15,19 +14,18 @@ class PlayerScore(pygame.sprite.Sprite):
         if settings.name == str(name).strip():
             self.same = True
         self.image = pygame.Surface((self.w, self.h))
-        self.textSurf = self.settings.font.render(str(name).strip()+" "+str(score).strip(), 1, "red")
-        self.w1, self.h1 = self.settings.font.size(str(id))
-        self.image.blit(self.textSurf, [self.w / 2 - self.w1 / 2, self.h / 2 - self.h1 / 2])
-        self.rect = self.image.get_rect(topleft=(x - self.w / 2, y))
+        self.textSurf = self.settings.font.render("{:<20s}{:>6.2f}".format(str(name).strip(), float(score)), 1, "blue")
+        self.image.blit(self.textSurf, [self.w / 2 - 150, self.h / 2 - 8])
+        self.rect = self.image.get_rect(topleft=(self.start, y))
 
     def update(self, el):
         self.rect.y += el.y
         if self.same:
-            self.image.fill((80, 80, 80))
-            self.image.blit(self.textSurf, [self.w / 2 - self.w1 / 2, self.h / 2 - self.h1 / 2])
+            self.image.fill((50, 168, 54))
+            self.image.blit(self.textSurf, [self.w / 2 - 150, self.h / 2 - 8 ])
         elif not self.same:
             self.image.fill((30, 30, 30))
-            self.image.blit(self.textSurf, [self.w / 2 - self.w1 / 2, self.h / 2 - self.h1 / 2])
+            self.image.blit(self.textSurf, [self.w / 2  - 150, self.h / 2 - 8 ])
 
 
 
@@ -43,10 +41,13 @@ class HighScore:
 
     def init_menu(self):
         self.lvls = pygame.sprite.Group()
+        self.yourScore = pygame.sprite.GroupSingle()
         self.buttons = pygame.sprite.Group()
         self.ui = pygame.sprite.Group()
         for i,x in enumerate(self.scores.items()):
             self.lvls.add(PlayerScore(self.settings.screen_w / 2, 200+50*i,x[0], x[1], self.settings,"playing"))
+            if self.settings.name == str(x[0]).strip():
+                self.yourScore.add(PlayerScore(self.settings.screen_w / 2, 650, x[0], x[1], self.settings, "playing"))
         self.buttons.add(Button(self.settings.screen_w / 2 + 150, 700, "lvl", "main_menu", self.settings))
         self.buttons.add(Button(self.settings.screen_w / 2 - 150, 700, "lvl", "exit_to_desktop", self.settings))
         self.ui.add(Block(0, 0, self.settings.screen_w, self.settings.screen_h / 5, self.settings))
@@ -78,8 +79,10 @@ class HighScore:
         self.settings.background.draw(self.display_surface)
         self.lvls.update(self)
         self.buttons.update(self)
+        self.yourScore.update(self)
         self.lvls.draw(self.display_surface)
         self.ui.draw(self.display_surface)
+        self.yourScore.draw(self.display_surface)
         self.settings.logo.draw(self.display_surface)
         self.buttons.draw(self.display_surface)
         return self.state
