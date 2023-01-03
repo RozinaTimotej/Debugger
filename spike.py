@@ -45,4 +45,4 @@ class Spike(pygame.sprite.Sprite):
         if self.frame_index >= len(self.frames[self.dir_i]):
             self.frame_index = 0
 
-        self.image = pygame.transform.rotate(self.frames[self.dir_i][self.frame_index],self.degs)
+        self.image = pygame.transform.rotate(self.frames[self.dir_i][int(self.frame_index)],self.degs)
