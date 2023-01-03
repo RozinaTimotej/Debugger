@@ -24,7 +24,7 @@ class PlayerScore(pygame.sprite.Sprite):
             self.image.fill((50, 168, 54))
             self.image.blit(self.textSurf, [self.w / 2 - 150, self.h / 2 - 8 ])
         elif not self.same:
-            self.image.fill((30, 30, 30))
+            self.image.fill((100, 100, 100))
             self.image.blit(self.textSurf, [self.w / 2  - 150, self.h / 2 - 8 ])
 
 
