@@ -1,13 +1,14 @@
 import pygame
 
 class Spike(pygame.sprite.Sprite):
-    def __init__(self, pos, settings, frames):
+    def __init__(self, pos, settings, frames,degs):
         super().__init__()
         self.settings = settings
         self.frames = frames
+        self.degs = degs
         self.dir_i = "spike"
         self.frame_index = 0
-        self.image = self.frames[self.dir_i][self.frame_index]
+        self.image = pygame.transform.rotate(self.frames[self.dir_i][self.frame_index],self.degs)
         self.rect = self.image.get_rect(topleft=pos)
         self.animMult = {"spike": 1}
         self.state = "alive"
@@ -44,4 +45,4 @@ class Spike(pygame.sprite.Sprite):
         if self.frame_index >= len(self.frames[self.dir_i]):
             self.frame_index = 0
 
-        self.image = self.frames[self.dir_i][int(self.frame_index)]
+        self.image = pygame.transform.rotate(self.frames[self.dir_i][self.frame_index],self.degs)

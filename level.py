@@ -71,7 +71,15 @@ class Level:
                     if char == 'c':
                         self.coins.add(Coin(c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.coin, self.settings))
                     if char == 's':
-                        self.spikes.add(Spike((c_i * self.settings.tile_size + 16, r_i * self.settings.tile_size + 40), self.settings, self.settings.spikeFrames))
+                        if r_i < len(layout)-1 and layout[r_i+1][c_i] == "t1":
+                            self.spikes.add(Spike((c_i * self.settings.tile_size + 16, r_i * self.settings.tile_size + 40), self.settings, self.settings.spikeFrames,0))
+                        elif c_i < len(row)-1 and layout[r_i][c_i+1] == "t1":
+                            self.spikes.add(Spike((c_i * self.settings.tile_size + 40, r_i * self.settings.tile_size + 20),self.settings, self.settings.spikeFrames,90))
+                        elif c_i > 0 and layout[r_i][c_i-1] == "t1":
+                            self.spikes.add(Spike((c_i * self.settings.tile_size + 0, r_i * self.settings.tile_size + 20),self.settings, self.settings.spikeFrames,270))
+                        elif r_i > 0 and layout[r_i-1][c_i] == "t1":
+                            self.spikes.add(
+                                Spike((c_i * self.settings.tile_size + 16, r_i * self.settings.tile_size + 0),self.settings, self.settings.spikeFrames, 180))
 
         len_x = math.ceil((self.settings.screen_w + self.settings.screen_w / 4) / 1367) + 1
         for i in range(-1, len_x + 1):
