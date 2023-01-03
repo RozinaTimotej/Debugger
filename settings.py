@@ -172,12 +172,13 @@ class Settings():
     def loadSettings(self):
         f = open("./settings/settings.txt", 'r')
         lines = f.readlines()
-        self.vol[0] = float(lines[0].strip())
-        self.vol[1] = float(lines[1].strip())
-        self.buttons["up"] = lines[2].strip()
-        self.buttons["down"] = lines[3].strip()
-        self.buttons["left"] = lines[4].strip()
-        self.buttons["right"] = lines[5].strip()
+        if len(lines) == 6:
+            self.vol[0] = float(lines[0].strip())
+            self.vol[1] = float(lines[1].strip())
+            self.buttons["up"] = lines[2].strip()
+            self.buttons["down"] = lines[3].strip()
+            self.buttons["left"] = lines[4].strip()
+            self.buttons["right"] = lines[5].strip()
     def writeSettings(self):
         f = open("./settings/settings.txt", "w")
         string = str(self.vol[0]) +"\n"

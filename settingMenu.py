@@ -55,9 +55,10 @@ class Key(pygame.sprite.Sprite):
         self.pressed = False
 
     def update(self):
-        if not (self.txt == "right" or self.txt == "up" or self.txt == "down" or self.txt == "left"):
+        self.txt = self.settings.buttons[self.id]
+        if not (self.txt == "right" or self.txt == "up" or self.txt == "down" or self.txt == "left") and not self.pressed:
             self.image = self.settings.keys["uni"]
-        else:
+        elif not self.pressed:
             self.image = self.settings.keys[self.id]
         mouse = pygame.mouse.get_pos()
         pressed = pygame.mouse.get_pressed()[0]
