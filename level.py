@@ -4,7 +4,7 @@ from tiles import Tla, Finish,Tile, Coin, Start
 from player import Player
 from enemy import Enemy, FlyingEnemy, KamikazeEnemy
 from background import Background1, Background2
-from math import atan2, degrees, pi
+from math import atan2, degrees, pi,ceil
 from bullet import Bullet
 from spike import Spike
 class Level:
@@ -311,14 +311,14 @@ class Level:
     def bullet_Col(self):
         player = self.player.sprite
         for bullet in self.bullets.sprites():
-            dx = player.rect.x+20 - bullet.rect.x
-            dy = player.rect.y+32 - bullet.rect.y
+            dx = (player.rect.x+(player.rect.width/2)) - bullet.rect.x
+            dy = (player.rect.y+(player.rect.height/2)) - bullet.rect.y
             dist = (dx ** 2 + dy ** 2) ** .5
             if not dist == 0:
                 dx /= dist
                 dy /= dist
-            move_distx = min(self.player.sprite.speed * 1.1, int(dist))
-            move_disty = min(self.player.sprite.speed*0.8, int(dist))
+            move_distx = self.player.sprite.speedInfo*1.2
+            move_disty = self.player.sprite.speedInfo*1.2
             bullet.rect.x += move_distx * dx
             bullet.rect.y += move_disty * dy
             for sprite in self.tiles.sprites():

@@ -25,6 +25,8 @@ class Bullet(pygame.sprite.Sprite):
         self.frame_index = 0
         self.dir_i = "die"
         self.state = "dying"
+        self.rect.x -= self.rect.height/2 + 15
+        self.rect.y -= self.rect.width/2 + 15
 
     def updateDest(self,destx,desty):
         dx = self.rect.x - destx
