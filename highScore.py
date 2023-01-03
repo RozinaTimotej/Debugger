@@ -62,20 +62,21 @@ class HighScore:
             self.y += 1
         scroll_lckup = False
         scroll_lckdown = False
-        if self.lvls.sprites()[-1].rect.y < (4 * self.settings.screen_h / 5) - 100:
-            scroll_lckup = True
-            if self.y < 0:
-                self.y = 0
-        if self.lvls.sprites()[0].rect.y > (self.settings.screen_h / 5) + 35:
-            scroll_lckdown = True
-            if self.y > 0:
-                self.y = 0
-        for event in self.settings.event:
-            if event.type == pygame.MOUSEWHEEL:
-                if event.y > 0 and not scroll_lckdown:
-                    self.y += event.y * 2
-                elif event.y < 0 and not scroll_lckup:
-                    self.y += event.y * 2
+        if len(self.lvls.sprites()):
+            if self.lvls.sprites()[-1].rect.y < (4 * self.settings.screen_h / 5) - 100:
+                scroll_lckup = True
+                if self.y < 0:
+                    self.y = 0
+            if self.lvls.sprites()[0].rect.y > (self.settings.screen_h / 5) + 35:
+                scroll_lckdown = True
+                if self.y > 0:
+                    self.y = 0
+            for event in self.settings.event:
+                if event.type == pygame.MOUSEWHEEL:
+                    if event.y > 0 and not scroll_lckdown:
+                        self.y += event.y * 2
+                    elif event.y < 0 and not scroll_lckup:
+                        self.y += event.y * 2
         self.settings.background.draw(self.display_surface)
         self.lvls.update(self)
         self.buttons.update(self)
