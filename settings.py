@@ -179,6 +179,7 @@ class Settings():
             self.buttons["down"] = lines[3].strip()
             self.buttons["left"] = lines[4].strip()
             self.buttons["right"] = lines[5].strip()
+        f.close()
     def writeSettings(self):
         f = open("./settings/settings.txt", "w")
         string = str(self.vol[0]) +"\n"
