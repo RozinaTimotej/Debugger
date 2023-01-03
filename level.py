@@ -380,6 +380,6 @@ class Level:
         self.spikes.draw(self.display_surface)
         self.bullets.draw(self.display_surface)
         self.player.draw(self.display_surface)
-        self.display_surface.blit(self.drawTime(), (50, 0))
+        self.display_surface.blit(self.drawTime(), (10, 0))
         self.start.draw(self.display_surface)
         return self.status
