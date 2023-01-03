@@ -49,12 +49,16 @@ class Key(pygame.sprite.Sprite):
         if not (txt == "right" or txt == "up" or txt == "down" or txt == "left"):
             self.image = settings.keys["uni"]
         else:
-            self.image = settings.keys[dir]
-        self.txt = txt
+            self.image = settings.keys[self.id]
+        self.txt = self.settings.buttons[self.id]
         self.rect = self.image.get_rect(topleft=(x, y))
         self.pressed = False
 
     def update(self):
+        if not (self.txt == "right" or self.txt == "up" or self.txt == "down" or self.txt == "left"):
+            self.image = self.settings.keys["uni"]
+        else:
+            self.image = self.settings.keys[self.id]
         mouse = pygame.mouse.get_pos()
         pressed = pygame.mouse.get_pressed()[0]
         if self.rect.collidepoint(mouse) and pressed and not self.settings.leftClick:
@@ -175,6 +179,7 @@ class SettingsMenu:
             self.settings.updateSound()
             return self.prevState
         elif self.state == "main_menu":
+            self.settings.writeSettings()
             return self.prevState
         else:
             return self.state
