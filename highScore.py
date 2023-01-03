@@ -48,7 +48,7 @@ class HighScore:
             self.lvls.add(PlayerScore(self.settings.screen_w / 2, 200+50*i,x[0], x[1], self.settings,"playing"))
             if self.settings.name == str(x[0]).strip():
                 self.yourScore.add(PlayerScore(self.settings.screen_w / 2, 650, x[0], x[1], self.settings, "playing"))
-        self.buttons.add(Button(self.settings.screen_w / 2 + 150, 700, "lvl", "main_menu", self.settings))
+        self.buttons.add(Button(self.settings.screen_w / 2 + 150, 700, "lvl", "back", self.settings))
         self.buttons.add(Button(self.settings.screen_w / 2 - 150, 700, "lvl", "exit_to_desktop", self.settings))
         self.ui.add(Block(0, 0, self.settings.screen_w, self.settings.screen_h / 5, self.settings))
         self.ui.add(
@@ -85,4 +85,6 @@ class HighScore:
         self.yourScore.draw(self.display_surface)
         self.settings.logo.draw(self.display_surface)
         self.buttons.draw(self.display_surface)
+        if self.state == "back":
+            self.state = "highscoreselect"
         return self.state

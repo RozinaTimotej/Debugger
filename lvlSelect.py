@@ -113,7 +113,7 @@ class HighScoreLevel:
         self.ui = pygame.sprite.Group()
         for i, lvl in enumerate(self.settings.levels):
             self.lvls.add(LevelButton((self.settings.screen_w / 5 * (i % 5)) + ((self.settings.screen_w / 5) / 2), 200 * (1 + (i // 5)), i, self.settings,"highscore"))
-        self.buttons.add(Button(self.settings.screen_w / 2 + 150, 700, "lvl", "main_menu", self.settings))
+        self.buttons.add(Button(self.settings.screen_w / 2 + 150, 700, "lvl", "back", self.settings))
         self.buttons.add(Button(self.settings.screen_w / 2 - 150, 700, "lvl", "exit_to_desktop", self.settings))
         self.ui.add(Block(0, 0, self.settings.screen_w, self.settings.screen_h / 5, self.settings))
         self.ui.add(
@@ -148,4 +148,6 @@ class HighScoreLevel:
         self.ui.draw(self.display_surface)
         self.settings.logo.draw(self.display_surface)
         self.buttons.draw(self.display_surface)
+        if self.state == "back":
+            self.state = "main_menu"
         return self.state
