@@ -142,7 +142,7 @@ class KamikazeEnemy(pygame.sprite.Sprite):
         self.frame_index = 0
         self.state = "attack"
         self.dir_i = "attack"
-        self.speed *= 3
+        self.speed *= 5
 
     def h_move(self):
         self.rect.x += self.speed * self.dx
