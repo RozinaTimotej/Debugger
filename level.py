@@ -91,10 +91,10 @@ class Level:
 
     def cam(self):  # ce je igralec znotraj 2 in 3 četrtine se kamera ne premika, drugače se
         player = self.player.sprite
-        if player.rect.right > (3 * self.settings.screen_w / 4) and player.direction.x > 0:
+        if player.rect.right+5 > (3 * self.settings.screen_w / 4) and player.direction.x > 0:
             self.move = -player.speedInfo
             player.speed = 0
-        elif player.rect.left < (self.settings.screen_w / 4) and player.direction.x < 0:
+        elif player.rect.left-5 < (self.settings.screen_w / 4) and player.direction.x < 0:
             self.move = player.speedInfo
             player.speed = 0
         else:
