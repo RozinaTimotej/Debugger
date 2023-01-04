@@ -17,6 +17,7 @@ class Level:
         self.time = 0
         self.startTime = 0
         self.move = 0
+        self.camMove = True
         self.started = False
         self.status = "playing"
 
@@ -91,10 +92,10 @@ class Level:
 
     def cam(self):  # ce je igralec znotraj 2 in 3 četrtine se kamera ne premika, drugače se
         player = self.player.sprite
-        if player.rect.centerx > (3 * self.settings.screen_w / 4) and player.direction.x > 0:
+        if player.rect.centerx > (3 * self.settings.screen_w / 4) and player.direction.x > 0 and self.camMove:
             self.move = -player.speedInfo
             player.speed = 0
-        elif player.rect.centerx < (self.settings.screen_w / 4) and player.direction.x < 0:
+        elif player.rect.centerx < (self.settings.screen_w / 4) and player.direction.x < 0  and self.camMove:
             self.move = player.speedInfo
             player.speed = 0
         else:
@@ -105,6 +106,7 @@ class Level:
         player = self.player.sprite
         player.rect.x += player.direction.x * player.speed
         dist = 0
+        self.camMove = True
         for sprite in self.tiles.sprites():
             if player.rect.colliderect(sprite.rect):
                 if player.direction.x < 0:
@@ -115,8 +117,12 @@ class Level:
                     if player.jumps > 0 and not player.wall_jumped:
                         dist = player.rect.top - sprite.rect.top
                     player.rect.right = sprite.rect.left-1
+                if self.move != 0:
+                    self.camMove = False
                 break
-        if dist > self.settings.tile_size // 15:
+        if not self.camMove:
+            print(self.camMove)
+        if dist > 0:
             player.direction.y = 0
             player.on_wall = True
         for sprite in self.finish.sprites():
@@ -189,9 +195,11 @@ class Level:
         if player.rect.y <= 0:
             player.direction.y = 0
             player.rect.top = 0
+            return
 
         if player.rect.y > self.settings.screen_h*1.2:
             self.die()
+            return
 
         for sprite in self.tiles.sprites():
             if player.rect.colliderect(sprite.rect):
@@ -202,11 +210,11 @@ class Level:
                     player.jumps = 0
                     player.on_wall = False
                     player.wall_jumped = False
-                    if abs(sprite.rect.top - player.rect.bottom) < self.settings.tile_size:
+                    if sprite.rect.top - player.rect.bottom < self.settings.tile_size*0.75:
                         player.rect.bottom = sprite.rect.top
                 elif player.direction.y < 0:
                     player.direction.y = 0
-                    if abs(sprite.rect.bottom - player.rect.top) < self.settings.tile_size:
+                    if sprite.rect.bottom - player.rect.top < self.settings.tile_size*0.75:
                         player.rect.top = sprite.rect.bottom
 
     def v_col_enemy(self):
