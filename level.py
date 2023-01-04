@@ -17,7 +17,6 @@ class Level:
         self.time = 0
         self.startTime = 0
         self.move = 0
-        self.camMove = True
         self.started = False
         self.status = "playing"
 
@@ -82,20 +81,20 @@ class Level:
                             self.spikes.add(
                                 Spike((c_i * self.settings.tile_size + 16, r_i * self.settings.tile_size + 0),self.settings, self.settings.spikeFrames, 180))
 
-        len_x = math.ceil((self.settings.screen_w + self.settings.screen_w / 4) / 1367) + 1
-        for i in range(-1, len_x + 1):
-            self.space.add(Background1(i * 1367 - self.settings.screen_w / 2, 0,self.settings))
-        for i in range(-1, len_x + 1):
-            self.stars.add(Background2(i * 1367 - self.settings.screen_w / 2, 0,self.settings))
+        len_x = math.ceil(((len(layout[0])+1)*64) / 1367) + 1
+        for i in range(-2, len_x + 1):
+            self.space.add(Background1(i * 1367, 0,self.settings))
+        for i in range(-2, len_x + 1):
+            self.stars.add(Background2(i * 1367, 0,self.settings))
 
         self.startTime = pygame.time.get_ticks()
 
     def cam(self):  # ce je igralec znotraj 2 in 3 četrtine se kamera ne premika, drugače se
         player = self.player.sprite
-        if player.rect.centerx > (3 * self.settings.screen_w / 4) and player.direction.x > 0 and self.camMove:
+        if player.rect.centerx > (3 * self.settings.screen_w / 4) and player.direction.x > 0:
             self.move = -player.speedInfo
             player.speed = 0
-        elif player.rect.centerx < (self.settings.screen_w / 4) and player.direction.x < 0  and self.camMove:
+        elif player.rect.centerx < (self.settings.screen_w / 4) and player.direction.x < 0:
             self.move = player.speedInfo
             player.speed = 0
         else:
@@ -104,9 +103,8 @@ class Level:
 
     def h_col_player(self):
         player = self.player.sprite
-        player.rect.x += player.direction.x * player.speed
         dist = 0
-        self.camMove = True
+        player.rect.x += player.direction.x * player.speed
         for sprite in self.tiles.sprites():
             if player.rect.colliderect(sprite.rect):
                 if player.direction.x < 0:
@@ -117,11 +115,8 @@ class Level:
                     if player.jumps > 0 and not player.wall_jumped:
                         dist = player.rect.top - sprite.rect.top
                     player.rect.right = sprite.rect.left-1
-                if self.move != 0:
-                    self.camMove = False
                 break
-        if not self.camMove:
-            print(self.camMove)
+
         if dist > 0:
             player.direction.y = 0
             player.on_wall = True
@@ -210,11 +205,11 @@ class Level:
                     player.jumps = 0
                     player.on_wall = False
                     player.wall_jumped = False
-                    if sprite.rect.top - player.rect.bottom < self.settings.tile_size*0.75:
+                    if sprite.rect.top - player.rect.bottom < 15:
                         player.rect.bottom = sprite.rect.top
                 elif player.direction.y < 0:
                     player.direction.y = 0
-                    if sprite.rect.bottom - player.rect.top < self.settings.tile_size*0.75:
+                    if sprite.rect.bottom - player.rect.top < 15:
                         player.rect.top = sprite.rect.bottom
 
     def v_col_enemy(self):
@@ -363,6 +358,7 @@ class Level:
     def draw(self):
         if not self.settings.pause and self.started:
             self.updateTime()
+            self.cam()
             self.h_col_plain()
             self.v_col_plain()
             self.col()
@@ -384,7 +380,6 @@ class Level:
             self.coins.update(self.move)
             self.player.update()
 
-        self.cam()
         self.space.draw(self.display_surface)
         self.stars.draw(self.display_surface)
         self.enemies.draw(self.display_surface)
