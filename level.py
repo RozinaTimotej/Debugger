@@ -71,13 +71,13 @@ class Level:
                     if char == 'c':
                         self.coins.add(Coin(c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.coin, self.settings))
                     if char == 's':
-                        if r_i < len(layout)-1 and layout[r_i+1][c_i] == "t1":
+                        if r_i < len(layout)-1 and "t1" in layout[r_i+1][c_i].split("_"):
                             self.spikes.add(Spike((c_i * self.settings.tile_size + 16, r_i * self.settings.tile_size + 40), self.settings, self.settings.spikeFrames,0))
-                        elif c_i < len(row)-1 and layout[r_i][c_i+1] == "t1":
+                        elif c_i < len(row)-1 and "t1" in layout[r_i][c_i+1].split("_"):
                             self.spikes.add(Spike((c_i * self.settings.tile_size + 40, r_i * self.settings.tile_size + 20),self.settings, self.settings.spikeFrames,90))
-                        elif c_i > 0 and layout[r_i][c_i-1] == "t1":
+                        elif c_i > 0 and "t1" in layout[r_i][c_i-1].split("_"):
                             self.spikes.add(Spike((c_i * self.settings.tile_size + 0, r_i * self.settings.tile_size + 20),self.settings, self.settings.spikeFrames,270))
-                        elif r_i > 0 and layout[r_i-1][c_i] == "t1":
+                        elif r_i > 0 and "t1" in layout[r_i-1][c_i].split("_"):
                             self.spikes.add(
                                 Spike((c_i * self.settings.tile_size + 16, r_i * self.settings.tile_size + 0),self.settings, self.settings.spikeFrames, 180))
 
@@ -118,6 +118,7 @@ class Level:
                 break
 
         if dist > self.settings.tile_size // 30:
+            print("test1")
             player.direction.y = 0
             player.on_wall = True
         for sprite in self.finish.sprites():
@@ -196,18 +197,22 @@ class Level:
 
         for sprite in self.tiles.sprites():
             if player.rect.colliderect(sprite.rect):
-                if player.direction.y > 0 and abs(sprite.rect.top - player.rect.bottom) < self.settings.tile_size:
-                    player.rect.bottom = sprite.rect.top
+                if player.direction.y > 0:
+                    print(sprite.rect.top, player.rect.bottom)
                     player.direction.y = 0
                     if player.jumps > 0:
                         player.soundDelay = 0
                     player.jumps = 0
                     player.on_wall = False
                     player.wall_jumped = False
-                elif player.direction.y < 0 and abs(sprite.rect.bottom - player.rect.top) < self.settings.tile_size:
+                    if abs(sprite.rect.top - player.rect.bottom) < self.settings.tile_size:
+                        print("test2")
+                        player.rect.bottom = sprite.rect.top
+                elif player.direction.y < 0:
                     player.direction.y = 0
-                    player.rect.top = sprite.rect.bottom
-                break
+                    if abs(sprite.rect.bottom - player.rect.top) < self.settings.tile_size:
+                        print("test3")
+                        player.rect.top = sprite.rect.bottom
 
     def v_col_enemy(self):
         player = self.player.sprite

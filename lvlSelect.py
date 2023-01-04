@@ -13,7 +13,7 @@ class LevelButton(pygame.sprite.Sprite):
         self.y = y
         self.setstate = state
         self.image = pygame.Surface((self.w, self.h))
-        self.textSurf = self.settings.font.render(str(id), 1, "red")
+        self.textSurf = self.settings.font.render(str(id+1), 1, "red")
         self.w1, self.h1 = self.settings.font.size(str(id))
         self.image.blit(self.textSurf, [self.w / 2 - self.w1 / 2, self.h / 2 - self.h1 / 2])
         self.rect = self.image.get_rect(topleft=(x - self.w / 2, y))

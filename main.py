@@ -2,7 +2,6 @@ import pygame, sys
 import settings
 from settings import *
 from level import Level
-from pygame.locals import *
 from mainMenu import MainMenu, PauseMenu
 from settingMenu import SettingsMenu
 from ChangeName import Changename
