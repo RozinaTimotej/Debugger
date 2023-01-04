@@ -110,15 +110,14 @@ class Level:
                 if player.direction.x < 0:
                     if player.jumps > 0 and not player.wall_jumped:
                         dist = player.rect.top - sprite.rect.top
-                    player.rect.left = sprite.rect.right-1
+                    player.rect.left = sprite.rect.right+0.3
                 elif player.direction.x > 0:
                     if player.jumps > 0 and not player.wall_jumped:
                         dist = player.rect.top - sprite.rect.top
-                    player.rect.right = sprite.rect.left-1
+                    player.rect.right = sprite.rect.left-0.3
                 break
 
         if dist > self.settings.tile_size // 30:
-            print("test1")
             player.direction.y = 0
             player.on_wall = True
         for sprite in self.finish.sprites():
@@ -198,7 +197,6 @@ class Level:
         for sprite in self.tiles.sprites():
             if player.rect.colliderect(sprite.rect):
                 if player.direction.y > 0:
-                    print(sprite.rect.top, player.rect.bottom)
                     player.direction.y = 0
                     if player.jumps > 0:
                         player.soundDelay = 0
@@ -206,12 +204,10 @@ class Level:
                     player.on_wall = False
                     player.wall_jumped = False
                     if abs(sprite.rect.top - player.rect.bottom) < self.settings.tile_size:
-                        print("test2")
                         player.rect.bottom = sprite.rect.top
                 elif player.direction.y < 0:
                     player.direction.y = 0
                     if abs(sprite.rect.bottom - player.rect.top) < self.settings.tile_size:
-                        print("test3")
                         player.rect.top = sprite.rect.bottom
 
     def v_col_enemy(self):
