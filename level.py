@@ -110,11 +110,11 @@ class Level:
                 if player.direction.x < 0:
                     if player.jumps > 0 and not player.wall_jumped:
                         dist = player.rect.top - sprite.rect.top
-                    player.rect.left = sprite.rect.right
+                    player.rect.left = sprite.rect.right-1
                 elif player.direction.x > 0:
                     if player.jumps > 0 and not player.wall_jumped:
                         dist = player.rect.top - sprite.rect.top
-                    player.rect.right = sprite.rect.left
+                    player.rect.right = sprite.rect.left-1
                 break
 
         if dist > self.settings.tile_size // 30:
