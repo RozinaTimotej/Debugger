@@ -93,29 +93,39 @@ class Level:
         player = self.player.sprite
         if player.rect.right > (3 * self.settings.screen_w / 4) and player.direction.x > 0:
             self.move = -player.speedInfo
-            player.speed = player.speed/10
+            player.speed = 0
         elif player.rect.left < (self.settings.screen_w / 4) and player.direction.x < 0:
             self.move = player.speedInfo
-            player.speed = player.speed/10
+            player.speed = 0
         else:
-            self.move = int(self.move*0.999)
+            self.move = 0
             player.speed = player.speedInfo
 
     def h_col_player(self):
         player = self.player.sprite
         dist = 0
-        player.rect.x += player.direction.x * player.speed
-        for sprite in self.tiles.sprites():
-            if player.rect.colliderect(sprite.rect):
-                if player.direction.x < 0:
-                    if player.jumps > 0 and not player.wall_jumped:
-                        dist = player.rect.top - sprite.rect.top
-                    player.rect.left = sprite.rect.right+1
-                elif player.direction.x > 0:
-                    if player.jumps > 0 and not player.wall_jumped:
-                        dist = player.rect.top - sprite.rect.top
-                    player.rect.right = sprite.rect.left-1
-                break
+        if self.move == 0:
+            player.rect.x += player.direction.x * player.speed
+            for sprite in self.tiles.sprites():
+                if player.rect.colliderect(sprite.rect):
+                    if player.direction.x < 0:
+                        if player.jumps > 0 and not player.wall_jumped:
+                            dist = player.rect.top - sprite.rect.top
+                        player.rect.left = sprite.rect.right+1
+                    elif player.direction.x > 0:
+                        if player.jumps > 0 and not player.wall_jumped:
+                            dist = player.rect.top - sprite.rect.top
+                        player.rect.right = sprite.rect.left-1
+                    break
+        else:
+            for sprite in self.tiles.sprites():
+                sprite.rect.x += self.move
+                if player.rect.colliderect(sprite.rect):
+                    if player.direction.x < 0:
+                        player.rect.left = sprite.rect.right + 1
+                    elif player.direction.x > 0:
+                        player.rect.right = sprite.rect.left - 1
+
 
         if dist > 0:
             player.direction.y = 0
@@ -358,7 +368,6 @@ class Level:
     def draw(self):
         if not self.settings.pause and self.started:
             self.updateTime()
-            self.cam()
             self.h_col_plain()
             self.v_col_plain()
             self.col()
@@ -369,7 +378,7 @@ class Level:
             self.bullet_Col()
             self.space.update(self.move)
             self.stars.update(self.move)
-            self.tiles.update(self.move)
+            self.tiles.update(0)
             self.enemyBlocks.update(self.move)
             self.finish.update(self.move)
             self.bullets.update(self.move)
@@ -379,6 +388,7 @@ class Level:
             self.spikes.update(self.move)
             self.coins.update(self.move)
             self.player.update()
+            self.cam()
 
         self.space.draw(self.display_surface)
         self.stars.draw(self.display_surface)
