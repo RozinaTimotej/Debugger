@@ -24,10 +24,10 @@ class Button(pygame.sprite.Sprite):
                 self.settings.leftClick = True
                 if self.job == "playing" and not el.state == "pause_menu":
                     self.settings.menuMusic.stop()
-                    self.settings.gameMusic.play(-1, 0, 2000)
+                    self.settings.gameMusic.play(-1, 0, 200)
                 if self.job == "main_menu" and (el.state == "pause_menu" or el.state == "die_menu" or el.state == "finish_menu"):
                     self.settings.gameMusic.stop()
-                    self.settings.menuMusic.play(-1, 0, 2000)
+                    self.settings.menuMusic.play(-1, 0, 200)
                 if el.state == "name" and ((el.valid and self.job == "main_menu") or (self.job == "exit_to_desktop")):
                     pygame.mixer.Sound.play(self.settings.ClickSound)
                 elif not el.state == "name":

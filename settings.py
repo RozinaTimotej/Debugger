@@ -153,7 +153,7 @@ class Settings():
            "holdWall": import_folder("./Assets/player/hold/game/", (40,60))
         }
         self.updateSound()
-        self.menuMusic.play(-1, 0, 2000)
+        self.menuMusic.play(-1, 0, 200)
 
     def updateName(self, name):
         self.name = name

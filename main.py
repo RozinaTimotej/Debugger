@@ -99,7 +99,7 @@ while True:
             settings.levelIndex = 0
             settings.state = "main_menu"
             settings.gameMusic.stop()
-            settings.menuMusic.play(-1, 0, 2000)
+            settings.menuMusic.play(-1, 0, 200)
             print("No more levels, loading main menu")
         else:
             print("Loading next level: (level %s)" % str(int(settings.levelIndex)+1))
