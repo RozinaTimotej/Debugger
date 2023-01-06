@@ -50,36 +50,46 @@ class Level:
         self.start = pygame.sprite.GroupSingle()
 
         self.start.add(Start(self.settings.screen_h-300,self.settings.screen_w/2, self.settings.start))
+
+        x_offset = self.settings.screen_w / 3 - 20
         for r_i, row in enumerate(layout):
             for c_i, col in enumerate(row):
                 col_split = col.split("_")
                 for char in col_split:
                     if char == 'p':
-                        self.player.add(Player((c_i * self.settings.tile_size, r_i * self.settings.tile_size),self.settings,self.settings.playerFrames))
+                        x_offset -= c_i * self.settings.tile_size
+                        break
+
+        for r_i, row in enumerate(layout):
+            for c_i, col in enumerate(row):
+                col_split = col.split("_")
+                for char in col_split:
+                    if char == 'p':
+                        self.player.add(Player((c_i * self.settings.tile_size + x_offset, r_i * self.settings.tile_size),self.settings,self.settings.playerFrames))
                     if char == 'h1':
-                        self.enemies.add(Enemy((c_i * self.settings.tile_size, r_i * self.settings.tile_size),self.settings, self.settings.enemyFrames))
+                        self.enemies.add(Enemy((c_i * self.settings.tile_size + x_offset, r_i * self.settings.tile_size),self.settings, self.settings.enemyFrames))
                     if char == 't1':
-                        self.tiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.tile[char[1]],self.settings))
+                        self.tiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size + x_offset, r_i * self.settings.tile_size, self.settings.tile[char[1]],self.settings))
                     if char == 'e':
-                        self.finish.add(Finish(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.finish, self.settings))
+                        self.finish.add(Finish(self.settings.tile_size, c_i * self.settings.tile_size + x_offset, r_i * self.settings.tile_size, self.settings.finish, self.settings))
                     if char == 'iw':
-                        self.enemyBlocks.add(Tile(self.settings.tile_size, c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings))
+                        self.enemyBlocks.add(Tile(self.settings.tile_size, c_i * self.settings.tile_size + x_offset, r_i * self.settings.tile_size, self.settings))
                     if char == 'h2':
-                        self.flyingEnemies.add(FlyingEnemy((c_i * self.settings.tile_size, r_i * self.settings.tile_size), self.settings,self.settings.enemyFlyFrames))
+                        self.flyingEnemies.add(FlyingEnemy((c_i * self.settings.tile_size + x_offset, r_i * self.settings.tile_size), self.settings,self.settings.enemyFlyFrames))
                     if char == 'h3':
-                        self.kamikazeEnemy.add(KamikazeEnemy((c_i * self.settings.tile_size+16, r_i * self.settings.tile_size+32), self.settings,self.settings.kamikazeEnemyFrames))
+                        self.kamikazeEnemy.add(KamikazeEnemy((c_i * self.settings.tile_size+16 + x_offset, r_i * self.settings.tile_size+32), self.settings,self.settings.kamikazeEnemyFrames))
                     if char == 'c':
-                        self.coins.add(Coin(c_i * self.settings.tile_size, r_i * self.settings.tile_size, self.settings.coin, self.settings))
+                        self.coins.add(Coin(c_i * self.settings.tile_size + x_offset, r_i * self.settings.tile_size, self.settings.coin, self.settings))
                     if char == 's':
                         if r_i < len(layout)-1 and "t1" in layout[r_i+1][c_i].split("_"):
-                            self.spikes.add(Spike((c_i * self.settings.tile_size + 16, r_i * self.settings.tile_size + 40), self.settings, self.settings.spikeFrames,0))
+                            self.spikes.add(Spike((c_i * self.settings.tile_size + 16 + x_offset, r_i * self.settings.tile_size + 40), self.settings, self.settings.spikeFrames,0))
                         elif c_i < len(row)-1 and "t1" in layout[r_i][c_i+1].split("_"):
-                            self.spikes.add(Spike((c_i * self.settings.tile_size + 40, r_i * self.settings.tile_size + 20),self.settings, self.settings.spikeFrames,90))
+                            self.spikes.add(Spike((c_i * self.settings.tile_size + 40 + x_offset, r_i * self.settings.tile_size + 20),self.settings, self.settings.spikeFrames,90))
                         elif c_i > 0 and "t1" in layout[r_i][c_i-1].split("_"):
-                            self.spikes.add(Spike((c_i * self.settings.tile_size + 0, r_i * self.settings.tile_size + 20),self.settings, self.settings.spikeFrames,270))
+                            self.spikes.add(Spike((c_i * self.settings.tile_size + 0 + x_offset, r_i * self.settings.tile_size + 20),self.settings, self.settings.spikeFrames,270))
                         elif r_i > 0 and "t1" in layout[r_i-1][c_i].split("_"):
                             self.spikes.add(
-                                Spike((c_i * self.settings.tile_size + 16, r_i * self.settings.tile_size + 0),self.settings, self.settings.spikeFrames, 180))
+                                Spike((c_i * self.settings.tile_size + 16 + x_offset, r_i * self.settings.tile_size + 0),self.settings, self.settings.spikeFrames, 180))
 
         len_x = math.ceil(((len(layout[0])+1)*64) / 1367) + 1
         for i in range(-2, len_x + 1):
