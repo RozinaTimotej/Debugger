@@ -41,9 +41,9 @@ class LevelButton(pygame.sprite.Sprite):
 class Block(pygame.sprite.Sprite):
     def __init__(self, x, y, w, h, settings):
         super().__init__()
-        self.image = pygame.Surface((w, h))
+        self.settings = settings
+        self.image = settings.lvlSelect
         self.rect = self.image.get_rect(topleft=(x, y))
-        self.image.fill((15, 36, 69))
 
 
 class LevelSelect:
@@ -60,12 +60,10 @@ class LevelSelect:
         self.buttons = pygame.sprite.Group()
         self.ui = pygame.sprite.Group()
         for i, lvl in enumerate(self.settings.levels):
-            self.lvls.add(LevelButton((self.settings.screen_w / 5 * (i % 5)) + ((self.settings.screen_w / 5) / 2), 200 * (1 + (i // 5)), i, self.settings,"playing"))
+            self.lvls.add(LevelButton((70 + ((self.settings.screen_w-160) / 7 * (i % 7))) + ((self.settings.screen_w / 7) / 2), 50 + (150 * (1 + (i // 7))) , i, self.settings,"playing"))
         self.buttons.add(Button(self.settings.screen_w / 2 + 150, 700, "lvl", "main_menu", self.settings))
         self.buttons.add(Button(self.settings.screen_w / 2 - 150, 700, "lvl", "exit_to_desktop", self.settings))
         self.ui.add(Block(0, 0, self.settings.screen_w, self.settings.screen_h / 5, self.settings))
-        self.ui.add(
-            Block(0, 4 * self.settings.screen_h / 5, self.settings.screen_w, self.settings.screen_h / 5, self.settings))
 
     def draw(self):
         self.state = "select"
@@ -112,12 +110,10 @@ class HighScoreLevel:
         self.buttons = pygame.sprite.Group()
         self.ui = pygame.sprite.Group()
         for i, lvl in enumerate(self.settings.levels):
-            self.lvls.add(LevelButton((self.settings.screen_w / 5 * (i % 5)) + ((self.settings.screen_w / 5) / 2), 200 * (1 + (i // 5)), i, self.settings,"highscore"))
+            self.lvls.add(LevelButton((70 + ((self.settings.screen_w-160) / 7 * (i % 7))) + ((self.settings.screen_w / 7) / 2), 50 + (150 * (1 + (i // 7))) , i, self.settings,"highscore"))
         self.buttons.add(Button(self.settings.screen_w / 2 + 150, 700, "lvl", "back", self.settings))
         self.buttons.add(Button(self.settings.screen_w / 2 - 150, 700, "lvl", "exit_to_desktop", self.settings))
         self.ui.add(Block(0, 0, self.settings.screen_w, self.settings.screen_h / 5, self.settings))
-        self.ui.add(
-            Block(0, 4 * self.settings.screen_h / 5, self.settings.screen_w, self.settings.screen_h / 5, self.settings))
 
     def draw(self):
         self.state = "highscoreselect"
