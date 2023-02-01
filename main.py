@@ -9,6 +9,9 @@ from lvlSelect import LevelSelect,HighScoreLevel
 from endLevel import DieMenu
 from finishMenu import FinishMenu
 from highScore import HighScore
+from extras import About
+
+
 clock = pygame.time.Clock()
 pygame.init()
 screen = pygame.display.set_mode((settings.screen_w, settings.screen_h))
@@ -23,6 +26,7 @@ levelSelect = LevelSelect(screen, settings)
 highScoreLevel = HighScoreLevel(screen,settings)
 level = Level(settings.levels[settings.levelIndex], screen, settings)
 highScore = HighScore(screen, settings,settings.levelIndex)
+about = About(screen, settings)
 def update_fps():
     fps = str(int(clock.get_fps()))
     fps_text = settings.font.render(fps, True, pygame.Color("coral"))
@@ -62,6 +66,8 @@ while True:
         settingMenu.updateState("pause_menu")
     elif settings.state == "name":
         settings.state = changeName.draw()
+    elif settings.state == "about":
+        settings.state = about.draw()
     elif settings.state == "die_menu":
         level.draw()
         settings.state = dieMenu.draw()

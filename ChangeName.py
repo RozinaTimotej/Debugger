@@ -74,7 +74,7 @@ class Changename:
         self.display_surface.blit(txt, (self.settings.screen_w / 2 - 140, 325+4))
         if self.state == "main_menu" and self.valid:
             self.settings.updateName(self.name)
-            return self.state
+            return "about"
         elif not self.state == "main_menu":
             return self.state
         else:
