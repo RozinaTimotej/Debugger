@@ -58,7 +58,8 @@ class MainMenu:
         self.menu.add(Button(self.settings.screen_w / 2, 200,"main", "select", self.settings))
         self.menu.add(Button(self.settings.screen_w / 2, 250,"main", "settings", self.settings))
         self.menu.add(Button(self.settings.screen_w / 2, 300, "main", "highscoreselect", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 350,"main", "exit_to_desktop", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 350, "main", "about", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2, 400,"main", "exit_to_desktop", self.settings))
 
     def draw(self):
         self.state = "main_menu"

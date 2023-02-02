@@ -83,6 +83,7 @@ class Settings():
         self.state = "name"
         self.event = pygame.event.get()
         self.font = pygame.font.SysFont("Courier", 18)
+        self.readAbout = []
         self.name = ""
         self.buttons = {
             "up": "up",
@@ -154,8 +155,19 @@ class Settings():
            "holdWall": import_folder("./Assets/player/hold/game/", (40,60))
         }
         self.updateSound()
+        self.loadAbout()
         self.menuMusic.play(-1, 0, 200)
 
+    def loadAbout(self):
+        with open("./settings/name.txt", 'r') as f:
+            for line in f.readlines():
+                line = line.strip()
+                self.readAbout.append(line)
+
+    def updateReadAbout(self):
+        self.readAbout.append(self.name)
+        with open("./settings/name.txt", 'a') as f:
+            f.write(self.name+"\n")
     def updateName(self, name):
         self.name = name
     def updateSound(self):

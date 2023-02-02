@@ -13,7 +13,7 @@ class About:
 
     def init_menu(self):
         self.groupButtons = pygame.sprite.Group()
-        self.groupButtons.add(Button(self.settings.screen_w / 2 - 25, 500,"settings", "main_menu", self.settings))
+        self.groupButtons.add(Button(self.settings.screen_w / 2 - 25, 500, "settings", "main_menu", self.settings))
 
     def draw(self):
         self.state = "about"
@@ -21,4 +21,6 @@ class About:
         self.settings.logo.draw(self.display_surface)
         self.groupButtons.update(self)
         self.groupButtons.draw(self.display_surface)
+        if self.state == "main_menu":
+            self.settings.updateReadAbout()
         return self.state
