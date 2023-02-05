@@ -24,7 +24,7 @@ class About:
         self.text = pygame.sprite.Group()
         self.groupButtons.add(Button(self.settings.screen_w / 2 - 25, 650, "settings", "main_menu", self.settings))
         self.ui.add(Block(0, 0, self.settings.screen_w, self.settings.screen_h / 5, self.settings))
-        self.text.add(Text(90, 275, self.settings, self.settings.license))  # 255,255,0
+        self.text.add(Text(90, 275, self.settings, self.settings.about))  # 255,255,0
 
     def draw(self):
         self.state = "about"

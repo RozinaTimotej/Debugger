@@ -100,7 +100,8 @@ class Settings():
         self.background = pygame.sprite.Group()
         self.leftClick = False
         self.lvlSelect = pygame.image.load("./Assets/background/bg_hol.png")
-        self.license = pygame.image.load("./Assets/background/test.png")
+        self.license = pygame.image.load("./Assets/background/licence.png")
+        self.about = pygame.image.load("./Assets/background/about.png")
         self.background.add(Background(0,0,pygame.image.load("./Assets/background/bg_hole.png")))
         self.deathSound = pygame.mixer.Sound("./Assets/sounds/death.mp3")
         self.coinSound = pygame.mixer.Sound("./Assets/sounds/coin.mp3")
