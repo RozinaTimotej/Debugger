@@ -145,14 +145,14 @@ class SettingsMenu:
         self.groupSound.add(SliderMovable(self.settings.screen_w / 2, 275, 1, self.settings, "settings"))
         self.groupSound.add(Button(self.settings.screen_w / 2+150, 500,"settings", "main_menu", self.settings))
         self.groupSound.add(Button(self.settings.screen_w / 2-150, 500,"settings", "back", self.settings))
-        self.groupButtons.add(Key(self.settings.screen_w / 2-25,340,"up",self.settings,self.settings.jump))
-        self.groupButtons.add(Key(self.settings.screen_w / 2-25, 410,"down",self.settings,self.settings.down))
-        self.groupButtons.add(Key(self.settings.screen_w / 2-25+65, 410,"right",self.settings,self.settings.right))
-        self.groupButtons.add(Key(self.settings.screen_w / 2-25-65, 410,"left",self.settings,self.settings.left))
-        self.groupText.add(Txt(self.settings.screen_w / 2-25, 340, "up", self.settings, self.settings.jump,self.display_surface))
-        self.groupText.add(Txt(self.settings.screen_w / 2-25, 410, "down", self.settings, self.settings.down,self.display_surface))
-        self.groupText.add(Txt(self.settings.screen_w / 2-25 + 65, 410, "right", self.settings, self.settings.right,self.display_surface))
-        self.groupText.add(Txt(self.settings.screen_w / 2-25 - 65, 410, "left", self.settings, self.settings.left,self.display_surface))
+        self.groupButtons.add(Key(self.settings.screen_w / 2-25,360,"up",self.settings,self.settings.jump))
+        self.groupButtons.add(Key(self.settings.screen_w / 2-25, 430,"down",self.settings,self.settings.down))
+        self.groupButtons.add(Key(self.settings.screen_w / 2-25+65, 430,"right",self.settings,self.settings.right))
+        self.groupButtons.add(Key(self.settings.screen_w / 2-25-65, 430,"left",self.settings,self.settings.left))
+        self.groupText.add(Txt(self.settings.screen_w / 2-25, 360, "up", self.settings, self.settings.jump,self.display_surface))
+        self.groupText.add(Txt(self.settings.screen_w / 2-25, 430, "down", self.settings, self.settings.down,self.display_surface))
+        self.groupText.add(Txt(self.settings.screen_w / 2-25 + 65, 430, "right", self.settings, self.settings.right,self.display_surface))
+        self.groupText.add(Txt(self.settings.screen_w / 2-25 - 65, 430, "left", self.settings, self.settings.left,self.display_surface))
 
     def updateState(self, state):
         self.prevState = state
