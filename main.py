@@ -5,29 +5,32 @@ from level import Level
 from mainMenu import MainMenu, PauseMenu
 from settingMenu import SettingsMenu
 from ChangeName import Changename
-from lvlSelect import LevelSelect,HighScoreLevel
+from lvlSelect import LevelSelect, HighScoreLevel
 from endLevel import DieMenu
 from finishMenu import FinishMenu
 from highScore import HighScore
 from extras import About, License
 
-
 clock = pygame.time.Clock()
 pygame.init()
 screen = pygame.display.set_mode((settings.screen_w, settings.screen_h))
 settings = Settings()
+pygame.display.set_caption('Debugger', "./Assets/player/idle/game/sprite_0.png")
+pygame.display.set_icon(settings.playerFrames["front"][0])
 settingMenu = SettingsMenu(screen, settings)
-changeName = Changename(screen,settings)
+changeName = Changename(screen, settings)
 startMenu = MainMenu(screen, settings, settingMenu)
 pauseMenu = PauseMenu(screen, settings, settingMenu)
-dieMenu = DieMenu(screen,settings)
-finishMenu = FinishMenu(screen,settings)
+dieMenu = DieMenu(screen, settings)
+finishMenu = FinishMenu(screen, settings)
 levelSelect = LevelSelect(screen, settings)
-highScoreLevel = HighScoreLevel(screen,settings)
+highScoreLevel = HighScoreLevel(screen, settings)
 level = Level(settings.levels[settings.levelIndex], screen, settings)
-highScore = HighScore(screen, settings,settings.levelIndex)
+highScore = HighScore(screen, settings, settings.levelIndex)
 about = About(screen, settings)
-license = License(screen,settings)
+license = License(screen, settings)
+
+
 def update_fps():
     fps = str(int(clock.get_fps()))
     fps_text = settings.font.render(fps, True, pygame.Color("coral"))
@@ -90,7 +93,7 @@ while True:
     elif settings.state == "highscoreselect":
         settings.state = highScoreLevel.draw()
         if settings.state == "highscore":
-            highScore = HighScore(screen, settings,settings.levelIndex)
+            highScore = HighScore(screen, settings, settings.levelIndex)
     elif settings.state == "highscore":
         settings.state = highScore.draw()
     elif settings.state == "main_menu":
@@ -111,9 +114,9 @@ while True:
             settings.menuMusic.play(-1, 0, 200)
             print("No more levels, loading main menu")
         else:
-            print("Loading next level: (level %s)" % str(int(settings.levelIndex)+1))
+            print("Loading next level: (level %s)" % str(int(settings.levelIndex) + 1))
         level = Level(settings.levels[settings.levelIndex], screen, settings)
-    screen.blit(update_fps(), (settings.screen_w-20, 0))
-    screen.blit(settings.font.render(settings.name, True, pygame.Color("coral")), (100,0))
+    screen.blit(update_fps(), (settings.screen_w - 20, 0))
+    screen.blit(settings.font.render(settings.name, True, pygame.Color("coral")), (100, 0))
     clock.tick(60)
     pygame.display.update()
