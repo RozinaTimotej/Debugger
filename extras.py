@@ -9,6 +9,9 @@ class Text(pygame.sprite.Sprite):
         self.settings = settings
         self.image = txt
         self.rect = self.image.get_rect(topleft=(x, y))
+    def update(self,el):
+        self.rect.y += el.y
+
 class About:
     def __init__(self, surface, settings):
         self.buttons = None
@@ -31,7 +34,7 @@ class About:
         self.settings.background.draw(self.display_surface)
         self.groupButtons.update(self)
         self.text.draw(self.display_surface)
-        #self.ui.draw(self.display_surface)
+        self.ui.draw(self.display_surface)
         self.settings.logo.draw(self.display_surface)
         self.groupButtons.draw(self.display_surface)
         if self.state == "main_menu":
@@ -57,6 +60,27 @@ class License:
 
     def draw(self):
         self.state = "license"
+        if self.y > 0:
+            self.y -= 1
+        elif self.y < 0:
+            self.y += 1
+        scroll_lckup = False
+        scroll_lckdown = False
+        if self.text.sprites()[-1].rect.bottom < (4 * self.settings.screen_h / 5) - 100:
+            scroll_lckup = True
+            if self.y < 0:
+                self.y = 0
+        if self.text.sprites()[0].rect.top > (self.settings.screen_h / 5) + 35:
+            scroll_lckdown = True
+            if self.y > 0:
+                self.y = 0
+        for event in self.settings.event:
+            if event.type == pygame.MOUSEWHEEL:
+                if event.y > 0 and not scroll_lckdown:
+                    self.y += event.y * 2
+                elif event.y < 0 and not scroll_lckup:
+                    self.y += event.y * 2
+        self.text.update(self)
         self.settings.background.draw(self.display_surface)
         self.groupButtons.update(self)
         self.text.draw(self.display_surface)
