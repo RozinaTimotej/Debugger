@@ -1,7 +1,7 @@
 import copy
 import pygame
 from mainMenu import Button
-
+validChars = "1234567890-.,qwertyuiopasdfghjklzxcvbnm"
 class Slider(pygame.sprite.Sprite):
 
     def __init__(self, x, y,folder, id, settings):
@@ -80,7 +80,9 @@ class Key(pygame.sprite.Sprite):
         if self.pressed and not self.settings.leftClick:
             self.settings.leftClick = True
             for event in self.settings.event:
-                if event.type == pygame.KEYUP:
+                if event.type == pygame.KEYUP and (pygame.key.name(event.key) in validChars or pygame.key.name(event.key) == "left" or pygame.key.name(
+                            event.key) == "right" or pygame.key.name(event.key) == "up" or pygame.key.name(
+                            event.key) == "down"):
                     self.settings.buttons[self.id] = pygame.key.name(event.key)
                     if not (pygame.key.name(event.key) == "left" or pygame.key.name(
                             event.key) == "right" or pygame.key.name(event.key) == "up" or pygame.key.name(
