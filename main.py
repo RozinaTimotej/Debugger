@@ -1,6 +1,5 @@
 import pygame, sys
-import settings
-from settings import *
+from settings import Settings
 from level import Level
 from mainMenu import MainMenu, PauseMenu
 from settingMenu import SettingsMenu
@@ -13,8 +12,10 @@ from extras import About, License
 
 clock = pygame.time.Clock()
 pygame.init()
-screen = pygame.display.set_mode((settings.screen_w, settings.screen_h))
 settings = Settings()
+screen = pygame.display.set_mode((settings.screen_w, settings.screen_h),pygame.RESIZABLE)
+settings.begin()
+settings.startSound()
 pygame.display.set_caption('Debugger', "./Assets/player/idle/game/sprite_0.png")
 pygame.display.set_icon(settings.playerFrames["front"][0])
 settingMenu = SettingsMenu(screen, settings)
@@ -51,6 +52,15 @@ while True:
                 settings.state = "playing"
             if not level.started:
                 level.starts()
+        elif event.type == pygame.VIDEORESIZE:
+            width, height = event.size
+            screen = pygame.display.set_mode((height*1.5625, height), pygame.RESIZABLE)
+            settings.screen_mul = height/768
+            settings.screen_w = 1200 * settings.screen_mul
+            settings.screen_h = 768 * settings.screen_mul
+            settings.tile_size = 64 * settings.screen_mul
+            settings.begin()
+            level = Level(settings.levels[settings.levelIndex], screen, settings)
     if not pygame.mouse.get_pressed()[0]:
         settings.leftClick = False
     if settings.state == "playing" and not settings.pause:

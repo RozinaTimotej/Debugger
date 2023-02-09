@@ -31,11 +31,11 @@ class Player(pygame.sprite.Sprite):
         self.jumps = 0
         self.doubleJump = False
         self.direction = pygame.math.Vector2(0.0)
-        self.speed = 4
+        self.speed = 4*self.settings.screen_mul
         self.speedInfo = self.speed
-        self.animMult = {"front": 6, "run": 6, "jump": 6, "fall": 6,"holdWall":  6}
-        self.gravity = 1
-        self.jumpHeight = -17
+        self.animMult = {"front": 6*self.settings.screen_mul, "run": 6*self.settings.screen_mul, "jump": 6*self.settings.screen_mul, "fall": 6*self.settings.screen_mul,"holdWall":  6*self.settings.screen_mul}
+        self.gravity = 1*self.settings.screen_mul
+        self.jumpHeight = -17*self.settings.screen_mul
 
     def animate(self): #pregled stanja igralca in določitev ustrezne animacije
         if self.direction.x > 0:

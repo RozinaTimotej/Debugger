@@ -18,3 +18,5 @@ Test
 test
 Timotej
 Timotej2
+tEST
+Rewst

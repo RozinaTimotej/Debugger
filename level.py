@@ -59,7 +59,6 @@ class Level:
                     if char == 'p':
                         x_offset -= c_i * self.settings.tile_size
                         break
-
         for r_i, row in enumerate(layout):
             for c_i, col in enumerate(row):
                 col_split = col.split("_")

@@ -15,9 +15,9 @@ class Enemy(pygame.sprite.Sprite):
         self.image = self.frames[self.dir_i][self.frame_index]
         self.rect = self.image.get_rect(topleft=pos)
         self.facing_right = True
-        self.speed = 1
+        self.speed = 1*self.settings.screen_mul
         self.speedInfo = self.speed
-        self.animMult = {"front": 6, "run": 6, "jump": 6, "fall": 6, "holdWall": 6}
+        self.animMult = {"front": 6*self.settings.screen_mul, "run": 6*self.settings.screen_mul, "jump": 6*self.settings.screen_mul, "fall": 6*self.settings.screen_mul, "holdWall": 6*self.settings.screen_mul}
         self.state = "alive"
         self.direction = pygame.math.Vector2(0.0)
         self.direction.x = 1
@@ -48,9 +48,9 @@ class FlyingEnemy(pygame.sprite.Sprite):
         self.image = self.frames[self.dir_i][self.frame_index]
         self.rect = self.image.get_rect(topleft=pos)
         self.facing_right = True
-        self.speed = 1
+        self.speed = 1*self.settings.screen_mul
         self.speedInfo = self.speed
-        self.animMult = {"fly": 6,"die":10,"shoot":10}
+        self.animMult = {"fly": 6*self.settings.screen_mul,"die":10*self.settings.screen_mul,"shoot":10*self.settings.screen_mul}
         self.direction = pygame.math.Vector2(0.0)
         self.direction.x = 1
         self.state = "alive"
@@ -88,9 +88,9 @@ class KamikazeEnemy(pygame.sprite.Sprite):
         self.image = self.frames[self.dir_i][self.frame_index]
         self.rect = self.image.get_rect(topleft=pos)
         self.facing_right = False
-        self.speed = 3
+        self.speed = 3*self.settings.screen_mul
         self.speedInfo = self.speed
-        self.animMult = {"fly": 6,"die":10,"ready":6,"attack":6,"stand":6}
+        self.animMult = {"fly": 6*self.settings.screen_mul,"die":10*self.settings.screen_mul,"ready":6*self.settings.screen_mul,"attack":6*self.settings.screen_mul,"stand":6*self.settings.screen_mul}
         self.dest = pygame.math.Vector2(0.0)
         self.state = "alive"
         self.dx = 0
@@ -106,7 +106,7 @@ class KamikazeEnemy(pygame.sprite.Sprite):
         self.dy = 0
         self.degs = 0
         self.dist = 0
-        self.speed = 3
+        self.speed = 3*self.settings.screen_mul
         self.state = state
         self.dir_i = "die"
 
