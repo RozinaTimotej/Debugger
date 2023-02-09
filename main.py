@@ -54,13 +54,17 @@ while True:
                 level.starts()
         elif event.type == pygame.VIDEORESIZE:
             width, height = event.size
-            screen = pygame.display.set_mode((height*1.5625, height), pygame.RESIZABLE)
-            settings.screen_mul = height/768
-            settings.screen_w = 1200 * settings.screen_mul
-            settings.screen_h = 768 * settings.screen_mul
-            settings.tile_size = 64 * settings.screen_mul
-            settings.begin()
-            level = Level(settings.levels[settings.levelIndex], screen, settings)
+            print(width,height)
+            if 1200 > width or height < 768:
+                screen = pygame.display.set_mode((1200, 768), pygame.RESIZABLE)
+            else:
+                screen = pygame.display.set_mode((height*1.5625, height), pygame.RESIZABLE)
+                settings.screen_mul = height/768
+                settings.screen_w = 1200 * settings.screen_mul
+                settings.screen_h = 768 * settings.screen_mul
+                settings.tile_size = 64 * settings.screen_mul
+                settings.begin()
+                level = Level(settings.levels[settings.levelIndex], screen, settings)
     if not pygame.mouse.get_pressed()[0]:
         settings.leftClick = False
     if settings.state == "playing" and not settings.pause:

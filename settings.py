@@ -73,7 +73,7 @@ class Settings():
         self.levelIndex = 0
         self.levels = map
         self.scores = scores
-        self.screen_mul = 1.5
+        self.screen_mul = 1
         self.screen_w = screen_w*self.screen_mul
         self.screen_h = screen_h*self.screen_mul
         self.tile_size = tile_size*self.screen_mul
@@ -98,12 +98,11 @@ class Settings():
         self.right = "right"
         self.vol = [music_volume, effects_volume]
         self.loadSettings()
-        self.background = pygame.sprite.Group()
         self.leftClick = False
 
 
     def begin(self):
-        print(self.screen_mul)
+        self.background = pygame.sprite.Group()
         self.lvlSelect = pygame.transform.scale(pygame.image.load("./Assets/background/bg_hol.png"),
                                                 (1200 * self.screen_mul, 768 * self.screen_mul))
         self.license = pygame.transform.scale(pygame.image.load("./Assets/background/licence.png"),
@@ -161,6 +160,7 @@ class Settings():
             "jump": import_folder("./Assets/player/jump/game/", (40 * self.screen_mul, 60 * self.screen_mul)),
             "holdWall": import_folder("./Assets/player/hold/game/", (40 * self.screen_mul, 60 * self.screen_mul))
         }
+
 
     def startSound(self):
         self.deathSound = pygame.mixer.Sound("./Assets/sounds/death.mp3")
