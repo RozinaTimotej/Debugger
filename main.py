@@ -54,7 +54,6 @@ while True:
                 level.starts()
         elif event.type == pygame.VIDEORESIZE:
             width, height = event.size
-            print(width,height)
             if 1200 > width or height < 768:
                 screen = pygame.display.set_mode((1200, 768), pygame.RESIZABLE)
             else:

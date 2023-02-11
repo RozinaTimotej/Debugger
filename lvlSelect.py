@@ -30,6 +30,7 @@ class LevelButton(pygame.sprite.Sprite):
                 if not self.setstate == "highscore":
                     self.settings.menuMusic.stop()
                     self.settings.gameMusic.play(-1, 0, 200)
+                    pygame.display.set_mode((1200, 768))
                 self.settings.levelIndex = int(self.id)
                 el.state = self.setstate
         elif not (self.rect.collidepoint(mouse) and 4 * self.settings.screen_h / 5 > mouse[

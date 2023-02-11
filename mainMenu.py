@@ -92,4 +92,6 @@ class PauseMenu:
         self.settings.logo.draw(self.display_surface)
         self.menu.update(self)
         self.menu.draw(self.display_surface)
+        if self.state == "main_menu":
+            pygame.display.set_mode((1200, 768),pygame.RESIZABLE)
         return self.state

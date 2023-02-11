@@ -22,4 +22,6 @@ class DieMenu:
         self.menu.draw(self.display_surface)
         if not self.state == "die_menu":
             self.settings.pause = False
+        if self.state == "main_menu":
+            pygame.display.set_mode((1200, 768),pygame.RESIZABLE)
         return self.state
