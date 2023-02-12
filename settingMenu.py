@@ -170,6 +170,8 @@ class SettingsMenu:
         self.settings.logo.draw(self.display_surface)
         self.groupSound.update(self)
         self.groupButtons.update()
+        self.settings.sfx.draw(self.display_surface)
+        self.settings.music.draw(self.display_surface)
         self.groupSound.draw(self.display_surface)
         self.groupButtons.draw(self.display_surface)
         self.groupText.update()

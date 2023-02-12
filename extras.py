@@ -3,6 +3,16 @@ import pygame
 from settingMenu import Button
 from lvlSelect import Block
 
+class Icon(pygame.sprite.Sprite):
+    def __init__(self, x, y,icon, settings):
+        super().__init__()
+        self.settings = settings
+        self.image = pygame.transform.scale(pygame.image.load('./Assets/icons/'+icon).convert_alpha(),
+                                            (50*self.settings.screen_mul, 50*self.settings.screen_mul))
+        self.rect = self.image.get_rect(topleft=(x, y))
+
+    def update(self, move):
+        self.rect.x += move
 class Text(pygame.sprite.Sprite):
     def __init__(self, x, y, settings, txt):
         super().__init__()

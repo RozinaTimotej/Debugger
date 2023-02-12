@@ -1,7 +1,7 @@
 import os
 import pygame
 from logo import Logo
-
+from extras import Icon
 d = 'levels'
 
 def import_folder(path,size):  # nalaganje vseh *.png datotek
@@ -103,11 +103,15 @@ class Settings():
 
     def begin(self):
         self.background = pygame.sprite.Group()
+        self.sfx = pygame.sprite.GroupSingle()
+        self.music = pygame.sprite.GroupSingle()
+        self.sfx.add(Icon(100,100,"sfx.png",self))
+        self.music.add(Icon(100,150,"music.png",self))
         self.lvlSelect = pygame.transform.scale(pygame.image.load("./Assets/background/bg_hol.png"),
                                                 (1200 * self.screen_mul, 768 * self.screen_mul))
-        self.license = pygame.transform.scale(pygame.image.load("./Assets/background/licence.png"),
+        self.license = pygame.transform.scale(pygame.image.load("./Assets/background/about.png"),
                                               (1000 * self.screen_mul, 1000 * self.screen_mul))
-        self.about = pygame.transform.scale(pygame.image.load("./Assets/background/about.png"),
+        self.about = pygame.transform.scale(pygame.image.load("./Assets/background/story.png"),
                                             (1000 * self.screen_mul, 1000 * self.screen_mul))
         self.background.add(Background(0, 0,
                                        pygame.transform.scale(pygame.image.load("./Assets/background/bg_hole.png"),
