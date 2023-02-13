@@ -3,19 +3,26 @@ import pygame
 from mainMenu import Button
 validChars = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./"
 class Input(pygame.sprite.Sprite):
-    def __init__(self, x, y, id,settings):
+    def __init__(self, id,settings):
         super().__init__()
         self.id = id
         self.settings = settings
-        self.w = 320
-        self.h = 30
+        self.w = 320*self.settings.screen_mul
+        self.h = 30*self.settings.screen_mul
+        self.y = 325
+        self.x = self.settings.screen_w / 2
+        self.start = self.x * self.settings.screen_mul - self.w / 2
         self.typing = False
-        self.start = x - self.w / 2
-        self.y = y
         self.image = pygame.Surface((self.w, self.h))
         self.image.fill((30, 30, 30))
-        self.rect = self.image.get_rect(topleft=(x - self.w / 2, y))
+        self.rect = self.image.get_rect(topleft=(self.x*self.settings.screen_mul - self.w / 2, self.y*self.settings.screen_mul ))
 
+    def resize(self):
+        self.w = 320 * self.settings.screen_mul
+        self.h = 30 * self.settings.screen_mul
+        self.start = self.x * self.settings.screen_mul - self.w / 2
+        self.image = pygame.Surface((self.w, self.h))
+        self.rect = self.image.get_rect(topleft=(self.x*self.settings.screen_mul  - self.w / 2, self.y*self.settings.screen_mul ))
     def update(self, el):
         mouse = pygame.mouse.get_pos()
         pressed = pygame.mouse.get_pressed()[0]
@@ -37,7 +44,7 @@ class Input(pygame.sprite.Sprite):
                             el.name += pygame.key.name(event.key).upper()
                         else:
                             el.name += pygame.key.name(event.key)
-        rect = pygame.Rect((self.start - 1, self.y - 1), (self.w + 2, self.h + 2))
+        rect = pygame.Rect((self.start - 1, self.y*self.settings.screen_mul - 1), (self.w + 2, self.h + 2))
 
         if len(el.name) > 3:
             el.valid = True
@@ -60,9 +67,13 @@ class Changename:
 
     def init_menu(self):
         self.nameGroup = pygame.sprite.Group()
-        self.nameGroup.add(Input(self.settings.screen_w / 2, 325, "input",self.settings))
+        self.nameGroup.add(Input("input",self.settings))
         self.nameGroup.add(Button(self.settings.screen_w / 2+85, 400,"name", "main_menu", self.settings))
         self.nameGroup.add(Button(self.settings.screen_w / 2-85, 400,"name", "exit_to_desktop", self.settings))
+
+    def resize(self):
+        for el in self.nameGroup:
+            el.resize()
 
     def draw(self):
         self.state = "name"
@@ -71,7 +82,7 @@ class Changename:
         self.nameGroup.update(self)
         self.nameGroup.draw(self.display_surface)
         txt = self.settings.font.render(self.name, True, pygame.Color("coral"))
-        self.display_surface.blit(txt, (self.settings.screen_w / 2 - 140, 325+4))
+        self.display_surface.blit(txt, (self.settings.screen_w / 2 - 140, 320 * self.settings.screen_mul - 4 + (30 * self.settings.screen_mul/2)))
         if self.state == "main_menu" and self.valid:
             self.settings.updateName(self.name)
             if self.settings.name in self.settings.readAbout:

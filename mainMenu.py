@@ -6,12 +6,24 @@ class Button(pygame.sprite.Sprite):
         super().__init__()
         self.job = job
         self.settings = settings
-        self.imageNormal = pygame.image.load('./Assets/menu/'+folder+'/'+job+".png").convert_alpha()
-        self.imageHover = pygame.image.load('./Assets/menu/'+folder+'/'+job+"_hover.png").convert_alpha()
+        self.x = x
+        self.y = y
+        self.imgNormal = pygame.image.load('./Assets/menu/'+folder+'/'+job+".png").convert_alpha()
+        self.imgHover = pygame.image.load('./Assets/menu/'+folder+'/'+job+"_hover.png").convert_alpha()
+        self.imageNormal = pygame.transform.scale(self.imgNormal,(self.imgNormal.get_width()*self.settings.screen_mul,self.imgNormal.get_height()*self.settings.screen_mul))
+        self.imageHover = pygame.transform.scale(self.imgHover,(self.imgHover.get_width()*self.settings.screen_mul,self.imgHover.get_height()*self.settings.screen_mul))
         self.played = False
 
         self.image = self.imageNormal
         self.rect = self.image.get_rect(topleft=(x-self.imageHover.get_width()/2, y))
+
+    def resize(self):
+        self.imageNormal = pygame.transform.scale(self.imgNormal, (
+        self.imgNormal.get_width() * self.settings.screen_mul, self.imgNormal.get_height() * self.settings.screen_mul))
+        self.imageHover = pygame.transform.scale(self.imgHover, (
+        self.imgHover.get_width() * self.settings.screen_mul, self.imgHover.get_height() * self.settings.screen_mul))
+        self.image = self.imageNormal
+        self.rect = self.image.get_rect(topleft=(self.x*self.settings.screen_mul - self.imageHover.get_width() / 2, self.y*self.settings.screen_mul))
 
     def update(self, el):
         mouse = pygame.mouse.get_pos()
@@ -61,6 +73,10 @@ class MainMenu:
         self.menu.add(Button(self.settings.screen_w / 2, 375, "main", "about", self.settings))
         self.menu.add(Button(self.settings.screen_w / 2, 425, "main", "license", self.settings))
         self.menu.add(Button(self.settings.screen_w / 2, 475,"main", "exit_to_desktop", self.settings))
+
+    def resize(self):
+        for el in self.menu:
+            el.resize()
 
     def draw(self):
         self.state = "main_menu"

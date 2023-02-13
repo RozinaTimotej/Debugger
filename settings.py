@@ -61,10 +61,15 @@ music_volume = 0.1
 effects_volume = 0.1
 
 class Background(pygame.sprite.Sprite):
-    def __init__(self, x, y, surface):
+    def __init__(self, x, y, surface,settings):
         super().__init__()
-        self.image = surface
+        self.settings = settings
+        self.surf = surface
+        self.image = self.surf
         self.rect = self.image.get_rect(topleft=(x, y))
+
+    def resize(self):
+        self.image = pygame.transform.scale(self.surf,(self.surf.get_width()*self.settings.screen_mul,self.surf.get_height()*self.settings.screen_mul))
 
 class Settings():
     def __init__(self):
@@ -100,9 +105,11 @@ class Settings():
         self.loadSettings()
         self.leftClick = False
 
-
+    def resize(self):
+        self.background.sprite.resize()
+        self.logo.sprite.resize()
     def begin(self):
-        self.background = pygame.sprite.Group()
+        self.background = pygame.sprite.GroupSingle()
         self.sfx = pygame.sprite.GroupSingle()
         self.music = pygame.sprite.GroupSingle()
         self.sfx.add(Icon(100,100,"sfx.png",self))
@@ -115,7 +122,7 @@ class Settings():
                                             (1000 * self.screen_mul, 1000 * self.screen_mul))
         self.background.add(Background(0, 0,
                                        pygame.transform.scale(pygame.image.load("./Assets/background/bg_hole.png"),
-                                                              (1200 * self.screen_mul, 768 * self.screen_mul))))
+                                                              (1200 * self.screen_mul, 768 * self.screen_mul)),self))
         self.tile = tiles("./Assets/tla/", (64 * self.screen_mul, 64 * self.screen_mul))
         self.finish = pygame.transform.scale(pygame.image.load("./Assets/finish/e.png").convert_alpha(),
                                              (64 * self.screen_mul, 64 * self.screen_mul))

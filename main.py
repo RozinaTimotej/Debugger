@@ -61,6 +61,9 @@ while True:
                 settings.screen_w = 1200
                 settings.screen_h = 768
                 settings.tile_size = 64
+                settings.resize()
+                changeName.resize()
+                startMenu.resize()
                 level = Level(settings.levels[settings.levelIndex], screen, settings)
             else:
                 screen = pygame.display.set_mode((height*1.5625, height), pygame.RESIZABLE)
@@ -68,6 +71,9 @@ while True:
                 settings.screen_w = 1200 * settings.screen_mul
                 settings.screen_h = 768 * settings.screen_mul
                 settings.tile_size = 64 * settings.screen_mul
+                settings.resize()
+                changeName.resize()
+                startMenu.resize()
                 level = Level(settings.levels[settings.levelIndex], screen, settings)
     if not pygame.mouse.get_pressed()[0]:
         settings.leftClick = False
