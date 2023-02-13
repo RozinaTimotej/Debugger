@@ -9,7 +9,7 @@ class PlayerScore(pygame.sprite.Sprite):
         self.score = score
         self.w = 380
         self.h = 30
-        self.start = (x*self.settings.screen_mul) - (self.w*self.settings.screen_mul) / 2
+        self.start = x - (self.w*self.settings.screen_mul) / 2
         self.y = y
         self.x = self.settings.screen_w / 2
         self.setstate = state

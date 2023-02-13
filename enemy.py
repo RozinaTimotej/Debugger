@@ -29,7 +29,7 @@ class Enemy(pygame.sprite.Sprite):
         self.state = "dead"
 
     def update(self, move):
-        self.rect.x += move
+        self.x += move
 
         self.frame_index += 0.02 * self.animMult[self.dir_i]
         if self.frame_index >= len(self.frames[self.dir_i]):
@@ -56,7 +56,7 @@ class FlyingEnemy(pygame.sprite.Sprite):
         self.facing_right = True
         self.speed = 1*self.settings.screen_mul
         self.speedInfo = self.speed
-        self.animMult = {"fly": 6*self.settings.screen_mul,"die":10,"shoot":10}
+        self.animMult = {"fly": 6,"die":10,"shoot":10}
         self.direction = pygame.math.Vector2(0.0)
         self.direction.x = 1
         self.state = "alive"
@@ -70,7 +70,7 @@ class FlyingEnemy(pygame.sprite.Sprite):
         self.frame_index = 0
         self.dir_i = "shoot"
     def update(self, move):
-        self.rect.x += move
+        self.x += move
         self.frame_index += 0.02 * self.animMult[self.dir_i]
         if self.frame_index >= len(self.frames[self.dir_i]):
             self.frame_index = 0
@@ -96,7 +96,6 @@ class KamikazeEnemy(pygame.sprite.Sprite):
         self.image = self.frames[self.dir_i][self.frame_index]
         self.image = pygame.transform.scale(self.image, (self.image.get_width() * self.settings.screen_mul, self.image.get_height() * self.settings.screen_mul))
         self.rect = self.image.get_rect(topleft=pos)
-        self.x = pos[0]
         self.facing_right = False
         self.speed = 3*self.settings.screen_mul
         self.speedInfo = self.speed
