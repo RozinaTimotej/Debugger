@@ -51,8 +51,6 @@ class HighScore:
         self.buttons.add(Button(self.settings.screen_w / 2 + 150, 700, "lvl", "back", self.settings))
         self.buttons.add(Button(self.settings.screen_w / 2 - 150, 700, "lvl", "exit_to_desktop", self.settings))
         self.ui.add(Block(0, 0, self.settings.screen_w, self.settings.screen_h / 5, self.settings))
-        self.ui.add(
-            Block(0, 4 * self.settings.screen_h / 5, self.settings.screen_w, self.settings.screen_h / 5, self.settings))
 
     def draw(self):
         self.state = "highscore"
