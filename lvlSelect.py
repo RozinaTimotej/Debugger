@@ -43,7 +43,13 @@ class Block(pygame.sprite.Sprite):
         super().__init__()
         self.settings = settings
         self.image = settings.lvlSelect
+        self.x = x
+        self.y = y
         self.rect = self.image.get_rect(topleft=(x, y))
+
+    def resize(self):
+        self.image = pygame.transform.scale(self.settings.lvlSelect,(self.settings.lvlSelect.get_width()*self.settings.screen_mul,self.settings.lvlSelect.get_height()*self.settings.screen_mul))
+        self.rect = self.image.get_rect(topleft=(self.x*self.settings.screen_mul, self.y*self.settings.screen_mul))
 
 
 class LevelSelect:
