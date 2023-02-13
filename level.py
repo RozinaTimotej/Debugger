@@ -1,6 +1,6 @@
 import math
 import pygame
-from tiles import Tla, Finish,Tile, Coin, Start
+from tiles import Tla, Finish,Tile, Coin
 from player import Player
 from enemy import Enemy, FlyingEnemy, KamikazeEnemy
 from background import Background1, Background2
@@ -49,7 +49,6 @@ class Level:
         self.spikes = pygame.sprite.Group()
         self.start = pygame.sprite.GroupSingle()
 
-        self.start.add(Start(self.settings.screen_h-300,self.settings.screen_w/2, self.settings.start))
 
         x_offset = self.settings.screen_w / 3 - 20
         for r_i, row in enumerate(layout):
@@ -68,7 +67,7 @@ class Level:
                     if char == 'h1':
                         self.enemies.add(Enemy((c_i * self.settings.tile_size + x_offset, r_i * self.settings.tile_size),self.settings, self.settings.enemyFrames))
                     if char == 't1':
-                        self.tiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size + x_offset, r_i * self.settings.tile_size, self.settings.tile[char[1]],self.settings))
+                        self.tiles.add(Tla(ceil(self.settings.tile_size), ceil(c_i * self.settings.tile_size) + x_offset, ceil(r_i * self.settings.tile_size), self.settings.tile[char[1]],self.settings))
                     if char == 'e':
                         self.finish.add(Finish(self.settings.tile_size, c_i * self.settings.tile_size + x_offset, r_i * self.settings.tile_size, self.settings.finish, self.settings))
                     if char == 'iw':
@@ -155,7 +154,8 @@ class Level:
     def h_col_enemy(self):
         player = self.player.sprite
         for enemy in self.enemies.sprites():
-            enemy.rect.x += enemy.direction.x * enemy.speed
+            enemy.x += enemy.direction.x * enemy.speed
+            enemy.rect.x = enemy.x
 
         for enemy in self.enemies.sprites():
             if pygame.sprite.collide_mask(player,enemy) and enemy.state == "alive":
@@ -177,7 +177,8 @@ class Level:
     def h_col_flyingEnemy(self):
         player = self.player.sprite
         for enemy in self.flyingEnemies.sprites():
-            enemy.rect.x += enemy.direction.x * enemy.speed
+            enemy.x += enemy.direction.x * enemy.speed
+            enemy.rect.x = enemy.x
 
         for enemy in self.flyingEnemies.sprites():
             if pygame.sprite.collide_mask(player,enemy) and enemy.state == "alive":

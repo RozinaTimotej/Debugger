@@ -31,6 +31,7 @@ highScore = HighScore(screen, settings, settings.levelIndex)
 about = About(screen, settings)
 license = License(screen, settings)
 
+print(pygame.version.ver)
 
 def update_fps():
     fps = str(int(clock.get_fps()))
@@ -56,13 +57,17 @@ while True:
             width, height = event.size
             if 1200 > width or height < 768:
                 screen = pygame.display.set_mode((1200, 768), pygame.RESIZABLE)
+                settings.screen_mul = 1
+                settings.screen_w = 1200
+                settings.screen_h = 768
+                settings.tile_size = 64
+                level = Level(settings.levels[settings.levelIndex], screen, settings)
             else:
                 screen = pygame.display.set_mode((height*1.5625, height), pygame.RESIZABLE)
                 settings.screen_mul = height/768
                 settings.screen_w = 1200 * settings.screen_mul
                 settings.screen_h = 768 * settings.screen_mul
                 settings.tile_size = 64 * settings.screen_mul
-                settings.begin()
                 level = Level(settings.levels[settings.levelIndex], screen, settings)
     if not pygame.mouse.get_pressed()[0]:
         settings.leftClick = False

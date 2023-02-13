@@ -35,6 +35,4 @@ class FinishMenu:
         if not self.state == "finish_menu":
             self.settings.wrote = False
             self.settings.pause = False
-        if self.state == "main_menu":
-            pygame.display.set_mode((1200, 768),pygame.RESIZABLE)
         return self.state
