@@ -9,16 +9,24 @@ class Slider(pygame.sprite.Sprite):
         self.id = id
         self.settings = settings
         self.w = 300
-        self.start = x - self.w / 2
-        self.image = pygame.image.load('./Assets/menu/' + folder + '/slider_' +  str(id) + ".png").convert_alpha()
-        self.rect = self.image.get_rect(topleft=(x - self.w / 2, y))
+        self.x = x
+        self.y = y
+        self.start = (x*self.settings.screen_mul) - (self.w*self.settings.screen_mul) / 2
+        self.surf = pygame.image.load('./Assets/menu/' + folder + '/slider_' + str(id) + ".png").convert_alpha()
+        self.image = pygame.transform.scale(self.surf, (self.surf.get_width()*self.settings.screen_mul, self.surf.get_height()*self.settings.screen_mul))
+        self.rect = self.image.get_rect(topleft=((x*self.settings.screen_mul) - (self.w*self.settings.screen_mul) / 2, (y*self.settings.screen_mul)))
+
+    def resize(self):
+        self.start = (self.x * self.settings.screen_mul) - (self.w * self.settings.screen_mul) / 2
+        self.image = pygame.transform.scale(self.surf, (self.surf.get_width() * self.settings.screen_mul, self.surf.get_height() * self.settings.screen_mul))
+        self.rect = self.image.get_rect(topleft=((self.x * self.settings.screen_mul) - (self.w*self.settings.screen_mul) / 2, (self.y * self.settings.screen_mul)))
 
     def update(self, el):
         mouse = pygame.mouse.get_pos()
         pressed = pygame.mouse.get_pressed()[0]
         if self.rect.collidepoint(mouse) and pressed:
             self.settings.leftClick = True
-            el.settings.vol[self.id] = (mouse[0] - self.start) / self.w
+            el.settings.vol[self.id] = (mouse[0] - self.start) / (self.w*self.settings.screen_mul)
 
 class Txt(pygame.sprite.Sprite):
 
@@ -28,6 +36,8 @@ class Txt(pygame.sprite.Sprite):
         self.settings = settings
         self.id = dir
         self.txt = txt
+        self.firstx = x
+        self.firsty = y
         self.x = x
         self.y = y
 
@@ -40,19 +50,32 @@ class Txt(pygame.sprite.Sprite):
         txt = self.settings.font.render(self.txt.upper(), True, pygame.Color("black"))
         self.display_surface.blit(txt, (self.x+20, self.y+10))
 
+    def resize(self):
+        self.x = self.firstx*self.settings.screen_mul
+        self.y =  self.firsty*self.settings.screen_mul
 class Key(pygame.sprite.Sprite):
 
     def __init__(self, x, y, dir,settings,txt):
         super().__init__()
         self.settings = settings
         self.id = dir
+        self.x = x
+        self.y = y
         if not (txt == "right" or txt == "up" or txt == "down" or txt == "left"):
             self.image = settings.keys["uni"]
         else:
             self.image = settings.keys[self.id]
         self.txt = self.settings.buttons[self.id]
-        self.rect = self.image.get_rect(topleft=(x, y))
+        self.rect = self.image.get_rect(topleft=(x*self.settings.screen_mul, y*self.settings.screen_mul))
         self.pressed = False
+
+    def resize(self):
+        if not (self.txt == "right" or self.txt == "up" or self.txt == "down" or self.txt == "left"):
+            self.image = self.settings.keys["uni"]
+        else:
+            self.image = self.settings.keys[self.id]
+        self.image = pygame.transform.scale(self.image, (self.image.get_width() * self.settings.screen_mul, self.image.get_height() * self.settings.screen_mul))
+        self.rect = self.image.get_rect(topleft=(self.x * self.settings.screen_mul, self.y * self.settings.screen_mul))
 
     def update(self):
         self.txt = self.settings.buttons[self.id]
@@ -108,19 +131,30 @@ class SliderMovable(pygame.sprite.Sprite):
         super().__init__()
         self.id = id
         self.settings = settings
+        self.x = x
         self.y = y
         self.w = 275
-        self.start = x - self.w / 2
-        self.end = self.start + self.w
-        img_size = (50, 50)
-        self.imageNormal = pygame.transform.scale(pygame.image.load('./Assets/menu/' + folder + "/tile.png").convert_alpha(), img_size)
-        self.imageHover = pygame.transform.scale(pygame.image.load('./Assets/menu/' + folder + "/tile_hover.png").convert_alpha(), img_size)
+        self.start = (x*self.settings.screen_mul) - (self.w*self.settings.screen_mul) / 2
+        self.end = self.start + self.w*self.settings.screen_mul
+        img_size = (50*self.settings.screen_mul, 50*self.settings.screen_mul)
+        self.imgNormal = pygame.transform.scale(pygame.image.load('./Assets/menu/' + folder + "/tile.png").convert_alpha(), img_size)
+        self.imgHover = pygame.transform.scale(pygame.image.load('./Assets/menu/' + folder + "/tile_hover.png").convert_alpha(), img_size)
+        self.imageHover =self.imgHover
+        self.imageNormal = self.imgNormal
         self.image = self.imageNormal
         self.rect = self.image.get_rect(center=(self.start + (self.settings.vol[id] * self.w), y+20))
 
+    def resize(self):
+        self.start = (self.x * self.settings.screen_mul) - (self.w * self.settings.screen_mul) / 2
+        self.end = self.start + self.w * self.settings.screen_mul
+        img_size = (50 * self.settings.screen_mul, 50 * self.settings.screen_mul)
+        self.imageNormal = pygame.transform.scale(self.imgNormal, img_size)
+        self.imageHover = pygame.transform.scale(self.imgHover, img_size)
+        self.image = self.imageNormal
+        self.rect = self.image.get_rect(center=(self.start + (self.settings.vol[self.id] * self.w * self.settings.screen_mul), (self.y * self.settings.screen_mul) + 20))
     def update(self, el):
         self.settings.updateSound()
-        self.rect.x = self.start + (el.settings.vol[self.id] * self.w) - 20
+        self.rect.x = self.start + (el.settings.vol[self.id] * self.w * self.settings.screen_mul) - 20
 
 
 
@@ -156,6 +190,13 @@ class SettingsMenu:
         self.groupText.add(Txt(self.settings.screen_w / 2-25 + 65, 430, "right", self.settings, self.settings.right,self.display_surface))
         self.groupText.add(Txt(self.settings.screen_w / 2-25 - 65, 430, "left", self.settings, self.settings.left,self.display_surface))
 
+    def resize(self):
+        for el in self.groupButtons:
+            el.resize()
+        for el in self.groupText:
+            el.resize()
+        for el in self.groupSound:
+            el.resize()
     def updateState(self, state):
         self.prevState = state
 

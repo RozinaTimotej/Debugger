@@ -16,6 +16,10 @@ class FinishMenu:
         self.menu.add(Button(self.settings.screen_w / 2, 300,"finish", "main_menu", self.settings))
         self.menu.add(Button(self.settings.screen_w / 2, 350,"finish", "exit_to_desktop", self.settings))
 
+    def resize(self):
+        for el in self.menu:
+            el.resize()
+
     def draw(self):
         if not self.settings.wrote:
             if self.settings.name in self.settings.scores[self.settings.levelIndex].keys():

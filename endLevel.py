@@ -15,6 +15,10 @@ class DieMenu:
         self.menu.add(Button(self.settings.screen_w / 2, 250,"end", "main_menu", self.settings))
         self.menu.add(Button(self.settings.screen_w / 2, 300,"end", "exit_to_desktop", self.settings))
 
+    def resize(self):
+        for el in self.menu:
+            el.resize()
+
     def draw(self):
         self.state = "die_menu"
         self.menu.update(self)

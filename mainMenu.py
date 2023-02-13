@@ -103,6 +103,10 @@ class PauseMenu:
         self.menu.add(Button(self.settings.screen_w / 2, 350,"pause", "settings", self.settings))
         self.menu.add(Button(self.settings.screen_w / 2, 400,"pause", "exit_to_desktop", self.settings))
 
+    def resize(self):
+        for el in self.menu:
+            el.resize()
+
     def draw(self):
         self.state = "pause_menu"
         self.settings.logo.draw(self.display_surface)
