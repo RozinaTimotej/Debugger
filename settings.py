@@ -112,8 +112,8 @@ class Settings():
         self.background = pygame.sprite.GroupSingle()
         self.sfx = pygame.sprite.GroupSingle()
         self.music = pygame.sprite.GroupSingle()
-        self.sfx.add(Icon(100,100,"sfx.png",self))
-        self.music.add(Icon(100,150,"music.png",self))
+        self.sfx.add(Icon(360,270,"sfx.png",self))
+        self.music.add(Icon(360,200,"music.png",self))
         self.lvlSelect = pygame.transform.scale(pygame.image.load("./Assets/background/bg_hol.png"),
                                                 (1200 * self.screen_mul, 768 * self.screen_mul))
         self.license = pygame.transform.scale(pygame.image.load("./Assets/background/about.png"),

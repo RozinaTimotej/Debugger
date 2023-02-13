@@ -7,10 +7,15 @@ class Icon(pygame.sprite.Sprite):
     def __init__(self, x, y,icon, settings):
         super().__init__()
         self.settings = settings
-        self.image = pygame.transform.scale(pygame.image.load('./Assets/icons/'+icon).convert_alpha(),
-                                            (50*self.settings.screen_mul, 50*self.settings.screen_mul))
-        self.rect = self.image.get_rect(topleft=(x, y))
+        self.x = x
+        self.y = y
+        self.surf =pygame.image.load('./Assets/icons/'+icon).convert_alpha()
+        self.image = pygame.transform.scale(self.surf, (50*self.settings.screen_mul, 50*self.settings.screen_mul))
+        self.rect = self.image.get_rect(topleft=(self.x*self.settings.screen_mul, self.y*self.settings.screen_mul))
 
+    def resize(self):
+        self.image = pygame.transform.scale(self.surf, (50 * self.settings.screen_mul, 50 * self.settings.screen_mul))
+        self.rect = self.image.get_rect(topleft=(self.x * self.settings.screen_mul, self.y * self.settings.screen_mul))
     def update(self, move):
         self.rect.x += move
 class Text(pygame.sprite.Sprite):
