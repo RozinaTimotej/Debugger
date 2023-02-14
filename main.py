@@ -114,6 +114,9 @@ while True:
         settingMenu.updateState("pause_menu")
     elif settings.state == "name":
         settings.state = changeName.draw()
+        if settings.state == "main_menu":
+            levelSelect = LevelSelect(screen, settings)
+            highScoreLevel = HighScoreLevel(screen, settings)
     elif settings.state == "about":
         settings.state = about.draw()
     elif settings.state == "license":

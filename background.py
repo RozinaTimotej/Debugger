@@ -9,7 +9,8 @@ class Background1(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=(x, y))
 
     def update(self, move):
-        self.rect.x += move
+        #self.rect.x += move
+        pass
 
 
 class Background2(pygame.sprite.Sprite):
@@ -20,5 +21,5 @@ class Background2(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=(x, y))
 
     def update(self, move):
-        if move != 0:
-            self.rect.x += move / 2
+        # self.rect.x += move
+        pass
