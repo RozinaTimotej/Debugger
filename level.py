@@ -1,6 +1,6 @@
 import math
 import pygame
-from tiles import Tla, Finish,Tile, Coin
+from tiles import Tla, Finish,Tile, Coin, Start
 from player import Player
 from enemy import Enemy, FlyingEnemy, KamikazeEnemy
 from background import Background1, Background2
@@ -49,6 +49,7 @@ class Level:
         self.spikes = pygame.sprite.Group()
         self.start = pygame.sprite.GroupSingle()
 
+        self.start.add(Start(self.settings.screen_w/2 - self.settings.start.get_width()/2,self.settings.screen_h - self.settings.screen_h/3,self.settings.start))
 
         x_offset = self.settings.screen_w / 3 - 20
         for r_i, row in enumerate(layout):

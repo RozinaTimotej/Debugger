@@ -29,7 +29,12 @@ class Finish(StaticTile):
         super().__init__(size, x, y, surface, settings)
         offset_y = y + size
         self.rect = self.image.get_rect(bottomleft=(x, offset_y+10))
-
+class Start(pygame.sprite.Sprite):
+    def __init__(self, x, y, surface):
+        super().__init__()
+        self.image = surface
+        offset_y = y + self.image.get_height()
+        self.rect = self.image.get_rect(bottomleft=(x, offset_y))
 
 class Coin(pygame.sprite.Sprite):
     def __init__(self, x,y, frames, settings):

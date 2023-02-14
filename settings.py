@@ -128,7 +128,7 @@ class Settings():
                                              (64 * self.screen_mul, 64 * self.screen_mul))
         self.coin = import_folder("./Assets/coin/game/", (20 * self.screen_mul, 20 * self.screen_mul))
         self.start = pygame.transform.scale(pygame.image.load("./Assets/start/start.png").convert_alpha(),
-                                            (64 * self.screen_mul, 64 * self.screen_mul))
+                                            (300 * self.screen_mul, 20 * self.screen_mul))
         self.logo = pygame.sprite.GroupSingle()
         self.logo.add(Logo(self))
         self.enemyFrames = {
