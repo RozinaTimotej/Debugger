@@ -12,8 +12,15 @@ class LevelButton(pygame.sprite.Sprite):
         self.start = x - self.w / 2
         self.x = x
         self.y = y
-        self.personal = personal
-        self.high = high
+        if not personal == "/":
+            self.personal = round(float(personal),2)
+        else:
+            self.personal = personal
+        if not high == "/":
+            self.high = round(float(high),2)
+        else:
+            self.high = high
+
         self.setstate = state
         self.image = pygame.Surface((self.w*self.settings.screen_mul, self.h*self.settings.screen_mul))
         self.textSurf1 = self.settings.font.render(str(id+1), 1, "red")
@@ -44,6 +51,19 @@ class LevelButton(pygame.sprite.Sprite):
         self.rect.y += el.y
         mouse = pygame.mouse.get_pos()
         pressed = pygame.mouse.get_pressed()[0]
+        curr_lvl = dict(sorted(self.settings.scores[self.id].items(), key=lambda item: float(item[1]), reverse=False))
+        if len(curr_lvl) > 0:
+            self.high  = round(float(list(curr_lvl.values())[0]),2)
+            if self.settings.name in curr_lvl:
+                self.personal = round(float(curr_lvl[self.settings.name]),2)
+            else:
+                self.personal = "/"
+        else:
+            self.personal = "/"
+            self.high  = "/"
+        self.textSurf1 = self.settings.font.render(str(self.id + 1), 1, "red")
+        self.textSurf2 = self.settings.font.render(str(self.high), 1, (255, 215, 0))
+        self.textSurf3 = self.settings.font.render(str(self.personal), 1, "green")
         if self.rect.collidepoint(mouse) and 4 * self.settings.screen_h / 5 > mouse[1] > 1 * self.settings.screen_h / 5:
             self.image.fill((80, 80, 80))
             self.image.blit(self.textSurf1,[(self.w*self.settings.screen_mul) / 2 -(self.w1) / 2, (self.h*self.settings.screen_mul) / 5 - (self.h1*self.settings.screen_mul) / 2])
