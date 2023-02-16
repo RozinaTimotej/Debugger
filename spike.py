@@ -9,6 +9,7 @@ class Spike(pygame.sprite.Sprite):
         self.dir_i = "spike"
         self.frame_index = 0
         self.image = pygame.transform.rotate(self.frames[self.dir_i][self.frame_index],self.degs)
+        self.image = pygame.transform.scale(self.image,(self.image.get_width() * self.settings.screen_mul, self.image.get_height() * self.settings.screen_mul))
         self.rect = self.image.get_rect(topleft=pos)
         self.animMult = {"spike": 1 + (random.randrange(6,16)/10)}
         self.state = "alive"
@@ -54,3 +55,4 @@ class Spike(pygame.sprite.Sprite):
                 self.frame_index = 0
 
         self.image = pygame.transform.rotate(self.frames[self.dir_i][int(self.frame_index)],self.degs)
+        self.image = pygame.transform.scale(self.image,(self.image.get_width() * self.settings.screen_mul, self.image.get_height() * self.settings.screen_mul))
