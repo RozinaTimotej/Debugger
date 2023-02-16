@@ -7,7 +7,7 @@ class LevelButton(pygame.sprite.Sprite):
         super().__init__()
         self.id = id
         self.settings = settings
-        self.w = 90
+        self.w = 100
         self.h = 110
         self.start = x - self.w / 2
         self.x = x
@@ -24,11 +24,11 @@ class LevelButton(pygame.sprite.Sprite):
         self.setstate = state
         self.image = pygame.Surface((self.w*self.settings.screen_mul, self.h*self.settings.screen_mul))
         self.textSurf1 = self.settings.font.render(str(id+1), 1, "red")
-        self.textSurf2 = self.settings.font.render(str(self.high), 1, (255,215,0))
-        self.textSurf3 = self.settings.font.render(str(self.personal), 1, "green")
+        self.textSurf2 = self.settings.font.render("R:"+str(self.high), 1, (255,215,0))
+        self.textSurf3 = self.settings.font.render("PB:"+str(self.personal), 1, "green")
         self.w1, self.h1 = self.settings.font.size(str(self.id))
-        self.w2, self.h2 = self.settings.font.size(str(self.high))
-        self.w3, self.h3 = self.settings.font.size(str(self.personal))
+        self.w2, self.h2 = self.settings.font.size("R:"+str(self.high))
+        self.w3, self.h3 = self.settings.font.size("PB:"+str(self.personal))
         self.image.blit(self.textSurf1, [(self.w*self.settings.screen_mul) / 2 - (self.w1) / 2, (self.h*self.settings.screen_mul) / 5 - (self.h1*self.settings.screen_mul) / 2])
         self.image.blit(self.textSurf2,[(self.w * self.settings.screen_mul) / 2 - (self.w2) / 2, (self.h * self.settings.screen_mul) / 2 - (self.h2 * self.settings.screen_mul) / 2])
         self.image.blit(self.textSurf3, [(self.w * self.settings.screen_mul) / 2 - (self.w3) / 2,(self.h * self.settings.screen_mul) / 1.2 - (self.h3 * self.settings.screen_mul) / 2])
@@ -37,11 +37,11 @@ class LevelButton(pygame.sprite.Sprite):
     def resize(self):
         self.image = pygame.Surface((self.w * self.settings.screen_mul, self.h * self.settings.screen_mul))
         self.textSurf1 = self.settings.font.render(str(self.id + 1), 1, "red")
-        self.textSurf2 = self.settings.font.render(str(self.high), 1, (255,215,0))
-        self.textSurf3 = self.settings.font.render(str(self.personal), 1, "green")
+        self.textSurf2 = self.settings.font.render("R:"+str(self.high), 1, (255,215,0))
+        self.textSurf3 = self.settings.font.render("PB:"+str(self.personal), 1, "green")
         self.w1, self.h1 = self.settings.font.size(str(self.id))
-        self.w2, self.h2 = self.settings.font.size(str(self.high))
-        self.w3, self.h3= self.settings.font.size(str(self.personal))
+        self.w2, self.h2 = self.settings.font.size("R:" + str(self.high))
+        self.w3, self.h3 = self.settings.font.size("PB:" + str(self.personal))
         self.image.blit(self.textSurf1,[(self.w * self.settings.screen_mul) / 2 - (self.w1) / 2,(self.h*self.settings.screen_mul) / 5 - (self.h1 * self.settings.screen_mul) / 2])
         self.image.blit(self.textSurf2,[(self.w * self.settings.screen_mul) / 2 - (self.w2) / 2,(self.h * self.settings.screen_mul) / 2 - (self.h2 * self.settings.screen_mul) / 2])
         self.image.blit(self.textSurf3,[(self.w * self.settings.screen_mul) / 2 - (self.w3) / 2,(self.h * self.settings.screen_mul) / 1.2 - (self.h3 * self.settings.screen_mul) / 2])
@@ -62,8 +62,8 @@ class LevelButton(pygame.sprite.Sprite):
             self.personal = "/"
             self.high  = "/"
         self.textSurf1 = self.settings.font.render(str(self.id + 1), 1, "red")
-        self.textSurf2 = self.settings.font.render(str(self.high), 1, (255, 215, 0))
-        self.textSurf3 = self.settings.font.render(str(self.personal), 1, "green")
+        self.textSurf2 = self.settings.font.render("R:"+str(self.high), 1, (255, 215, 0))
+        self.textSurf3 = self.settings.font.render("PB:"+str(self.personal), 1, "green")
         if self.rect.collidepoint(mouse) and 4 * self.settings.screen_h / 5 > mouse[1] > 1 * self.settings.screen_h / 5:
             self.image.fill((80, 80, 80))
             self.image.blit(self.textSurf1,[(self.w*self.settings.screen_mul) / 2 -(self.w1) / 2, (self.h*self.settings.screen_mul) / 5 - (self.h1*self.settings.screen_mul) / 2])

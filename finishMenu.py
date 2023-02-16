@@ -1,5 +1,5 @@
 import pygame
-from mainMenu import Button
+from mainMenu import Button, CurrHighScore
 
 class FinishMenu:
     def __init__(self, surface, settings):
@@ -11,14 +11,17 @@ class FinishMenu:
 
     def init_menu(self):
         self.menu = pygame.sprite.Group()
+        self.hs = pygame.sprite.GroupSingle()
         self.menu.add(Button(self.settings.screen_w / 2, 200, "finish", "next_level", self.settings))
         self.menu.add(Button(self.settings.screen_w / 2, 250,"finish", "restart", self.settings))
         self.menu.add(Button(self.settings.screen_w / 2, 300,"finish", "main_menu", self.settings))
         self.menu.add(Button(self.settings.screen_w / 2, 350,"finish", "exit_to_desktop", self.settings))
+        self.hs.add(CurrHighScore(self.settings.screen_w / 2, 400, self.settings))
 
     def resize(self):
         for el in self.menu:
             el.resize()
+        self.hs.sprite.resize()
 
     def draw(self):
         if not self.settings.wrote:
@@ -35,6 +38,8 @@ class FinishMenu:
         self.state = "finish_menu"
         self.menu.update(self)
         self.settings.logo.draw(self.display_surface)
+        self.hs.update(self)
+        self.hs.draw(self.display_surface)
         self.menu.draw(self.display_surface)
         if not self.state == "finish_menu":
             self.settings.wrote = False
