@@ -64,6 +64,8 @@ class LevelButton(pygame.sprite.Sprite):
         self.textSurf1 = self.settings.font.render(str(self.id + 1), 1, "red")
         self.textSurf2 = self.settings.font.render("R:"+str(self.high), 1, (255, 215, 0))
         self.textSurf3 = self.settings.font.render("PB:"+str(self.personal), 1, "green")
+        self.w2, self.h2 = self.settings.font.size("R:" + str(self.high))
+        self.w3, self.h3 = self.settings.font.size("PB:" + str(self.personal))
         if self.rect.collidepoint(mouse) and 4 * self.settings.screen_h / 5 > mouse[1] > 1 * self.settings.screen_h / 5:
             self.image.fill((80, 80, 80))
             self.image.blit(self.textSurf1,[(self.w*self.settings.screen_mul) / 2 -(self.w1) / 2, (self.h*self.settings.screen_mul) / 5 - (self.h1*self.settings.screen_mul) / 2])

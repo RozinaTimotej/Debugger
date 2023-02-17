@@ -31,8 +31,6 @@ highScore = HighScore(screen, settings, settings.levelIndex)
 about = About(screen, settings)
 license = License(screen, settings)
 
-print(pygame.version.ver)
-
 def update_fps():
     fps = str(int(clock.get_fps()))
     fps_text = settings.font.render(fps, True, pygame.Color("coral"))
@@ -116,9 +114,6 @@ while True:
         settingMenu.updateState("pause_menu")
     elif settings.state == "name":
         settings.state = changeName.draw()
-        if settings.state == "main_menu":
-            levelSelect = LevelSelect(screen, settings)
-            highScoreLevel = HighScoreLevel(screen, settings)
     elif settings.state == "about":
         settings.state = about.draw()
     elif settings.state == "license":
