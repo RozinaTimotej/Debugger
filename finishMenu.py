@@ -12,10 +12,10 @@ class FinishMenu:
     def init_menu(self):
         self.menu = pygame.sprite.Group()
         self.hs = pygame.sprite.GroupSingle()
-        self.menu.add(Button(self.settings.screen_w / 2, 200, "finish", "next_level", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 250,"finish", "restart", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 300,"finish", "main_menu", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 350,"finish", "exit_to_desktop", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2,0, 200, "finish", "next_level", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2,0, 250,"finish", "restart", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2,0, 300,"finish", "main_menu", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2,0, 350,"finish", "exit_to_desktop", self.settings))
         self.hs.add(CurrHighScore(self.settings.screen_w / 2, 400, self.settings))
 
     def resize(self):

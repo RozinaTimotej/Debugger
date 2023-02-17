@@ -47,11 +47,12 @@ class CurrHighScore(pygame.sprite.Sprite):
         self.image.blit(self.textSurf3, [(self.w * self.settings.screen_mul - self.padding) / 2, (self.h * self.settings.screen_mul) / 1.4 - (self.h3 * self.settings.screen_mul) / 2])
 
 class Button(pygame.sprite.Sprite):
-    def __init__(self, x, y, folder ,job, settings):
+    def __init__(self, x,x_offset, y, folder ,job, settings):
         super().__init__()
         self.job = job
         self.settings = settings
         self.x = x
+        self.x_offset = x_offset
         self.y = y
         self.imgNormal = pygame.image.load('./Assets/menu/'+folder+'/'+job+".png").convert_alpha()
         self.imgHover = pygame.image.load('./Assets/menu/'+folder+'/'+job+"_hover.png").convert_alpha()
@@ -60,7 +61,7 @@ class Button(pygame.sprite.Sprite):
         self.played = False
 
         self.image = self.imageNormal
-        self.rect = self.image.get_rect(topleft=(x-self.imageHover.get_width()/2, y))
+        self.rect = self.image.get_rect(topleft=((self.x)+(self.x_offset*self.settings.screen_mul) - self.imageHover.get_width()/2, (y*self.settings.screen_mul)))
 
     def resize(self):
         self.imageNormal = pygame.transform.scale(self.imgNormal, (
@@ -68,7 +69,7 @@ class Button(pygame.sprite.Sprite):
         self.imageHover = pygame.transform.scale(self.imgHover, (
         self.imgHover.get_width() * self.settings.screen_mul, self.imgHover.get_height() * self.settings.screen_mul))
         self.image = self.imageNormal
-        self.rect = self.image.get_rect(topleft=(self.x*self.settings.screen_mul - self.imageHover.get_width() / 2, self.y*self.settings.screen_mul))
+        self.rect = self.image.get_rect(topleft=((self.settings.screen_w/2)+(self.x_offset*self.settings.screen_mul) - self.imageHover.get_width() / 2, self.y*self.settings.screen_mul))
 
     def update(self, el):
         mouse = pygame.mouse.get_pos()
@@ -112,12 +113,12 @@ class MainMenu:
 
     def init_menu(self):
         self.menu = pygame.sprite.Group()
-        self.menu.add(Button(self.settings.screen_w / 2, 225,"main", "select", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 275, "main", "highscoreselect", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 325,"main", "settings", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 375, "main", "about", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 425, "main", "license", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 475,"main", "exit_to_desktop", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2,0, 225,"main", "select", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2,0, 275, "main", "highscoreselect", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2,0, 325,"main", "settings", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2,0, 375, "main", "about", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2,0, 425, "main", "license", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2,0, 475,"main", "exit_to_desktop", self.settings))
 
     def resize(self):
         for el in self.menu:
@@ -143,11 +144,11 @@ class PauseMenu:
     def init_menu(self):
         self.menu = pygame.sprite.Group()
         self.hs = pygame.sprite.GroupSingle()
-        self.menu.add(Button(self.settings.screen_w / 2, 200,"pause", "playing", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 250, "pause", "restart", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 300,"pause", "main_menu", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 350,"pause", "settings", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 400,"pause", "exit_to_desktop", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2,0, 200,"pause", "playing", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2,0, 250, "pause", "restart", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2,0, 300,"pause", "main_menu", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2,0, 350,"pause", "settings", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2,0, 400,"pause", "exit_to_desktop", self.settings))
         self.hs.add(CurrHighScore(self.settings.screen_w / 2,450,self.settings))
 
     def resize(self):

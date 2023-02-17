@@ -12,9 +12,9 @@ class DieMenu:
     def init_menu(self):
         self.menu = pygame.sprite.Group()
         self.hs = pygame.sprite.GroupSingle()
-        self.menu.add(Button(self.settings.screen_w / 2, 200,"end", "restart", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 250,"end", "main_menu", self.settings))
-        self.menu.add(Button(self.settings.screen_w / 2, 300,"end", "exit_to_desktop", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2,0, 200,"end", "restart", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2,0, 250,"end", "main_menu", self.settings))
+        self.menu.add(Button(self.settings.screen_w / 2,0, 300,"end", "exit_to_desktop", self.settings))
         self.hs.add(CurrHighScore(self.settings.screen_w / 2, 350, self.settings))
 
     def resize(self):

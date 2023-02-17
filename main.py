@@ -62,6 +62,8 @@ while True:
                 settings.screen_h = 768
                 settings.tile_size = 64
                 settings.resize()
+                settings.sfx.sprite.resize()
+                settings.music.sprite.resize()
                 changeName.resize()
                 startMenu.resize()
                 pauseMenu.resize()

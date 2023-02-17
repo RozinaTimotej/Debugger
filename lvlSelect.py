@@ -122,8 +122,8 @@ class LevelSelect:
                 personal = "/"
                 high = "/"
             self.lvls.add(LevelButton((70 + ((self.settings.screen_w-160) / 7 * (i % 7))) + ((self.settings.screen_w / 7) / 2), 50 + (150 * (1 + (i // 7))) , i, self.settings,"playing",personal,high))
-        self.buttons.add(Button(self.settings.screen_w / 2 + 150, 700, "lvl", "main_menu", self.settings))
-        self.buttons.add(Button(self.settings.screen_w / 2 - 150, 700, "lvl", "exit_to_desktop", self.settings))
+        self.buttons.add(Button(self.settings.screen_w / 2 , 150, 700, "lvl", "main_menu", self.settings))
+        self.buttons.add(Button(self.settings.screen_w / 2 , -150, 700, "lvl", "exit_to_desktop", self.settings))
         self.ui.add(Block(0, 0, self.settings.screen_w, self.settings.screen_h / 5, self.settings))
 
     def resize(self):
@@ -190,8 +190,8 @@ class HighScoreLevel:
                 personal = "/"
                 high = "/"
             self.lvls.add(LevelButton((70 + ((self.settings.screen_w-160) / 7 * (i % 7))) + ((self.settings.screen_w / 7) / 2), 50 + (150 * (1 + (i // 7))) , i, self.settings,"highscore",personal,high))
-        self.buttons.add(Button(self.settings.screen_w / 2 + 150, 700, "lvl", "back", self.settings))
-        self.buttons.add(Button(self.settings.screen_w / 2 - 150, 700, "lvl", "exit_to_desktop", self.settings))
+        self.buttons.add(Button(self.settings.screen_w / 2,150, 700, "lvl", "back", self.settings))
+        self.buttons.add(Button(self.settings.screen_w / 2,-150, 700, "lvl", "exit_to_desktop", self.settings))
         self.ui.add(Block(0, 0, self.settings.screen_w, self.settings.screen_h / 5, self.settings))
 
     def resize(self):

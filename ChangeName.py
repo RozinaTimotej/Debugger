@@ -22,6 +22,7 @@ class Input(pygame.sprite.Sprite):
         self.h = 30 * self.settings.screen_mul
         self.start = self.x * self.settings.screen_mul - self.w / 2
         self.image = pygame.Surface((self.w, self.h))
+        self.image.fill((30, 30, 30))
         self.rect = self.image.get_rect(topleft=(self.x*self.settings.screen_mul  - self.w / 2, self.y*self.settings.screen_mul ))
     def update(self, el):
         mouse = pygame.mouse.get_pos()
@@ -68,8 +69,8 @@ class Changename:
     def init_menu(self):
         self.nameGroup = pygame.sprite.Group()
         self.nameGroup.add(Input("input",self.settings))
-        self.nameGroup.add(Button(self.settings.screen_w / 2+85, 400,"name", "main_menu", self.settings))
-        self.nameGroup.add(Button(self.settings.screen_w / 2-85, 400,"name", "exit_to_desktop", self.settings))
+        self.nameGroup.add(Button(self.settings.screen_w / 2,85, 400,"name", "main_menu", self.settings))
+        self.nameGroup.add(Button(self.settings.screen_w / 2,-85, 400,"name", "exit_to_desktop", self.settings))
 
     def resize(self):
         for el in self.nameGroup:
