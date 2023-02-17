@@ -1,0 +1,7 @@
+In a world where technology has advanced beyond measure, a programmer named Tim was tasked with fixing
+bugs in the system. He was the best programmer in the world, but the bugs were getting the better of 
+him. So, he decided to enter the virtual world of the game "Debugger" to defeat the bugs once and for
+all and reset the program.
+
+His main objective is to get to the internal computer as fast, so he can reset the program, and destroy
+any bugs that stand in his way.

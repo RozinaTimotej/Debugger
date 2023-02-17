@@ -1,0 +1,1 @@
+pyinstaller --onefile background.py bullet.py ChangeName.py endLevel.py enemy.py extras.py finishMenu.py highScore.py level.py logo.py lvlSelect.py mainMenu.py player.py settingMenu.py settings.py spike.py tiles.py main.py

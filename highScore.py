@@ -5,19 +5,28 @@ class PlayerScore(pygame.sprite.Sprite):
     def __init__(self, x, y, name ,score, settings,state):
         super().__init__()
         self.settings = settings
+        self.name = name
+        self.score = score
         self.w = 380
         self.h = 30
-        self.start = x - self.w / 2
+        self.start = x - (self.w*self.settings.screen_mul) / 2
         self.y = y
+        self.x = self.settings.screen_w / 2
         self.setstate = state
         self.same = False
         if settings.name == str(name).strip():
             self.same = True
-        self.image = pygame.Surface((self.w, self.h))
-        self.textSurf = self.settings.font.render("{:<20s}{:>6.2f}".format(str(name).strip(), float(score)), 1, "blue")
-        self.image.blit(self.textSurf, [self.w / 2 - 150, self.h / 2 - 8])
-        self.rect = self.image.get_rect(topleft=(self.start, y))
+        self.image = pygame.Surface((self.w*self.settings.screen_mul, self.h))
+        self.textSurf = self.settings.font.render("{:<20s}{:>6.2f}".format(str(self.name).strip(), float(self.score)), 1, "blue")
+        self.image.blit(self.textSurf, [(self.w*self.settings.screen_mul) / 2 - 150, self.h / 2 - 8])
+        self.rect = self.image.get_rect(topleft=(self.start, y*self.settings.screen_mul))
 
+    def resize(self):
+        self.start = (self.settings.screen_w / 2) - (self.w * self.settings.screen_mul) / 2
+        self.image = pygame.Surface((self.w * self.settings.screen_mul, self.h))
+        self.textSurf = self.settings.font.render("{:<20s}{:>6.2f}".format(str(self.name).strip(), float(self.score)), 1, "blue")
+        self.image.blit(self.textSurf, [(self.w * self.settings.screen_mul) / 2 - 150, self.h / 2 - 8])
+        self.rect = self.image.get_rect(topleft=(self.start, self.y * self.settings.screen_mul))
     def update(self, el):
         self.rect.y += el.y
         if self.same:
@@ -48,11 +57,19 @@ class HighScore:
             self.lvls.add(PlayerScore(self.settings.screen_w / 2, 200+50*i,x[0], x[1], self.settings,"playing"))
             if self.settings.name == str(x[0]).strip():
                 self.yourScore.add(PlayerScore(self.settings.screen_w / 2, 650, x[0], x[1], self.settings, "playing"))
-        self.buttons.add(Button(self.settings.screen_w / 2 + 150, 700, "lvl", "back", self.settings))
-        self.buttons.add(Button(self.settings.screen_w / 2 - 150, 700, "lvl", "exit_to_desktop", self.settings))
+        self.buttons.add(Button(self.settings.screen_w / 2 , 150, 700, "lvl", "back", self.settings))
+        self.buttons.add(Button(self.settings.screen_w / 2 ,-150, 700, "lvl", "exit_to_desktop", self.settings))
         self.ui.add(Block(0, 0, self.settings.screen_w, self.settings.screen_h / 5, self.settings))
-        self.ui.add(
-            Block(0, 4 * self.settings.screen_h / 5, self.settings.screen_w, self.settings.screen_h / 5, self.settings))
+
+    def resize(self):
+        for el in self.ui:
+            el.resize()
+        for el in self.buttons:
+            el.resize()
+        for el in self.lvls:
+            el.resize()
+        if len(self.yourScore.sprites()) > 0:
+            self.yourScore.sprite.resize()
 
     def draw(self):
         self.state = "highscore"

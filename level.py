@@ -49,7 +49,7 @@ class Level:
         self.spikes = pygame.sprite.Group()
         self.start = pygame.sprite.GroupSingle()
 
-        self.start.add(Start(self.settings.screen_h-300,self.settings.screen_w/2, self.settings.start))
+        self.start.add(Start(self.settings.screen_w/2 - self.settings.start.get_width()/2,self.settings.screen_h - self.settings.screen_h/3,self.settings.start))
 
         x_offset = self.settings.screen_w / 3 - 20
         for r_i, row in enumerate(layout):
@@ -59,7 +59,6 @@ class Level:
                     if char == 'p':
                         x_offset -= c_i * self.settings.tile_size
                         break
-
         for r_i, row in enumerate(layout):
             for c_i, col in enumerate(row):
                 col_split = col.split("_")
@@ -69,7 +68,7 @@ class Level:
                     if char == 'h1':
                         self.enemies.add(Enemy((c_i * self.settings.tile_size + x_offset, r_i * self.settings.tile_size),self.settings, self.settings.enemyFrames))
                     if char == 't1':
-                        self.tiles.add(Tla(self.settings.tile_size, c_i * self.settings.tile_size + x_offset, r_i * self.settings.tile_size, self.settings.tile[char[1]],self.settings))
+                        self.tiles.add(Tla(ceil(self.settings.tile_size), ceil(c_i * self.settings.tile_size) + x_offset, ceil(r_i * self.settings.tile_size), self.settings.tile[char[1]],self.settings))
                     if char == 'e':
                         self.finish.add(Finish(self.settings.tile_size, c_i * self.settings.tile_size + x_offset, r_i * self.settings.tile_size, self.settings.finish, self.settings))
                     if char == 'iw':
@@ -77,25 +76,22 @@ class Level:
                     if char == 'h2':
                         self.flyingEnemies.add(FlyingEnemy((c_i * self.settings.tile_size + x_offset, r_i * self.settings.tile_size), self.settings,self.settings.enemyFlyFrames))
                     if char == 'h3':
-                        self.kamikazeEnemy.add(KamikazeEnemy((c_i * self.settings.tile_size+16 + x_offset, r_i * self.settings.tile_size+32), self.settings,self.settings.kamikazeEnemyFrames))
+                        self.kamikazeEnemy.add(KamikazeEnemy((c_i * self.settings.tile_size+(16*self.settings.screen_mul) + x_offset, r_i * self.settings.tile_size+(32*self.settings.screen_mul)), self.settings,self.settings.kamikazeEnemyFrames))
                     if char == 'c':
                         self.coins.add(Coin(c_i * self.settings.tile_size + x_offset, r_i * self.settings.tile_size, self.settings.coin, self.settings))
                     if char == 's':
                         if r_i < len(layout)-1 and "t1" in layout[r_i+1][c_i].split("_"):
-                            self.spikes.add(Spike((c_i * self.settings.tile_size + 16 + x_offset, r_i * self.settings.tile_size + 40), self.settings, self.settings.spikeFrames,0))
+                            self.spikes.add(Spike((c_i * self.settings.tile_size + (16*self.settings.screen_mul) + x_offset, r_i * self.settings.tile_size + (40*self.settings.screen_mul)), self.settings, self.settings.spikeFrames,0))
                         elif c_i < len(row)-1 and "t1" in layout[r_i][c_i+1].split("_"):
-                            self.spikes.add(Spike((c_i * self.settings.tile_size + 40 + x_offset, r_i * self.settings.tile_size + 20),self.settings, self.settings.spikeFrames,90))
+                            self.spikes.add(Spike((c_i * self.settings.tile_size + (40*self.settings.screen_mul) + x_offset, r_i * self.settings.tile_size + (20*self.settings.screen_mul)),self.settings, self.settings.spikeFrames,90))
                         elif c_i > 0 and "t1" in layout[r_i][c_i-1].split("_"):
-                            self.spikes.add(Spike((c_i * self.settings.tile_size + 0 + x_offset, r_i * self.settings.tile_size + 20),self.settings, self.settings.spikeFrames,270))
+                            self.spikes.add(Spike((c_i * self.settings.tile_size + 0 + x_offset, r_i * self.settings.tile_size + (20*self.settings.screen_mul)),self.settings, self.settings.spikeFrames,270))
                         elif r_i > 0 and "t1" in layout[r_i-1][c_i].split("_"):
                             self.spikes.add(
-                                Spike((c_i * self.settings.tile_size + 16 + x_offset, r_i * self.settings.tile_size + 0),self.settings, self.settings.spikeFrames, 180))
+                                Spike((c_i * self.settings.tile_size + (16*self.settings.screen_mul) + x_offset, r_i * self.settings.tile_size + 0),self.settings, self.settings.spikeFrames, 180))
 
-        len_x = math.ceil(((len(layout[0])+1)*64) / 1367) + 1
-        for i in range(-2, len_x + 1):
-            self.space.add(Background1(i * 1367, 0,self.settings))
-        for i in range(-2, len_x + 1):
-            self.stars.add(Background2(i * 1367, 0,self.settings))
+        self.space.add(Background1(0, 0,self.settings))
+        self.space.add(Background2(0, 0, self.settings))
 
         self.startTime = pygame.time.get_ticks()
 
@@ -156,7 +152,8 @@ class Level:
     def h_col_enemy(self):
         player = self.player.sprite
         for enemy in self.enemies.sprites():
-            enemy.rect.x += enemy.direction.x * enemy.speed
+            enemy.x += enemy.direction.x * enemy.speed
+            enemy.rect.x = enemy.x
 
         for enemy in self.enemies.sprites():
             if pygame.sprite.collide_mask(player,enemy) and enemy.state == "alive":
@@ -178,7 +175,8 @@ class Level:
     def h_col_flyingEnemy(self):
         player = self.player.sprite
         for enemy in self.flyingEnemies.sprites():
-            enemy.rect.x += enemy.direction.x * enemy.speed
+            enemy.x += enemy.direction.x * enemy.speed
+            enemy.rect.x = enemy.x
 
         for enemy in self.flyingEnemies.sprites():
             if pygame.sprite.collide_mask(player,enemy) and enemy.state == "alive":

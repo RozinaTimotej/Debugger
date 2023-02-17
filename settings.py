@@ -1,7 +1,7 @@
 import os
 import pygame
 from logo import Logo
-
+from extras import Icon
 d = 'levels'
 
 def import_folder(path,size):  # nalaganje vseh *.png datotek
@@ -22,13 +22,13 @@ def sound(path, volume):  # nalaganje vseh *.png datotek
     return arr
 
 
-def tiles(path):  # nalaganje vseh *.png datotek
+def tiles(path,size):  # nalaganje vseh *.png datotek
     arr = {}
     for filename in os.listdir(path):
         if not filename.endswith('.png'):
             continue
         id = filename.split(".")[0].split("_")[1]
-        arr[id] = pygame.image.load(path+filename).convert_alpha()
+        arr[id] = pygame.transform.scale(pygame.image.load(path+filename).convert_alpha(),size)
     return arr
 
 map = []
@@ -61,10 +61,15 @@ music_volume = 0.1
 effects_volume = 0.1
 
 class Background(pygame.sprite.Sprite):
-    def __init__(self, x, y, surface):
+    def __init__(self, x, y, surface,settings):
         super().__init__()
-        self.image = surface
+        self.settings = settings
+        self.surf = surface
+        self.image = self.surf
         self.rect = self.image.get_rect(topleft=(x, y))
+
+    def resize(self):
+        self.image = pygame.transform.scale(self.surf,(self.surf.get_width()*self.settings.screen_mul,self.surf.get_height()*self.settings.screen_mul))
 
 class Settings():
     def __init__(self):
@@ -73,9 +78,10 @@ class Settings():
         self.levelIndex = 0
         self.levels = map
         self.scores = scores
-        self.screen_w = screen_w
-        self.screen_h = screen_h
-        self.tile_size = tile_size
+        self.screen_mul = 1
+        self.screen_w = screen_w*self.screen_mul
+        self.screen_h = screen_h*self.screen_mul
+        self.tile_size = tile_size*self.screen_mul
         self.inGame = False
         self.wrote = False
         self.pause = False
@@ -97,33 +103,42 @@ class Settings():
         self.right = "right"
         self.vol = [music_volume, effects_volume]
         self.loadSettings()
-        self.background = pygame.sprite.Group()
         self.leftClick = False
-        self.lvlSelect = pygame.image.load("./Assets/background/bg_hol.png")
-        self.license = pygame.image.load("./Assets/background/licence.png")
-        self.about = pygame.image.load("./Assets/background/about.png")
-        self.background.add(Background(0,0,pygame.image.load("./Assets/background/bg_hole.png")))
-        self.deathSound = pygame.mixer.Sound("./Assets/sounds/death.mp3")
-        self.coinSound = pygame.mixer.Sound("./Assets/sounds/coin.mp3")
-        self.playerJump = pygame.mixer.Sound("./Assets/sounds/jump_02.wav")
-        self.menuMusic = pygame.mixer.Sound("./Assets/sounds/menumusic.mp3")
-        self.gameMusic = pygame.mixer.Sound("./Assets/sounds/gameMusic.mp3")
-        self.hitEnemy = pygame.mixer.Sound("./Assets/sounds/hit_enemy.wav")
-        self.HoverSound = pygame.mixer.Sound("./Assets/sounds/hover.wav")
-        self.ClickSound = pygame.mixer.Sound("./Assets/sounds/test.wav")
-        self.playerWalk = sound("./Assets/sounds/walk/", self.vol[1])
-        self.tile = tiles("./Assets/tla/")
-        self.finish = pygame.image.load("./Assets/finish/e.png").convert_alpha()
-        self.coin = import_folder("./Assets/coin/game/", (20,20))
-        self.start = pygame.image.load("./Assets/start/start.png").convert_alpha()
+
+    def resize(self):
+        self.background.sprite.resize()
+        self.logo.sprite.resize()
+    def begin(self):
+        self.background = pygame.sprite.GroupSingle()
+        self.sfx = pygame.sprite.GroupSingle()
+        self.music = pygame.sprite.GroupSingle()
+        self.sfx.add(Icon(360,270,"sfx.png",self))
+        self.music.add(Icon(360,200,"music.png",self))
+        self.lvlSelect = pygame.transform.scale(pygame.image.load("./Assets/background/bg_hol.png"),
+                                                (1200 * self.screen_mul, 768 * self.screen_mul))
+        self.license = pygame.transform.scale(pygame.image.load("./Assets/background/about.png"),
+                                              (1000 * self.screen_mul, 1000 * self.screen_mul))
+        self.about = pygame.transform.scale(pygame.image.load("./Assets/background/story.png"),
+                                            (1000 * self.screen_mul, 1000 * self.screen_mul))
+        self.background.add(Background(0, 0,
+                                       pygame.transform.scale(pygame.image.load("./Assets/background/bg_hole.png"),
+                                                              (1200 * self.screen_mul, 768 * self.screen_mul)),self))
+        self.tile = tiles("./Assets/tla/", (64 * self.screen_mul, 64 * self.screen_mul))
+        self.finish = pygame.transform.scale(pygame.image.load("./Assets/finish/e.png").convert_alpha(),
+                                             (64 * self.screen_mul, 64 * self.screen_mul))
+        self.coin = import_folder("./Assets/coin/game/", (20 * self.screen_mul, 20 * self.screen_mul))
+        self.start = pygame.transform.scale(pygame.image.load("./Assets/start/start.png").convert_alpha(),
+                                            (300 * self.screen_mul, 20 * self.screen_mul))
         self.logo = pygame.sprite.GroupSingle()
-        self.logo.add(Logo(380,80,self))
-        self.enemyFrames = {"run": import_folder("./Assets/enemy/run/game/", (64,64))}
-        self.spikeFrames = {"spike": import_folder("./Assets/spike/game/", (32,29))}
+        self.logo.add(Logo(self))
+        self.enemyFrames = {
+            "run": import_folder("./Assets/enemy/run/game/", (64 * self.screen_mul, 64 * self.screen_mul))}
+        self.spikeFrames = {
+            "spike": import_folder("./Assets/spike/game/", (32 * self.screen_mul, 29 * self.screen_mul))}
         self.enemyFlyFrames = {
-            "fly": import_folder("./Assets/flyingenemy/fly/game/", (64,64)),
-            "die": import_folder("./Assets/flyingenemy/death/game/", (64,64)),
-            "shoot": import_folder("./Assets/flyingenemy/attack/game/", (64,64)),
+            "fly": import_folder("./Assets/flyingenemy/fly/game/", (64 * self.screen_mul, 64 * self.screen_mul)),
+            "die": import_folder("./Assets/flyingenemy/death/game/", (64 * self.screen_mul, 64 * self.screen_mul)),
+            "shoot": import_folder("./Assets/flyingenemy/attack/game/", (64 * self.screen_mul, 64 * self.screen_mul)),
         }
         self.keys = {
             "up": pygame.image.load("./Assets/menu/keys/KeyboardButtonsDir_up.png"),
@@ -140,22 +155,34 @@ class Settings():
             "uni": pygame.image.load("./Assets/menu/keys/KeyboardButtons_Base0.png")
         }
         self.kamikazeEnemyFrames = {
-            "fly": import_folder("./Assets/enemybird/fly/game/", (32, 32)),
-            "die": import_folder("./Assets/enemybird/death/game/", (32, 32)),
-            "ready": import_folder("./Assets/enemybird/blink/game/", (32, 32)),
-            "attack": import_folder("./Assets/enemybird/attack/game/", (32, 32)),
-            "stand": import_folder("./Assets/enemybird/stand/game/", (32, 32)),
+            "fly": import_folder("./Assets/enemybird/fly/game/", (32 * self.screen_mul, 32 * self.screen_mul)),
+            "die": import_folder("./Assets/enemybird/death/game/", (32 * self.screen_mul, 32 * self.screen_mul)),
+            "ready": import_folder("./Assets/enemybird/blink/game/", (32 * self.screen_mul, 32 * self.screen_mul)),
+            "attack": import_folder("./Assets/enemybird/attack/game/", (32 * self.screen_mul, 32 * self.screen_mul)),
+            "stand": import_folder("./Assets/enemybird/stand/game/", (32 * self.screen_mul, 32 * self.screen_mul)),
         }
         self.bulletFrames = {
-            "fly": import_folder("./Assets/bullet/fly/game/", (25,4)),
-            "die": import_folder("./Assets/bullet/hit/game/", (64, 64)),
+            "fly": import_folder("./Assets/bullet/fly/game/", (25 * self.screen_mul, 4 * self.screen_mul)),
+            "die": import_folder("./Assets/bullet/hit/game/", (64 * self.screen_mul, 64 * self.screen_mul)),
         }
         self.playerFrames = {
-           "front": import_folder("./Assets/player/idle/game/", (40,60)),
-           "run": import_folder("./Assets/player/run/game/", (40,60)),
-           "jump": import_folder("./Assets/player/jump/game/", (40,60)),
-           "holdWall": import_folder("./Assets/player/hold/game/", (40,60))
+            "front": import_folder("./Assets/player/idle/game/", (40 * self.screen_mul, 60 * self.screen_mul)),
+            "run": import_folder("./Assets/player/run/game/", (40 * self.screen_mul, 60 * self.screen_mul)),
+            "jump": import_folder("./Assets/player/jump/game/", (40 * self.screen_mul, 60 * self.screen_mul)),
+            "holdWall": import_folder("./Assets/player/hold/game/", (40 * self.screen_mul, 60 * self.screen_mul))
         }
+
+
+    def startSound(self):
+        self.deathSound = pygame.mixer.Sound("./Assets/sounds/death.mp3")
+        self.coinSound = pygame.mixer.Sound("./Assets/sounds/coin.mp3")
+        self.playerJump = pygame.mixer.Sound("./Assets/sounds/jump_02.wav")
+        self.menuMusic = pygame.mixer.Sound("./Assets/sounds/menumusic.mp3")
+        self.gameMusic = pygame.mixer.Sound("./Assets/sounds/gameMusic.mp3")
+        self.hitEnemy = pygame.mixer.Sound("./Assets/sounds/hit_enemy.wav")
+        self.HoverSound = pygame.mixer.Sound("./Assets/sounds/hover.wav")
+        self.ClickSound = pygame.mixer.Sound("./Assets/sounds/test.wav")
+        self.playerWalk = sound("./Assets/sounds/walk/", self.vol[1])
         self.updateSound()
         self.loadAbout()
         self.menuMusic.play(-1, 0, 200)

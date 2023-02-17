@@ -1,0 +1,29 @@
+My name is Timotej Rozina and I developed this game withing computer science course called 
+"Tehnologija iger in navidezna resničnost" (Technology of games and virtual reality) on 
+Faculty of Computer and Information Science, Ljubljana Slovenia.
+
+Following are the links of all the assets that I used from the internet:
+
+https://dinvstudio.itch.io/dynamic-space-background-lite-free - Background image
+
+https://vivicat.itch.io/drone-sprite-sheet - Drone (enemy)
+
+Stephen Challener (Redshrike), hosted by OpenGameArt.org 
+(https://opengameart.org/content/lpc-beetle) - Beetle (enemy)
+
+https://free-game-assets.itch.io/free-enemy-sprite-sheets-pixel-art - Bird (enemy)
+
+https://opengameart.org/content/gold-coin-6 - Coin sound
+
+https://opengameart.org/content/8bit-death-whirl - Death sound
+
+https://opengameart.org/content/8-bit-music-pack-loopable - Game music
+
+https://mixkit.co/free-sound-effects/game/ - Hover effect
+
+Dklon, https://opengameart.org/content/platformer-jumping-sounds - Jump effect
+
+https://opengameart.org/content/awake-megawall-10, http://cynicmusic.com, 
+http://pixelsphere.org - Menu music
+
+https://opengameart.org/content/floor-spikes - Spike

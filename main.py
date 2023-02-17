@@ -1,6 +1,5 @@
 import pygame, sys
-import settings
-from settings import *
+from settings import Settings
 from level import Level
 from mainMenu import MainMenu, PauseMenu
 from settingMenu import SettingsMenu
@@ -13,8 +12,10 @@ from extras import About, License
 
 clock = pygame.time.Clock()
 pygame.init()
-screen = pygame.display.set_mode((settings.screen_w, settings.screen_h))
 settings = Settings()
+screen = pygame.display.set_mode((settings.screen_w, settings.screen_h),pygame.RESIZABLE)
+settings.begin()
+settings.startSound()
 pygame.display.set_caption('Debugger', "./Assets/player/idle/game/sprite_0.png")
 pygame.display.set_icon(settings.playerFrames["front"][0])
 settingMenu = SettingsMenu(screen, settings)
@@ -30,6 +31,7 @@ highScore = HighScore(screen, settings, settings.levelIndex)
 about = About(screen, settings)
 license = License(screen, settings)
 
+print(pygame.version.ver)
 
 def update_fps():
     fps = str(int(clock.get_fps()))
@@ -51,6 +53,50 @@ while True:
                 settings.state = "playing"
             if not level.started:
                 level.starts()
+        elif event.type == pygame.VIDEORESIZE:
+            width, height = event.size
+            if 1200 > width or height < 768:
+                screen = pygame.display.set_mode((1200, 768), pygame.RESIZABLE)
+                settings.screen_mul = 1
+                settings.screen_w = 1200
+                settings.screen_h = 768
+                settings.tile_size = 64
+                settings.resize()
+                settings.sfx.sprite.resize()
+                settings.music.sprite.resize()
+                changeName.resize()
+                startMenu.resize()
+                pauseMenu.resize()
+                settingMenu.resize()
+                highScore.resize()
+                highScoreLevel.resize()
+                levelSelect.resize()
+                about.resize()
+                dieMenu.resize()
+                finishMenu.resize()
+                license.resize()
+                level = Level(settings.levels[settings.levelIndex], screen, settings)
+            else:
+                screen = pygame.display.set_mode((height*1.5625, height), pygame.RESIZABLE)
+                settings.screen_mul = height/768
+                settings.screen_w = 1200 * settings.screen_mul
+                settings.screen_h = 768 * settings.screen_mul
+                settings.tile_size = 64 * settings.screen_mul
+                settings.resize()
+                settings.sfx.sprite.resize()
+                settings.music.sprite.resize()
+                changeName.resize()
+                startMenu.resize()
+                dieMenu.resize()
+                pauseMenu.resize()
+                settingMenu.resize()
+                highScore.resize()
+                highScoreLevel.resize()
+                levelSelect.resize()
+                finishMenu.resize()
+                about.resize()
+                license.resize()
+                level = Level(settings.levels[settings.levelIndex], screen, settings)
     if not pygame.mouse.get_pressed()[0]:
         settings.leftClick = False
     if settings.state == "playing" and not settings.pause:
@@ -70,6 +116,9 @@ while True:
         settingMenu.updateState("pause_menu")
     elif settings.state == "name":
         settings.state = changeName.draw()
+        if settings.state == "main_menu":
+            levelSelect = LevelSelect(screen, settings)
+            highScoreLevel = HighScoreLevel(screen, settings)
     elif settings.state == "about":
         settings.state = about.draw()
     elif settings.state == "license":
