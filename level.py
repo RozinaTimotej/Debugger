@@ -90,11 +90,8 @@ class Level:
                             self.spikes.add(
                                 Spike((c_i * self.settings.tile_size + (16*self.settings.screen_mul) + x_offset, r_i * self.settings.tile_size + 0),self.settings, self.settings.spikeFrames, 180))
 
-        len_x = math.ceil(((len(layout[0])+1)*self.settings.tile_size) / 1367) + 1
-        for i in range(-2, len_x + 1):
-            self.space.add(Background1(i * 1367, 0,self.settings))
-        for i in range(-2, len_x + 1):
-            self.stars.add(Background2(i * 1367, 0,self.settings))
+        self.space.add(Background1(0, 0,self.settings))
+        self.space.add(Background2(0, 0, self.settings))
 
         self.startTime = pygame.time.get_ticks()
 
